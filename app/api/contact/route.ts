@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { contactSchema } from '@/lib/contact-schema';
 
+export const runtime = 'edge';
+
 // Resend setup
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
