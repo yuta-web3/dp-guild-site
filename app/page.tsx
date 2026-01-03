@@ -944,7 +944,7 @@ export default function DPGuildWebsite() {
               <div>
                 <div className="rounded-2xl overflow-hidden">
                   <img
-                    src="/images/team/代表取締役写真.jpg"
+                    src="/images/team/ceo-photo.jpg"
                     alt="代表取締役 石井 勇多"
                     className="w-full h-full object-cover"
                   />

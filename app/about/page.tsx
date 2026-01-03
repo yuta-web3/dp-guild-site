@@ -850,7 +850,7 @@ export default function AboutPage() {
                 <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
                   <div className="w-32 h-32 rounded-full overflow-hidden">
                     <img
-                      src="/images/team/代表取締役写真.jpg"
+                      src="/images/team/ceo-photo.jpg"
                       alt="代表取締役 石井 勇多"
                       className="w-full h-full object-cover"
                     />
