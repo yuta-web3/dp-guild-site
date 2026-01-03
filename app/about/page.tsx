@@ -899,18 +899,34 @@ export default function AboutPage() {
               30分の無料相談で、解決への第一歩を踏み出しましょう。
             </p>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto mb-12">
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+              <motion.a
+                href="https://timerex.net/s/info_f990_429a/709e9191"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white hover:bg-gray-50 text-[#0F172A] p-8 rounded-2xl flex flex-col items-center transition-all group"
+                whileHover={{ scale: 1.05 }}
+              >
+                <Calendar className="w-12 h-12 mb-4 text-cyan-500 group-hover:scale-110 transition-transform" />
+                <div className="text-xl font-semibold mb-2">予約して相談</div>
+                <div className="text-gray-600 mb-4">30分無料相談</div>
+                <div className="inline-flex items-center text-cyan-500 font-bold">
+                  カレンダーへ
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </div>
+              </motion.a>
+
               <motion.div
                 whileHover={{ scale: 1.05 }}
               >
                 <Link
                   href="/#contact"
-                  className="bg-white hover:bg-gray-50 text-[#0F172A] p-8 rounded-2xl flex flex-col items-center transition-all group block"
+                  className="bg-white/10 backdrop-blur hover:bg-white/20 text-white p-8 rounded-2xl flex flex-col items-center transition-all group block h-full"
                 >
-                  <Mail className="w-12 h-12 mb-4 text-cyan-500 group-hover:scale-110 transition-transform" />
+                  <Mail className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-xl font-semibold mb-2">フォームで相談</div>
-                  <div className="text-gray-600 mb-4">24時間受付中</div>
-                  <div className="inline-flex items-center text-cyan-500 font-bold">
+                  <div className="text-white/80 mb-4">24時間受付中</div>
+                  <div className="inline-flex items-center font-bold">
                     相談フォームへ
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </div>
