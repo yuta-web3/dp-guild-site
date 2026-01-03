@@ -529,13 +529,15 @@ export default function DPGuildWebsite() {
   return (
     <div className="font-sans text-gray-900 bg-white">
       {/* Fixed CTA Button */}
-      <Link
-        href="/contact"
+      <a
+        href="https://timerex.net/s/info_f990_429a/709e9191"
+        target="_blank"
+        rel="noopener noreferrer"
         className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-gradient-to-b from-cyan-500 to-blue-600 text-white px-8 py-6 rounded-l-2xl font-bold text-lg shadow-2xl hover:from-cyan-600 hover:to-blue-700 transition-all hover:shadow-cyan-500/50 hover:px-10 animate-pulse"
         style={{ writingMode: 'vertical-rl', letterSpacing: '0.1em' }}
       >
         無料相談
-      </Link>
+      </a>
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm py-5 border-b border-gray-100">
@@ -554,12 +556,14 @@ export default function DPGuildWebsite() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Link
-              href="/contact"
+            <a
+              href="https://timerex.net/s/info_f990_429a/709e9191"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
             >
               無料相談
-            </Link>
+            </a>
             <button className="md:hidden text-[#7F7F7F]">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />

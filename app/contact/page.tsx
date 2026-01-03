@@ -82,7 +82,7 @@ export default function ContactPage() {
       title: "相談を予約",
       description: "30分無料相談",
       detail: "予約カレンダーへ",
-      href: "#form"
+      href: "https://timerex.net/s/info_f990_429a/709e9191"
     }
   ];
 
@@ -106,7 +106,9 @@ export default function ContactPage() {
 
           <div className="flex items-center space-x-4">
             <a
-              href="#form"
+              href="https://timerex.net/s/info_f990_429a/709e9191"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
             >
               無料相談

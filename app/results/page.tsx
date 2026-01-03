@@ -404,12 +404,14 @@ export default function ResultsPage() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Link
-              href="/contact"
+            <a
+              href="https://timerex.net/s/info_f990_429a/709e9191"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
             >
               無料相談
-            </Link>
+            </a>
             <button className="md:hidden text-[#7F7F7F]">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
