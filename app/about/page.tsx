@@ -315,7 +315,9 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#contact"
+                href="https://timerex.net/s/info_f990_429a/709e9191"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-4 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-all transform hover:scale-105"
               >
                 まずは課題をご相談
