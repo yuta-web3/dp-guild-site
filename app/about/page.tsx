@@ -63,7 +63,7 @@ export default function AboutPage() {
     },
     {
       phase: "03. 実装・開発",
-      title: "確実な実行",
+      title: "着実な実行",
       description: "速く、破綻なく、品質の高い実装で価値を形に",
       items: ["開発・制作", "品質管理", "進捗報告", "調整・改善"]
     },
@@ -554,7 +554,7 @@ export default function AboutPage() {
               仕事の進め方
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              再現性のある4つのステップで、確実に成果を創出
+              再現性のある4つのステップで、着実に成果へつなげる
             </p>
           </motion.div>
 
@@ -867,7 +867,7 @@ export default function AboutPage() {
                     私たちDP-GUILDは、お客様にとって&ldquo;頼れるITパートナー&rdquo;でありたいと考えています
                   </p>
                   <p className="text-lg md:text-xl text-gray-300 leading-relaxed italic mb-6">
-                    技術的な解決策を提供するだけでなく、お客様と共に課題に向き合い、
+                    技術的な解決策の提供にとどまらず、お客様と共に課題に向き合い、
                     真に価値のあるソリューションを共創することを大切にしています
                   </p>
                   <p className="text-lg md:text-xl text-gray-300 leading-relaxed italic">
@@ -896,7 +896,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto mb-12">
               どんな小さな課題でも、お気軽にご相談ください。
-              30分の無料相談で、解決への第一歩を踏み出しましょう。
+              30分の無料相談が、解決への第一歩になります。
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">

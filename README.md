@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DP-GUILD コーポレートサイト
 
-## Getting Started
+DP-GUILDの公式Webサイト。Next.js 15 + Cloudflare Pagesで構築。
 
-First, run the development server:
+## 技術スタック
+
+- **フレームワーク**: Next.js 15.5.2 (App Router)
+- **スタイリング**: Tailwind CSS
+- **CMS**: microCMS
+- **ホスティング**: Cloudflare Pages
+- **アニメーション**: Framer Motion
+
+## 開発環境
 
 ```bash
+# 依存関係インストール
+npm install
+
+# 開発サーバー起動（Turbopack）
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# ビルド
+npm run build
+
+# Cloudflare Pages用ビルド
+npm run pages:build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+開発サーバー: http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 環境変数
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`.env.local` に以下を設定:
 
-## Learn More
+```
+MICROCMS_SERVICE_DOMAIN=your-service-domain
+MICROCMS_API_KEY=your-api-key
+```
 
-To learn more about Next.js, take a look at the following resources:
+## デプロイ構成
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+GitHub (yuta-web3/dp-guild-site)
+    │
+    │ main ブランチへ push
+    ↓
+Cloudflare Pages（自動ビルド・デプロイ）
+    │
+    ↓
+公開URL: https://dp-guild-site.pages.dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 自動デプロイ
 
-## Deploy on Vercel
+- **トリガー**: `main` ブランチへのpush
+- **ビルドコマンド**: `npm run build`
+- **出力ディレクトリ**: `.vercel/output/static`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### カスタムドメイン設定
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Cloudflare Pages ダッシュボードにアクセス
+2. 「カスタムドメイン」タブを選択
+3. 「カスタムドメインを設定」をクリック
+4. 取得済みのドメインを入力
+5. DNSレコードを設定（CloudflareでDNS管理している場合は自動）
+
+## ディレクトリ構成
+
+```
+dp-guild-site/
+├── app/                    # Next.js App Router
+│   ├── page.tsx           # トップページ
+│   ├── about/             # 会社概要
+│   ├── blog/              # ブログ
+│   │   ├── page.tsx       # 一覧ページ
+│   │   └── [id]/          # 詳細ページ
+│   ├── contact/           # お問い合わせ
+│   ├── results/           # 実績・事例
+│   └── api/               # APIルート
+├── lib/                   # ユーティリティ
+│   └── microcms.ts        # microCMSクライアント
+├── wrangler.toml          # Cloudflare設定
+└── package.json
+```
+
+## ブログ機能（microCMS連携）
+
+### 必須フィールド
+
+| フィールド | フィールドID | 用途 |
+|-----------|-------------|------|
+| タイトル | `title` | 記事タイトル |
+| 概要 | `description` | meta description |
+| アイキャッチ | `eyecatch` | サムネイル画像 |
+| カテゴリ | `category` | 記事分類 |
+| TL;DR | `tldr` | 要点（改行区切り5項目） |
+| 内容 | `content` | 本文HTML |
+| FAQ | `faq` | よくある質問（繰り返し） |
+
+### 表示要素
+
+- TL;DRボックス（本文前）
+- FAQセクション + JSON-LD構造化データ
+- CTAセクション（FAQ直後）
+
+## リンク
+
+- **本番URL**: https://dp-guild-site.pages.dev
+- **GitHub**: https://github.com/yuta-web3/dp-guild-site
+- **microCMS管理画面**: https://dp-guild.microcms.io

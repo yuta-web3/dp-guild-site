@@ -1,0 +1,143 @@
+import Link from 'next/link';
+import { getBlogs } from '@/lib/microcms';
+import { ArrowRight, Calendar } from 'lucide-react';
+
+export const revalidate = 60; // ISR: 60秒ごとに再検証
+
+export default async function BlogPage() {
+  const { contents: blogs, totalCount } = await getBlogs(20);
+
+  return (
+    <div className="font-sans text-gray-900 bg-white min-h-screen">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm py-5 border-b border-gray-100">
+        <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
+          <Link href="/" className="text-2xl font-bold text-[#0F172A]">
+            DP-GUILD
+          </Link>
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/#solutions" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ソリューション</Link>
+            <Link href="/results" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">実績・事例</Link>
+            <Link href="/about" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">会社概要</Link>
+            <Link href="/blog" className="text-[#0F172A] font-medium">ブログ</Link>
+          </nav>
+          <a
+            href="https://timerex.net/s/info_f990_429a/709e9191"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
+          >
+            無料相談
+          </a>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="pt-32 pb-16 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155]">
+        <div className="container mx-auto px-4 md:px-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">ブログ</h1>
+          <p className="text-xl text-gray-300">
+            DX・IT活用に関する情報をお届けします
+          </p>
+        </div>
+      </section>
+
+      {/* Blog List */}
+      <section className="py-16">
+        <div className="container mx-auto px-4 md:px-8">
+          {blogs.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">記事がまだありません</p>
+            </div>
+          ) : (
+            <>
+              <p className="text-gray-600 mb-8">{totalCount}件の記事</p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogs.map((blog) => (
+                  <Link
+                    key={blog.id}
+                    href={`/blog/${blog.id}`}
+                    className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
+                  >
+                    {blog.eyecatch ? (
+                      <div className="aspect-video overflow-hidden">
+                        <img
+                          src={blog.eyecatch.url}
+                          alt={blog.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    ) : (
+                      <div className="aspect-video bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                        <span className="text-white text-4xl font-bold opacity-30">DP</span>
+                      </div>
+                    )}
+                    <div className="p-6">
+                      {blog.category && (
+                        <span className="inline-block px-3 py-1 bg-cyan-100 text-cyan-700 text-sm rounded-full mb-3">
+                          {blog.category.name}
+                        </span>
+                      )}
+                      <h2 className="text-lg font-bold text-[#0F172A] mb-2 group-hover:text-cyan-600 transition-colors line-clamp-2">
+                        {blog.title}
+                      </h2>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {blog.description}
+                      </p>
+                      <div className="flex items-center text-gray-400 text-sm">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {new Date(blog.publishedAt).toLocaleDateString('ja-JP')}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-gradient-to-r from-cyan-500 to-blue-600">
+        <div className="container mx-auto px-4 md:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            DXについてお悩みですか？
+          </h2>
+          <p className="text-white/90 mb-8">
+            30分の無料相談で、お客様の課題をお聞かせください
+          </p>
+          <a
+            href="https://timerex.net/s/info_f990_429a/709e9191"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-8 py-4 bg-white text-[#0F172A] rounded-md font-medium hover:bg-gray-100 transition-colors"
+          >
+            無料相談を予約する
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </a>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#0F172A] text-white py-12">
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+              <span className="text-xl font-bold">DP-GUILD</span>
+            </div>
+            <nav className="flex space-x-6 text-sm text-gray-400">
+              <Link href="/" className="hover:text-white transition-colors">ホーム</Link>
+              <Link href="/about" className="hover:text-white transition-colors">会社概要</Link>
+              <Link href="/results" className="hover:text-white transition-colors">実績・事例</Link>
+              <Link href="/blog" className="hover:text-white transition-colors">ブログ</Link>
+              <Link href="/contact" className="hover:text-white transition-colors">お問い合わせ</Link>
+            </nav>
+          </div>
+          <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} DP-GUILD Inc. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

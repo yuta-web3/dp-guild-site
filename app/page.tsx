@@ -553,6 +553,7 @@ export default function DPGuildWebsite() {
             <a href="/#solutions" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ソリューション</a>
             <Link href="/results" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">実績・事例</Link>
             <Link href="/about" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">会社概要</Link>
+            <Link href="/blog" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ブログ</Link>
           </nav>
 
           <div className="flex items-center space-x-4">
@@ -954,7 +955,7 @@ export default function DPGuildWebsite() {
                 <h3 className="text-2xl font-bold text-[#0F172A] mb-4">代表取締役 石井 勇多</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   私たちDP-GUILDは、お客様にとって&ldquo;頼れるITパートナー&rdquo;でありたいと考えています。
-                  技術的な解決策を提供するだけでなく、お客様と共に課題に向き合い、
+                  技術的な解決策の提供にとどまらず、お客様と共に課題に向き合い、
                   真に価値のあるソリューションを共創することを大切にしています
                 </p>
                 <Link

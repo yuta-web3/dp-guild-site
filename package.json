@@ -19,6 +19,7 @@
     "@types/nodemailer": "^7.0.2",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.544.0",
+    "microcms-js-sdk": "^3.2.0",
     "next": "15.5.2",
     "nodemailer": "^7.0.6",
     "react": "19.1.0",
