@@ -978,13 +978,15 @@ export default function DPGuildWebsite() {
             </p>
 
             <div className="flex justify-center mb-16">
-              <Link
-                href="/contact"
+              <a
+                href="https://timerex.net/s/info_f990_429a/709e9191"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center px-8 py-4 bg-white text-[#0F172A] rounded-md font-medium hover:bg-gray-100 transition-colors"
               >
                 無料相談を予約する
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
+              </a>
             </div>
 
             <div className="bg-white/10 backdrop-blur p-8 rounded-xl">

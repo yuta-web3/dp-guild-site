@@ -816,9 +816,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
           >
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a
-              href="/#contact"
+              href="https://timerex.net/s/info_f990_429a/709e9191"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-[#60A5FA] to-[#5EEAD4] text-white rounded-full font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all transform hover:scale-105"
             >
               無料相談を予約する
