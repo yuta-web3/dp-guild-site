@@ -52,42 +52,29 @@ export default async function BlogPage() {
           ) : (
             <>
               <p className="text-gray-600 mb-8">{totalCount}件の記事</p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="flex flex-col gap-6">
                 {blogs.map((blog) => (
                   <Link
                     key={blog.id}
                     href={`/blog/${blog.id}`}
-                    className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
+                    className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all p-6"
                   >
-                    {blog.eyecatch ? (
-                      <div className="aspect-video overflow-hidden">
-                        <img
-                          src={blog.eyecatch.url}
-                          alt={blog.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    ) : (
-                      <div className="aspect-video bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                        <span className="text-white text-4xl font-bold opacity-30">DP</span>
-                      </div>
+                    {blog.category && (
+                      <span className="inline-block px-3 py-1 bg-cyan-100 text-cyan-700 text-sm rounded-full mb-3">
+                        {blog.category.name}
+                      </span>
                     )}
-                    <div className="p-6">
-                      {blog.category && (
-                        <span className="inline-block px-3 py-1 bg-cyan-100 text-cyan-700 text-sm rounded-full mb-3">
-                          {blog.category.name}
-                        </span>
-                      )}
-                      <h2 className="text-lg font-bold text-[#0F172A] mb-2 group-hover:text-cyan-600 transition-colors line-clamp-2">
-                        {blog.title}
-                      </h2>
+                    <h2 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-cyan-600 transition-colors line-clamp-2">
+                      {blog.title}
+                    </h2>
+                    {blog.description && (
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                         {blog.description}
                       </p>
-                      <div className="flex items-center text-gray-400 text-sm">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(blog.publishedAt).toLocaleDateString('ja-JP')}
-                      </div>
+                    )}
+                    <div className="flex items-center text-gray-400 text-sm">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      {new Date(blog.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')}
                     </div>
                   </Link>
                 ))}

@@ -112,20 +112,9 @@ export default async function BlogDetailPage({ params }: Props) {
           </Link>
 
           {/* Title（H1） */}
-          <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-6 leading-tight">
             {blog.title}
           </h1>
-
-          {/* Eyecatch */}
-          {blog.eyecatch && (
-            <div className="mb-6 rounded-xl overflow-hidden">
-              <img
-                src={blog.eyecatch.url}
-                alt={blog.title}
-                className="w-full h-auto"
-              />
-            </div>
-          )}
 
           {/* Category & Date */}
           <div className="flex flex-wrap items-center gap-4 mb-8">
@@ -136,61 +125,67 @@ export default async function BlogDetailPage({ params }: Props) {
             )}
             <div className="flex items-center text-gray-500 text-sm">
               <Calendar className="w-4 h-4 mr-1" />
-              {new Date(blog.publishedAt).toLocaleDateString('ja-JP')}
+              {new Date(blog.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')}
             </div>
           </div>
 
-          {/* TL;DR - 要点ボックス（ガイドライン準拠：セクション0-3） */}
+          {/* TL;DR - 要点ボックス（ガイドライン準拠） */}
           {blog.tldr && (
-            <div className="bg-[#e8f4fd] border border-[#b8daff] rounded-lg p-5 mb-10">
-              <h2 className="text-base font-bold text-[#004085] mb-3">この記事の要点</h2>
-              <ul className="space-y-2 pl-5 list-disc marker:text-[#004085]">
-                {blog.tldr.split('\n').filter(Boolean).map((line, i) => (
-                  <li key={i} className="text-gray-700 leading-relaxed">{line}</li>
+            <div className="bg-[#e8f4fd] border border-[#b8daff] rounded-lg p-6 mb-12">
+              <h2 className="text-lg font-bold text-[#004085] mb-4">この記事の要点</h2>
+              <ul className="space-y-3 pl-5 list-disc marker:text-[#004085]">
+                {blog.tldr.split(/\\n|\n/).filter(Boolean).map((line, i) => (
+                  <li key={i} className="text-gray-700 leading-relaxed text-[15px]">{line.trim()}</li>
                 ))}
               </ul>
             </div>
           )}
 
-          {/* Content */}
+          {/* Content - ガイドライン準拠のスタイリング */}
           <div
-            className="prose prose-lg max-w-none prose-headings:text-[#0F172A] prose-a:text-cyan-600 prose-a:no-underline hover:prose-a:underline"
+            className="article-content"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
 
-          {/* FAQ */}
+          {/* FAQ - ガイドライン準拠（本文の後、CTA前） */}
           {blog.faq && blog.faq.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <h2 className="text-2xl font-bold text-[#0F172A] mb-6">よくある質問</h2>
-              <div className="space-y-4">
+            <section className="mt-20 pt-10 border-t border-gray-200">
+              <h2 className="text-2xl font-bold text-[#0F172A] mb-8">よくある質問</h2>
+              <div className="space-y-6">
                 {blog.faq.map((item, index) => (
-                  <div key={index} className="bg-gray-50 rounded-xl p-6">
-                    <h3 className="font-bold text-[#0F172A] mb-2">
+                  <div key={index} className="border-b border-gray-100 pb-6 last:border-b-0">
+                    <h3 className="text-lg font-bold text-[#0F172A] mb-3">
                       Q. {item.question}
                     </h3>
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 leading-relaxed pl-6">
                       A. {item.answer}
                     </p>
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
-          {/* CTA - 判断補助型（ガイドライン準拠） */}
-          <div className="mt-12 bg-gray-50 border-l-4 border-cyan-500 p-6 rounded-r-lg">
-            <p className="text-gray-700 leading-relaxed">
-              ご自身の状況に当てはまるか判断に迷う場合や、
-              より詳しい情報が必要な場合は
+          {/* CTA - 2択（Zoom + 問い合わせフォーム） */}
+          <div className="mt-16 bg-[#f8f9fa] border-l-4 border-cyan-500 p-6 rounded-r-lg">
+            <p className="text-gray-700 leading-relaxed text-[15px]">
+              ご自身の状況に当てはまるか判断に迷う場合や、より詳しい情報が必要な場合は
               <a
                 href="https://timerex.net/s/info_f990_429a/709e9191"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cyan-600 font-medium hover:underline mx-1"
+                className="text-cyan-600 font-bold hover:underline mx-1"
               >
-                こちらからご相談ください
+                無料相談（Zoom）
               </a>
-              。
+              をご利用ください。Zoomが難しい方は
+              <a
+                href="/contact"
+                className="text-cyan-600 font-bold hover:underline mx-1"
+              >
+                お問い合わせフォーム
+              </a>
+              からご連絡ください。
             </p>
           </div>
         </div>

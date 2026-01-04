@@ -24,3 +24,112 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 記事本文のスタイル（HP_EXPRESSION_GUIDE準拠） */
+.article-content {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #374151;
+}
+
+.article-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-top: 64px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+
+.article-content h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.article-content p {
+  margin-bottom: 24px;
+  line-height: 1.9;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 24px 0;
+  padding-left: 24px;
+}
+
+.article-content li {
+  margin-bottom: 8px;
+  line-height: 1.8;
+}
+
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 32px 0;
+  font-size: 15px;
+}
+
+.article-content th {
+  background-color: #f3f4f6;
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+}
+
+.article-content td {
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  vertical-align: top;
+}
+
+.article-content tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.article-content a {
+  color: #0891b2;
+  text-decoration: none;
+}
+
+.article-content a:hover {
+  text-decoration: underline;
+}
+
+.article-content strong {
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.article-content blockquote {
+  border-left: 4px solid #0891b2;
+  padding-left: 16px;
+  margin: 24px 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 32px 0;
+}
+
+.article-content hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 48px 0;
+}
