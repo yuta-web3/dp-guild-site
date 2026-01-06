@@ -7,6 +7,7 @@ import { ArrowRight, Send, Loader2, CheckCircle, AlertCircle, TrendingUp, Code, 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactFormData } from "@/lib/contact-schema";
+import Header from "@/components/Header";
 
 // Spline fallback component
 const SplineFallback: React.FC = () => (
@@ -539,40 +540,7 @@ export default function DPGuildWebsite() {
         無料相談
       </a>
 
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm py-5 border-b border-gray-100">
-        <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
-          <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-[#0F172A]">
-              DP-GUILD
-            </Link>
-          </div>
-
-          <nav className="hidden md:flex items-center space-x-8">
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/#solutions" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ソリューション</a>
-            <Link href="/results" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">実績・事例</Link>
-            <Link href="/about" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">会社概要</Link>
-            <Link href="/blog" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ブログ</Link>
-          </nav>
-
-          <div className="flex items-center space-x-4">
-            <a
-              href="https://timerex.net/s/info_f990_429a/709e9191"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
-            >
-              無料相談
-            </a>
-            <button className="md:hidden text-[#7F7F7F]">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden">

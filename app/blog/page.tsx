@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getBlogs } from '@/lib/microcms';
 import { ArrowRight, Calendar } from 'lucide-react';
+import Header from '@/components/Header';
 
 export const revalidate = 60; // ISR: 60秒ごとに再検証
 
@@ -9,28 +10,7 @@ export default async function BlogPage() {
 
   return (
     <div className="font-sans text-gray-900 bg-white min-h-screen">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm py-5 border-b border-gray-100">
-        <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-[#0F172A]">
-            DP-GUILD
-          </Link>
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/#solutions" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ソリューション</Link>
-            <Link href="/results" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">実績・事例</Link>
-            <Link href="/about" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">会社概要</Link>
-            <Link href="/blog" className="text-[#0F172A] font-medium">ブログ</Link>
-          </nav>
-          <a
-            href="https://timerex.net/s/info_f990_429a/709e9191"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
-          >
-            無料相談
-          </a>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155]">
