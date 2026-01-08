@@ -346,16 +346,21 @@ export default function ContactPage() {
                 </button>
               </div>
 
-              {/* 成功・エラーメッセージ */}
+              {/* 成功メッセージ - 次に何が起きるかを明確に */}
               {submitStatus === 'success' && (
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-green-700 flex items-start">
-                    <CheckCircle className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
-                    <span>
-                      ありがとうございます。<br />
-                      内容を確認し、状況整理の観点で2営業日以内にご連絡します。
-                    </span>
+                <div className="p-5 bg-[#F8FAFC] border border-gray-200 rounded-lg">
+                  <p className="text-[#0F172A] font-medium mb-3 flex items-center">
+                    <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                    ありがとうございます
                   </p>
+                  <div className="text-sm text-gray-600 space-y-2 ml-7">
+                    <p className="font-medium text-gray-700">2営業日以内に、以下の流れでご連絡します：</p>
+                    <ol className="list-decimal list-inside space-y-1 text-gray-600">
+                      <li>いただいた内容を整理し、状況を確認します</li>
+                      <li>必要に応じて、選択肢をお伝えします</li>
+                      <li>「今はやらない」も含め、判断をお手伝いします</li>
+                    </ol>
+                  </div>
                 </div>
               )}
 
