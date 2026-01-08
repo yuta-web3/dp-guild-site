@@ -426,39 +426,25 @@ export default function AboutPage() {
               </div>
             </motion.div>
 
-            {/* Vision - Right Text, Left Visual */}
+            {/* Vision - テキストのみ */}
             <motion.div
-              className="flex flex-col md:flex-row-reverse items-center gap-12"
+              className="max-w-3xl mx-auto text-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="flex-1">
-                <div className="text-[#0F172A] font-semibold text-sm font-bold mb-2">VISION</div>
-                <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
-                  地域から世界へ、革新的なデジタル体験を
-                </h3>
-                <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  滋賀から始まる全国展開。地域密着型のアプローチで培った信頼と実績を基に、
-                  質の高いITソリューションを全国、そして世界へと広げていきます。
-                  テクノロジーの力で、あらゆるビジネスの可能性を最大化します。
-                </p>
-                <div className="flex items-start space-x-4">
-                  <TrendingUp className="w-6 h-6 text-purple-500 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-[#0F172A] mb-2">持続的な成長</h4>
-                    <p className="text-gray-600">地域に根ざしながら、グローバルな視点で価値創造</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="rounded-2xl overflow-hidden shadow-lg">
-                  <img
-                    src="/images/team/village-7702981_1920.jpg"
-                    alt="地域から世界へ"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div className="text-[#0F172A] font-semibold text-sm mb-2">VISION</div>
+              <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
+                「何から手をつけるか」を一緒に決める
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+                施策は無数にある。でも、今やるべきことは限られている。<br />
+                私たちは「作る」前に「決める」を大切にします。<br />
+                判断の精度を上げることで、無駄な投資を減らし、成果に近づく。
+              </p>
+              <div className="inline-flex items-center justify-center space-x-3 text-gray-600">
+                <TrendingUp className="w-5 h-5" />
+                <span>判断の質が、成果の質を決める</span>
               </div>
             </motion.div>
           </div>
@@ -674,7 +660,7 @@ export default function AboutPage() {
                         <div className="flex items-start justify-between mb-6">
                           <div className="flex items-center gap-4">
                             <div className="w-14 h-14 rounded-xl bg-[#0F172A]/10 flex items-center justify-center">
-                              <Icon className="w-7 h-7 text-[#60A5FA]" />
+                              <Icon className="w-7 h-7 text-white" />
                             </div>
                             <div>
                               <h3 className="text-[#E6EBF5] font-bold text-2xl">
@@ -697,7 +683,7 @@ export default function AboutPage() {
                             <ul className="space-y-2">
                               {industry.examples.map((example, exampleIndex) => (
                                 <li key={exampleIndex} className="text-[#CBD5E1] text-sm flex items-start">
-                                  <CheckCircle className="w-4 h-4 text-[#5EEAD4] mr-2 mt-0.5 flex-shrink-0" />
+                                  <CheckCircle className="w-4 h-4 text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
                                   <span>{example}</span>
                                 </li>
                               ))}
@@ -711,7 +697,7 @@ export default function AboutPage() {
                               {industry.achievements.map((achievement, achIndex) => (
                                 <div
                                   key={achIndex}
-                                  className="text-[#5EEAD4] text-sm bg-white/5 px-3 py-2 rounded-md flex items-start"
+                                  className="text-gray-400 text-sm bg-white/5 px-3 py-2 rounded-md flex items-start"
                                 >
                                   <CheckCircle className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
                                   <span>{achievement}</span>
