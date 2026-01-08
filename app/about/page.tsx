@@ -18,37 +18,6 @@ export default function AboutPage() {
     { label: "従業員数", value: "10名（業務委託含む）", icon: Users },
   ];
 
-  const businessContent = [
-    {
-      title: "デジタルマーケティング",
-      description: "SNS戦略・運用、コンテンツ制作、オンライン広告、データ分析",
-      icon: TrendingUp,
-      color: "from-gray-700 to-gray-900",
-      metrics: "SNS動画1500万再生達成"
-    },
-    {
-      title: "Web制作・開発",
-      description: "LP／EC／採用／コーポレート／オウンドメディア、WordPress・CMS構築",
-      icon: Code,
-      color: "from-gray-700 to-gray-900",
-      metrics: "300件以上の制作実績"
-    },
-    {
-      title: "システム・アプリ開発",
-      description: "要件定義〜開発・運用保守、AI活用、クラウド基盤構築",
-      icon: Building2,
-      color: "from-gray-700 to-gray-900",
-      metrics: "官公庁級セキュリティ対応"
-    },
-    {
-      title: "ITコンサルティング",
-      description: "プロジェクトマネジメント、DX推進支援、業務効率化",
-      icon: Lightbulb,
-      color: "from-gray-700 to-gray-900",
-      metrics: "顧客継続率94%"
-    }
-  ];
-
   const workProcess = [
     {
       phase: "01. 要件定義",
@@ -326,47 +295,32 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Story Timeline */}
-      <section id="story" className="py-20 bg-white">
-        <div className="container mx-auto px-4 md:px-8">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-4">
+      {/* Story Timeline - Simple */}
+      <section id="story" className="py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-4 md:px-8 max-w-3xl">
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-[#0F172A] mb-4">
               私たちのストーリー
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              地域に根ざし、全国へ。意思の積み重ねが作る成長の軌跡
+            <p className="text-base md:text-xl text-gray-600">
+              地域に根ざし、全国へ
             </p>
-          </motion.div>
+          </div>
 
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-[#0F172A]"></div>
+          <div className="space-y-6">
             {storyTimeline.map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                className={`relative flex items-center mb-12 ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                className="flex items-start gap-4 border-l-2 border-[#0F172A] pl-4 py-2"
               >
-                <div className="flex-1"></div>
-                <div className="w-12 h-12 bg-[#0F172A] rounded-full flex items-center justify-center text-white font-bold z-10">
-                  {item.year.slice(2)}
+                <div className="flex-shrink-0 w-12 h-8 bg-[#0F172A] rounded text-white text-sm font-bold flex items-center justify-center">
+                  {item.year}
                 </div>
-                <div className={`flex-1 ${index % 2 === 0 ? "pl-8 text-left" : "pr-8 text-right"}`}>
-                  <div className="bg-[#F8FAFC] p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                    <h3 className="text-2xl font-bold text-[#0F172A] mb-2">{item.title}</h3>
-                    <p className="text-gray-600">{item.description}</p>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#0F172A]">{item.title}</h3>
+                  <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -398,12 +352,12 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <div className="text-[#0F172A] font-semibold text-sm mb-2">MISSION</div>
-              <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
-                判断を支援し、成果に近づける
+              <h3 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-6">
+                判断を支援し、<br className="md:hidden" />成果に近づける
               </h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                施策ありきではなく、「今、何をやるべきか」の判断から伴走する。<br />
-                判断の精度を上げることで、無駄な投資を減らし、成果に近づける。
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-8">
+                施策ありきではなく、<br className="md:hidden" />「今、何をやるべきか」の判断から伴走する。<br className="hidden md:block" />
+                判断の精度を上げることで、<br className="md:hidden" />無駄な投資を減らし、成果に近づける。
               </p>
               <div className="inline-flex items-center justify-center space-x-3 text-gray-600">
                 <CheckCircle className="w-5 h-5" />
@@ -419,13 +373,13 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <div className="text-[#0F172A] font-semibold text-sm mb-2">VISION</div>
-              <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
-                「何から手をつけるか」を一緒に決める
+              <h3 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-6 leading-tight">
+                「何から手をつけるか」を<br />一緒に決める
               </h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                施策は無数にある。でも、今やるべきことは限られている。<br />
-                私たちは「作る」前に「決める」を大切にします。<br />
-                判断の精度を上げることで、無駄な投資を減らし、成果に近づく。
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-8">
+                施策は無数にある。<br />
+                でも、今やるべきことは限られている。<br />
+                「作る」前に「決める」を大切にします。
               </p>
               <div className="inline-flex items-center justify-center space-x-3 text-gray-600">
                 <TrendingUp className="w-5 h-5" />
@@ -438,45 +392,88 @@ export default function AboutPage() {
 
       {/* Services - 4 Grid Visual */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 md:px-8">
+        <div className="container mx-auto px-4 md:px-8 max-w-4xl">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-4">
-              判断の結果、こうなることがあります
+            <h2 className="text-2xl md:text-4xl font-bold text-[#0F172A] mb-4 leading-tight">
+              判断の結果、<br className="md:hidden" />こうなることがあります
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              私たちは「作る会社」ではなく「決める会社」です。判断の結果として、以下の施策を実行することがあります。
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              「作る会社」ではなく<br className="md:hidden" />「決める会社」です。
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {businessContent.map((service, index) => (
-              <motion.div
-                key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-5 group-hover:opacity-10 transition-opacity`}></div>
-                <div className="relative p-8">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <service.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{service.title}</h3>
-                  <p className="text-gray-600 mb-4">{service.description}</p>
-                  <div className={`inline-flex items-center text-sm font-medium bg-gradient-to-r ${service.color} text-transparent bg-clip-text`}>
-                    {service.metrics}
-                    <ArrowRight className="w-4 h-4 ml-1 text-current" />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="space-y-8">
+            {/* Case 1 */}
+            <motion.div
+              className="border-l-4 border-[#0F172A] pl-6 py-2"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-sm text-gray-500 mb-2">ケース①</p>
+              <h3 className="text-lg font-bold text-[#0F172A] mb-2">
+                SNSを「やる」と判断した場合
+              </h3>
+              <p className="text-gray-600">
+                → 広告や運用代行ではなく、投稿設計と社内で回せる体制づくりから始めます
+              </p>
+            </motion.div>
+
+            {/* Case 2 */}
+            <motion.div
+              className="border-l-4 border-[#0F172A] pl-6 py-2"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <p className="text-sm text-gray-500 mb-2">ケース②</p>
+              <h3 className="text-lg font-bold text-[#0F172A] mb-2">
+                Webサイトを「今は作らない」と判断した場合
+              </h3>
+              <p className="text-gray-600">
+                → 既存資産を活かし、別の選択肢を検討します。作らないことも立派な判断です
+              </p>
+            </motion.div>
+
+            {/* Case 3 */}
+            <motion.div
+              className="border-l-4 border-[#0F172A] pl-6 py-2"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <p className="text-sm text-gray-500 mb-2">ケース③</p>
+              <h3 className="text-lg font-bold text-[#0F172A] mb-2">
+                システム化が必要だと判断した場合
+              </h3>
+              <p className="text-gray-600">
+                → 要件定義だけを行い、開発は別会社に任せる選択をすることもあります
+              </p>
+            </motion.div>
+
+            {/* Case 4 */}
+            <motion.div
+              className="border-l-4 border-[#0F172A] pl-6 py-2"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <p className="text-sm text-gray-500 mb-2">ケース④</p>
+              <h3 className="text-lg font-bold text-[#0F172A] mb-2">
+                外注せず自走すると判断した場合
+              </h3>
+              <p className="text-gray-600">
+                → 必要なスキルや仕組みを整え、社内で完結できる状態を一緒に作ります
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
