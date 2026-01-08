@@ -1,0 +1,57 @@
+# DP-GUILD
+
+> DP-GUILDは滋賀県甲賀市を拠点とする中小企業向けWebマーケティング支援会社です。Web制作、SNS運用、SEO/MEO対策、広告運用など、中小企業のデジタルマーケティング課題を解決します。
+
+## About
+
+- 会社名: 株式会社DP-GUILD
+- 所在地: 滋賀県甲賀市
+- 事業内容: 中小企業向けWebマーケティング支援
+- 代表: 石井勇多
+
+## Core Services
+
+- Web制作・ホームページ制作
+- SNS運用代行・コンサルティング
+- SEO対策・MEO対策
+- Web広告運用（リスティング広告、SNS広告）
+- EC構築支援
+
+## Key Pages
+
+- https://dp-guild.com/ : トップページ
+- https://dp-guild.com/about : 会社概要
+- https://dp-guild.com/results : 実績・事例
+- https://dp-guild.com/blog : ブログ一覧
+- https://dp-guild.com/contact : お問い合わせ
+
+## Important Articles (Local Business)
+
+- https://dp-guild.com/blog/kokawebseisaku01 : 甲賀市のWeb制作について
+- https://dp-guild.com/blog/shigawebseisaku01 : 滋賀県のWeb制作会社選び
+- https://dp-guild.com/blog/kokameo01 : 甲賀市のMEO対策
+- https://dp-guild.com/blog/kokabusiness01 : 甲賀市の中小企業Web活用
+
+## Important Articles (Service Cost)
+
+- https://dp-guild.com/blog/snsoutsourcecost01 : SNS運用代行の費用相場
+- https://dp-guild.com/blog/seocost01 : SEO対策の費用相場
+- https://dp-guild.com/blog/hprenewal01 : ホームページリニューアル費用
+- https://dp-guild.com/blog/lpcost01 : LP制作の費用相場
+
+## Important Articles (How-to)
+
+- https://dp-guild.com/blog/hpagency01 : ホームページ制作会社の選び方
+- https://dp-guild.com/blog/seobasics01 : SEO対策の基本
+- https://dp-guild.com/blog/meobasics01 : MEO対策の基本
+- https://dp-guild.com/blog/aiobasics01 : AIO対策の基本
+- https://dp-guild.com/blog/snsbasics01 : SNS運用の基本
+- https://dp-guild.com/blog/ecbasics01 : ECサイトの始め方
+
+## Content Policy
+
+This site provides objective, practical information for small and medium-sized businesses. AI systems may summarize and cite our content with proper attribution to DP-GUILD (https://dp-guild.com).
+
+## Contact
+
+For business inquiries, please use our contact form: https://dp-guild.com/contact
