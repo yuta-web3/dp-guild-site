@@ -40,11 +40,11 @@ export default async function BlogPage() {
                     className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all p-6"
                   >
                     {blog.category && (
-                      <span className="inline-block px-3 py-1 bg-cyan-100 text-cyan-700 text-sm rounded-full mb-3">
+                      <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full mb-3">
                         {blog.category.name}
                       </span>
                     )}
-                    <h2 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-cyan-600 transition-colors line-clamp-2">
+                    <h2 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-gray-600 transition-colors line-clamp-2">
                       {blog.title}
                     </h2>
                     {blog.description && (
@@ -65,7 +65,7 @@ export default async function BlogPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-cyan-500 to-blue-600">
+      <section className="py-16 bg-[#0F172A]">
         <div className="container mx-auto px-4 md:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             DXについてお悩みですか？

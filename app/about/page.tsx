@@ -23,28 +23,28 @@ export default function AboutPage() {
       title: "デジタルマーケティング",
       description: "SNS戦略・運用、コンテンツ制作、オンライン広告、データ分析",
       icon: TrendingUp,
-      color: "from-cyan-500 to-blue-600",
+      color: "from-gray-700 to-gray-900",
       metrics: "SNS動画1500万再生達成"
     },
     {
       title: "Web制作・開発",
       description: "LP／EC／採用／コーポレート／オウンドメディア、WordPress・CMS構築",
       icon: Code,
-      color: "from-cyan-500 to-blue-600",
+      color: "from-gray-700 to-gray-900",
       metrics: "300件以上の制作実績"
     },
     {
       title: "システム・アプリ開発",
       description: "要件定義〜開発・運用保守、AI活用、クラウド基盤構築",
       icon: Building2,
-      color: "from-cyan-500 to-blue-600",
+      color: "from-gray-700 to-gray-900",
       metrics: "官公庁級セキュリティ対応"
     },
     {
       title: "ITコンサルティング",
       description: "プロジェクトマネジメント、DX推進支援、業務効率化",
       icon: Lightbulb,
-      color: "from-cyan-500 to-blue-600",
+      color: "from-gray-700 to-gray-900",
       metrics: "顧客継続率94%"
     }
   ];
@@ -287,7 +287,7 @@ export default function AboutPage() {
                 href="https://timerex.net/s/info_f990_429a/709e9191"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-all transform hover:scale-105"
+                className="inline-flex items-center px-8 py-4 bg-[#0F172A] text-white rounded-md font-medium hover:bg-[#1e293b] transition-all transform hover:scale-105"
               >
                 まずは課題をご相談
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -305,7 +305,7 @@ export default function AboutPage() {
       </section>
 
       {/* Impact Numbers - Visual Data */}
-      <section className="py-16 bg-gradient-to-r from-cyan-500 to-blue-600">
+      <section className="py-16 bg-[#0F172A]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {achievements.map((item, index) => (
@@ -344,7 +344,7 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-cyan-500 to-blue-600"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-[#0F172A]"></div>
             {storyTimeline.map((item, index) => (
               <motion.div
                 key={index}
@@ -357,7 +357,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
               >
                 <div className="flex-1"></div>
-                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold z-10">
+                <div className="w-12 h-12 bg-[#0F172A] rounded-full flex items-center justify-center text-white font-bold z-10">
                   {item.year.slice(2)}
                 </div>
                 <div className={`flex-1 ${index % 2 === 0 ? "pl-8 text-left" : "pr-8 text-right"}`}>
@@ -398,7 +398,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <div className="flex-1">
-                <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-transparent bg-clip-text text-sm font-bold mb-2">MISSION</div>
+                <div className="bg-[#0F172A] text-transparent bg-clip-text text-sm font-bold mb-2">MISSION</div>
                 <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
                   確かな技術で、ビジネスの成長を加速
                 </h3>
@@ -408,7 +408,7 @@ export default function AboutPage() {
                   真に価値あるソリューションを提供し続けます。
                 </p>
                 <div className="flex items-start space-x-4">
-                  <CheckCircle className="w-6 h-6 text-cyan-500 mt-1 flex-shrink-0" />
+                  <CheckCircle className="w-6 h-6 text-[#0F172A] mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-bold text-[#0F172A] mb-2">お客様と共に</h4>
                     <p className="text-gray-600">課題の本質を見極め、最適な解決策を共創</p>
@@ -434,7 +434,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <div className="flex-1">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-transparent bg-clip-text text-sm font-bold mb-2">VISION</div>
+                <div className="text-[#0F172A] font-semibold text-sm font-bold mb-2">VISION</div>
                 <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
                   地域から世界へ、革新的なデジタル体験を
                 </h3>
@@ -532,7 +532,7 @@ export default function AboutPage() {
               <motion.div
                 key={index}
                 className={`relative bg-[#1E293B] rounded-xl p-6 hover:bg-[#1E293B]/80 transition-all cursor-pointer ${
-                  activeStep === index ? "ring-2 ring-cyan-500" : ""
+                  activeStep === index ? "ring-2 ring-[#0F172A]" : ""
                 }`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -540,19 +540,19 @@ export default function AboutPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 onClick={() => setActiveStep(index)}
               >
-                <div className="text-cyan-400 font-bold mb-2">{step.phase}</div>
+                <div className="text-gray-400 font-bold mb-2">{step.phase}</div>
                 <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
                 <p className="text-gray-400 text-sm mb-4">{step.description}</p>
                 <div className="space-y-2">
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="flex items-center text-gray-500 text-sm">
-                      <CheckCircle className="w-4 h-4 mr-2 text-cyan-500/50" />
+                      <CheckCircle className="w-4 h-4 mr-2 text-[#0F172A]/50" />
                       {item}
                     </div>
                   ))}
                 </div>
                 {index < workProcess.length - 1 && (
-                  <div className="hidden md:block absolute -right-3 top-1/2 transform -translate-y-1/2 text-cyan-500">
+                  <div className="hidden md:block absolute -right-3 top-1/2 transform -translate-y-1/2 text-[#0F172A]">
                     <ChevronRight className="w-6 h-6" />
                   </div>
                 )}
@@ -590,7 +590,7 @@ export default function AboutPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center mr-6">
+                  <div className="w-14 h-14 bg-[#0F172A] rounded-xl flex items-center justify-center mr-6">
                     <item.icon className="w-7 h-7 text-white" />
                   </div>
                   <div className="flex-1">
@@ -638,7 +638,7 @@ export default function AboutPage() {
                 onClick={() => setSelectedIndustry(filter)}
                 className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                   selectedIndustry === filter
-                    ? "bg-gradient-to-r from-[#60A5FA] to-[#5EEAD4] text-white shadow-lg shadow-cyan-500/25"
+                    ? "bg-[#0F172A] text-white shadow-lg shadow-gray-900/25"
                     : "bg-white/5 backdrop-blur-sm text-[#CBD5E1] hover:bg-white/10 border border-white/10"
                 }`}
                 aria-pressed={selectedIndustry === filter}
@@ -664,16 +664,16 @@ export default function AboutPage() {
                 >
                   <div className="block h-full">
                     {/* Glassmorphism Card */}
-                    <div className="relative h-full bg-white/[0.06] backdrop-blur-xl rounded-2xl border border-white/[0.18] p-8 hover:bg-white/[0.08] transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-cyan-500/10 overflow-hidden">
+                    <div className="relative h-full bg-white/[0.06] backdrop-blur-xl rounded-2xl border border-white/[0.18] p-8 hover:bg-white/[0.08] transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-gray-900/10 overflow-hidden">
                       {/* Gradient overlay on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#60A5FA]/5 to-[#5EEAD4]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-gray-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                       {/* Content */}
                       <div className="relative z-10">
                         {/* Header with Icon and Badge */}
                         <div className="flex items-start justify-between mb-6">
                           <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#60A5FA]/20 to-[#5EEAD4]/20 flex items-center justify-center">
+                            <div className="w-14 h-14 rounded-xl bg-[#0F172A]/10 flex items-center justify-center">
                               <Icon className="w-7 h-7 text-[#60A5FA]" />
                             </div>
                             <div>
@@ -685,7 +685,7 @@ export default function AboutPage() {
                               </p>
                             </div>
                           </div>
-                          <span className="bg-gradient-to-r from-[#60A5FA] to-[#5EEAD4] text-white text-xs px-3 py-1.5 rounded-full font-medium flex-shrink-0">
+                          <span className="bg-[#0F172A] text-white text-xs px-3 py-1.5 rounded-full font-medium flex-shrink-0">
                             実績あり
                           </span>
                         </div>
@@ -769,7 +769,7 @@ export default function AboutPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                   >
-                    <div className="w-10 h-10 bg-gradient-to-br from-[#60A5FA]/10 to-[#5EEAD4]/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <div className="w-10 h-10 bg-[#0F172A]/10 rounded-lg flex items-center justify-center mx-auto mb-3">
                       <Icon className="w-5 h-5 text-[#9AA6BF]" />
                     </div>
                     <div className="text-[#CBD5E1] text-sm font-medium">
@@ -793,7 +793,7 @@ export default function AboutPage() {
               href="https://timerex.net/s/info_f990_429a/709e9191"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-[#60A5FA] to-[#5EEAD4] text-white rounded-full font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all transform hover:scale-105"
+              className="inline-flex items-center px-8 py-3 bg-[#0F172A] text-white rounded-full font-medium hover:shadow-lg hover:shadow-gray-900/25 transition-all transform hover:scale-105"
             >
               相談を予約する
               <ArrowRight className="w-5 h-5 ml-2" />
@@ -826,12 +826,12 @@ export default function AboutPage() {
                   </div>
                   <div className="text-center md:text-left">
                     <h3 className="text-3xl font-bold text-white mb-2">石井 勇多</h3>
-                    <p className="text-cyan-400 font-medium">代表取締役</p>
+                    <p className="text-gray-400 font-medium">代表取締役</p>
                   </div>
                 </div>
 
                 <blockquote className="relative">
-                  <div className="absolute -top-4 -left-2 text-6xl text-cyan-500/20 font-serif">&ldquo;</div>
+                  <div className="absolute -top-4 -left-2 text-6xl text-[#0F172A]/20 font-serif">&ldquo;</div>
                   <p className="text-lg md:text-xl text-gray-300 leading-relaxed italic mb-6">
                     私たちDP-GUILDは、お客様にとって&ldquo;頼れるITパートナー&rdquo;でありたいと考えています
                   </p>
@@ -843,7 +843,7 @@ export default function AboutPage() {
                     滋賀という地域から始まった私たちの挑戦を、全国のお客様に届け、
                     共に成長していく。それが私たちの使命です
                   </p>
-                  <div className="absolute -bottom-8 right-0 text-6xl text-cyan-500/20 font-serif rotate-180">&rdquo;</div>
+                  <div className="absolute -bottom-8 right-0 text-6xl text-[#0F172A]/20 font-serif rotate-180">&rdquo;</div>
                 </blockquote>
               </div>
             </motion.div>
@@ -852,7 +852,7 @@ export default function AboutPage() {
       </section>
 
       {/* Final CTA - Enhanced */}
-      <section id="contact" className="py-20 bg-gradient-to-r from-cyan-500 to-blue-600">
+      <section id="contact" className="py-20 bg-[#0F172A]">
         <div className="container mx-auto px-4 md:px-8">
           <motion.div
             className="text-center"
@@ -876,10 +876,10 @@ export default function AboutPage() {
                 className="bg-white hover:bg-gray-50 text-[#0F172A] p-8 rounded-2xl flex flex-col items-center transition-all group"
                 whileHover={{ scale: 1.05 }}
               >
-                <Calendar className="w-12 h-12 mb-4 text-cyan-500 group-hover:scale-110 transition-transform" />
+                <Calendar className="w-12 h-12 mb-4 text-[#0F172A] group-hover:scale-110 transition-transform" />
                 <div className="text-xl font-semibold mb-2">予約して相談</div>
                 <div className="text-gray-600 mb-4">まず30分、状況を整理</div>
-                <div className="inline-flex items-center text-cyan-500 font-bold">
+                <div className="inline-flex items-center text-[#0F172A] font-bold">
                   カレンダーへ
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </div>

@@ -410,7 +410,7 @@ export default function ResultsPage() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-16 bg-gradient-to-r from-cyan-500 to-blue-600">
+      <section className="py-16 bg-[#0F172A]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {statistics.map((stat, index) => {
@@ -457,7 +457,7 @@ export default function ResultsPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <div className="w-16 h-16 bg-[#0F172A] rounded-xl flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{item.title}</h3>
@@ -467,7 +467,7 @@ export default function ResultsPage() {
                     {item.metrics.map((metric, metricIndex) => (
                       <div key={metricIndex} className="flex justify-between items-center">
                         <span className="text-gray-700">{metric.label}</span>
-                        <span className="text-cyan-600 font-bold">{metric.value}</span>
+                        <span className="text-gray-600 font-bold">{metric.value}</span>
                       </div>
                     ))}
                   </div>
@@ -496,7 +496,7 @@ export default function ResultsPage() {
                   key={industry.id}
                   className={`px-6 py-3 rounded-full flex items-center ${
                     activeIndustry === industry.id
-                      ? "bg-cyan-500 text-white"
+                      ? "bg-[#0F172A] text-white"
                       : "bg-[#0F172A] text-gray-300 hover:bg-[#0F172A]/80"
                   } transition-colors`}
                   onClick={() => setActiveIndustry(industry.id)}
@@ -510,7 +510,7 @@ export default function ResultsPage() {
 
           <div className="bg-[#0F172A] rounded-xl p-8 md:p-12">
             <div className="text-center mb-8">
-              <div className="text-cyan-400 font-medium text-lg mb-2">
+              <div className="text-gray-400 font-medium text-lg mb-2">
                 {industryContent[activeIndustry].summary}
               </div>
             </div>
@@ -524,7 +524,7 @@ export default function ResultsPage() {
                   <div className="mb-4 space-y-2">
                     {caseItem.achievements.map((achievement, achievementIndex: number) => (
                       <div key={achievementIndex} className="flex items-center">
-                        <span className="text-cyan-400 text-sm font-semibold">• {achievement}</span>
+                        <span className="text-gray-400 text-sm font-semibold">• {achievement}</span>
                       </div>
                     ))}
                   </div>
@@ -536,7 +536,7 @@ export default function ResultsPage() {
 
                   <div className="flex flex-wrap gap-2">
                     {caseItem.tags.map((tag, tagIndex: number) => (
-                      <span key={tagIndex} className="bg-[#0F172A] text-cyan-400 text-xs px-2 py-1 rounded">
+                      <span key={tagIndex} className="bg-[#0F172A] text-gray-400 text-xs px-2 py-1 rounded">
                         {tag}
                       </span>
                     ))}
@@ -548,7 +548,7 @@ export default function ResultsPage() {
             <div className="text-center mt-8">
               <Link
                 href="/contact"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-medium hover:from-cyan-600 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-4 bg-[#0F172A] text-white rounded-lg font-medium hover:bg-[#1e293b] transition-all shadow-lg hover:shadow-xl"
               >
                 自社ではどのようなことができるのか問い合わせる
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -586,7 +586,7 @@ export default function ResultsPage() {
                   />
                 </div>
                 <div className="p-8">
-                  <div className="text-sm text-cyan-600 font-medium mb-2">{study.industry}</div>
+                  <div className="text-sm text-gray-600 font-medium mb-2">{study.industry}</div>
                   <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{study.client}</h3>
 
                   <div className="mb-4">
@@ -601,7 +601,7 @@ export default function ResultsPage() {
 
                   <div>
                     <div className="text-gray-700 font-medium">成果:</div>
-                    <div className="text-cyan-600 font-semibold">{study.result}</div>
+                    <div className="text-gray-600 font-semibold">{study.result}</div>
                   </div>
                 </div>
               </motion.div>
@@ -611,7 +611,7 @@ export default function ResultsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-cyan-500 to-blue-600">
+      <section className="py-20 bg-[#0F172A]">
         <div className="container mx-auto px-4 md:px-8">
           <motion.div
             className="text-center"

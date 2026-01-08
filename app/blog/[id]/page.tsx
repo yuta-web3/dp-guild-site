@@ -92,7 +92,7 @@ export default async function BlogDetailPage({ params }: Props) {
             href="https://timerex.net/s/info_f990_429a/709e9191"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
+            className="hidden md:flex items-center px-5 py-2 bg-[#0F172A] text-white rounded-md font-medium hover:bg-[#1e293b] transition-colors"
           >
             相談する
           </a>
@@ -105,7 +105,7 @@ export default async function BlogDetailPage({ params }: Props) {
           {/* Back link */}
           <Link
             href="/blog"
-            className="inline-flex items-center text-gray-500 hover:text-cyan-600 mb-8 transition-colors"
+            className="inline-flex items-center text-gray-500 hover:text-gray-600 mb-8 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             記事一覧に戻る
@@ -119,7 +119,7 @@ export default async function BlogDetailPage({ params }: Props) {
           {/* Category & Date */}
           <div className="flex flex-wrap items-center gap-4 mb-8">
             {blog.category && (
-              <span className="px-3 py-1 bg-cyan-100 text-cyan-700 text-sm rounded-full">
+              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
                 {blog.category.name}
               </span>
             )}
@@ -167,21 +167,21 @@ export default async function BlogDetailPage({ params }: Props) {
           )}
 
           {/* CTA - 2択（Zoom + 問い合わせフォーム） */}
-          <div className="mt-16 bg-[#f8f9fa] border-l-4 border-cyan-500 p-6 rounded-r-lg">
+          <div className="mt-16 bg-[#f8f9fa] border-l-4 border-[#0F172A] p-6 rounded-r-lg">
             <p className="text-gray-700 leading-relaxed text-[15px]">
               ご自身の状況に当てはまるか判断に迷う場合や、より詳しい情報が必要な場合は
               <a
                 href="https://timerex.net/s/info_f990_429a/709e9191"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cyan-600 font-bold hover:underline mx-1"
+                className="text-gray-600 font-bold hover:underline mx-1"
               >
                 相談する（Zoom）
               </a>
               をご利用ください。Zoomが難しい方は
               <a
                 href="/contact"
-                className="text-cyan-600 font-bold hover:underline mx-1"
+                className="text-gray-600 font-bold hover:underline mx-1"
               >
                 お問い合わせフォーム
               </a>
