@@ -595,7 +595,7 @@ export default function ResultsPage() {
                   </div>
 
                   <div className="mb-4">
-                    <div className="text-gray-700 font-medium">ソリューション:</div>
+                    <div className="text-gray-700 font-medium">対応内容:</div>
                     <div className="text-gray-600">{study.solution}</div>
                   </div>
 
@@ -653,8 +653,7 @@ export default function ResultsPage() {
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">サイトマップ</h3>
               <ul className="space-y-3">
-                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                <li><a href="/#solutions" className="text-gray-400 hover:text-white transition-colors">ソリューション</a></li>
+
                 <li><Link href="/results" className="text-gray-400 hover:text-white transition-colors">実績・事例</Link></li>
                 <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors">会社概要</Link></li>
                 <li><Link href="/contact" className="text-gray-400 hover:text-white transition-colors">お問い合わせ</Link></li>

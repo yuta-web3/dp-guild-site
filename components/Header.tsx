@@ -44,10 +44,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-            <a href="/#solutions" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">
-              ソリューション
-            </a>
+
             <Link
               href="/results"
               className={`transition-colors ${isActive('/results') ? 'text-[#0F172A] font-medium' : 'text-[#7F7F7F] hover:text-[#0F172A]'}`}
@@ -134,16 +131,7 @@ export default function Header() {
                   ホーム
                 </Link>
               </li>
-              <li>
-                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                <a
-                  href="/#solutions"
-                  onClick={() => setIsOpen(false)}
-                  className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  ソリューション
-                </a>
-              </li>
+
               <li>
                 <Link
                   href="/results"

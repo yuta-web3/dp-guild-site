@@ -53,7 +53,7 @@ export default function AboutPage() {
     {
       phase: "01. 要件定義",
       title: "課題の言語化",
-      description: "お客様の本質的な課題を見極め、最適なソリューションを設計",
+      description: "お客様の本質的な課題を見極め、適切な対応策を設計",
       items: ["ヒアリング", "課題分析", "要件整理", "提案書作成"]
     },
     {
@@ -196,7 +196,7 @@ export default function AboutPage() {
     { year: "2019", title: "創業", description: "滋賀県甲賀市で創業。地域に根ざしたITサービスを開始" },
     { year: "2020", title: "サービス拡張", description: "デジタルマーケティング領域への本格参入" },
     { year: "2021", title: "全国展開", description: "オンラインを活用した全国対応サービスを確立" },
-    { year: "2022", title: "技術革新", description: "AI・自動化技術を活用したソリューション開発" },
+    { year: "2022", title: "技術革新", description: "AI・自動化技術を活用した支援体制を構築" },
     { year: "2024", title: "現在", description: "300件超の実績と共に、次世代のデジタル変革を支援" }
   ];
 

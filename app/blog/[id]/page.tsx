@@ -83,7 +83,7 @@ export default async function BlogDetailPage({ params }: Props) {
             DP-GUILD
           </Link>
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/#solutions" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ソリューション</Link>
+
             <Link href="/results" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">実績・事例</Link>
             <Link href="/about" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">会社概要</Link>
             <Link href="/blog" className="text-[#0F172A] font-medium">ブログ</Link>
