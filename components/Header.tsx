@@ -44,7 +44,12 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-
+            <Link
+              href="/"
+              className={`transition-colors ${isActive('/') && !pathname.startsWith('/results') && !pathname.startsWith('/about') && !pathname.startsWith('/blog') ? 'text-[#0F172A] font-medium' : 'text-[#7F7F7F] hover:text-[#0F172A]'}`}
+            >
+              TOP
+            </Link>
             <Link
               href="/results"
               className={`transition-colors ${isActive('/results') ? 'text-[#0F172A] font-medium' : 'text-[#7F7F7F] hover:text-[#0F172A]'}`}
@@ -128,7 +133,7 @@ export default function Header() {
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  ホーム
+                  TOP
                 </Link>
               </li>
 

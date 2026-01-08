@@ -170,10 +170,10 @@ export default function ResultsPage() {
                 </div>
 
                 {/* 最終判断 */}
-                <div className="mb-6 bg-[#e8f4fd] border border-[#b8daff] rounded-lg p-4">
+                <div className="mb-6 bg-[#F0F4F8] border border-[#0F172A]/20 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="w-5 h-5 text-[#004085]" />
-                    <span className="font-bold text-[#004085]">最終判断</span>
+                    <CheckCircle className="w-5 h-5 text-[#0F172A]" />
+                    <span className="font-bold text-[#0F172A]">最終判断</span>
                   </div>
                   <p className="text-gray-700 pl-7 font-medium">{caseItem.finalDecision}</p>
                   <p className="text-gray-600 pl-7 mt-2 text-sm">理由：{caseItem.reason}</p>
