@@ -23,9 +23,13 @@ export default function JudgmentLP() {
           <p className="text-xl md:text-2xl text-[#0F172A] mb-8">
             そんな中小企業のための会社です。
           </p>
-          <p className="text-lg text-gray-600 mb-12 leading-relaxed">
+          <p className="text-lg text-gray-600 mb-6 leading-relaxed">
             WebもSNSもDXも、選択肢が多すぎて決められない。<br />
             その状態から一緒に整理します。
+          </p>
+          <p className="text-base text-gray-500 mb-12">
+            施策が決まっていなくても大丈夫です。<br />
+            状況を整理するところから始めます。
           </p>
           <a
             href="https://timerex.net/s/info_f990_429a/709e9191"
@@ -33,7 +37,7 @@ export default function JudgmentLP() {
             rel="noopener noreferrer"
             className="inline-flex items-center px-8 py-4 bg-[#0F172A] text-white rounded-lg font-medium hover:bg-[#1e293b] transition-colors"
           >
-            無料相談を予約する
+            何から手をつけるべきか相談する
             <ArrowRight className="w-5 h-5 ml-2" />
           </a>
         </div>
@@ -126,7 +130,7 @@ export default function JudgmentLP() {
               rel="noopener noreferrer"
               className="inline-flex items-center px-8 py-4 bg-[#0F172A] text-white rounded-lg font-medium hover:bg-[#1e293b] transition-colors"
             >
-              無料相談を予約する
+              何から手をつけるべきか相談する
               <ArrowRight className="w-5 h-5 ml-2" />
             </a>
           </div>
@@ -214,7 +218,7 @@ export default function JudgmentLP() {
             rel="noopener noreferrer"
             className="inline-flex items-center px-10 py-5 bg-white text-[#0F172A] rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
           >
-            無料相談を予約する
+            何から手をつけるべきか相談する
             <ArrowRight className="w-6 h-6 ml-2" />
           </a>
         </div>
@@ -234,9 +238,8 @@ export default function JudgmentLP() {
             Webサイト保守、SNS運用代行など、継続型の契約において<br />
             これまで解約はありません。
           </p>
-          <p className="text-lg text-gray-600 mb-12 leading-relaxed">
-            一度きりの納品ではなく、判断と改善を繰り返す関係だから、<br />
-            続いています。
+          <p className="text-lg text-[#0F172A] font-medium mb-12 leading-relaxed">
+            判断と改善を繰り返す関係だから、続いています。
           </p>
 
           <Link
