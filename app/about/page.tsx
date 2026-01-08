@@ -795,7 +795,7 @@ export default function AboutPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-[#60A5FA] to-[#5EEAD4] text-white rounded-full font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all transform hover:scale-105"
             >
-              無料相談を予約する
+              相談を予約する
               <ArrowRight className="w-5 h-5 ml-2" />
             </a>
           </motion.div>
@@ -865,7 +865,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto mb-12">
               どんな小さな課題でも、お気軽にご相談ください。
-              30分の無料相談が、解決への第一歩になります。
+              まず30分、状況を整理します。
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
@@ -878,7 +878,7 @@ export default function AboutPage() {
               >
                 <Calendar className="w-12 h-12 mb-4 text-cyan-500 group-hover:scale-110 transition-transform" />
                 <div className="text-xl font-semibold mb-2">予約して相談</div>
-                <div className="text-gray-600 mb-4">30分無料相談</div>
+                <div className="text-gray-600 mb-4">まず30分、状況を整理</div>
                 <div className="inline-flex items-center text-cyan-500 font-bold">
                   カレンダーへ
                   <ArrowRight className="w-5 h-5 ml-2" />

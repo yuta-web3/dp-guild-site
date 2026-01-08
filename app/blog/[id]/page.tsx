@@ -94,7 +94,7 @@ export default async function BlogDetailPage({ params }: Props) {
             rel="noopener noreferrer"
             className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
           >
-            無料相談
+            相談する
           </a>
         </div>
       </header>
@@ -176,7 +176,7 @@ export default async function BlogDetailPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="text-cyan-600 font-bold hover:underline mx-1"
               >
-                無料相談（Zoom）
+                相談する（Zoom）
               </a>
               をご利用ください。Zoomが難しい方は
               <a

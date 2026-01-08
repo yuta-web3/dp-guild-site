@@ -74,9 +74,9 @@ export default function Header() {
               href="https://timerex.net/s/info_f990_429a/709e9191"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center px-5 py-2 bg-cyan-500 text-white rounded-md font-medium hover:bg-cyan-600 transition-colors"
+              className="hidden md:flex items-center px-5 py-2 bg-[#0F172A] text-white rounded-md font-medium hover:bg-[#1e293b] transition-colors"
             >
-              無料相談
+              相談する
             </a>
 
             {/* Mobile Menu Button */}
@@ -127,7 +127,7 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`block px-4 py-3 rounded-lg transition-colors ${
                     pathname === '/'
-                      ? 'bg-cyan-50 text-cyan-600 font-medium'
+                      ? 'bg-gray-100 text-[#0F172A] font-medium'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
@@ -150,7 +150,7 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`block px-4 py-3 rounded-lg transition-colors ${
                     isActive('/results')
-                      ? 'bg-cyan-50 text-cyan-600 font-medium'
+                      ? 'bg-gray-100 text-[#0F172A] font-medium'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
@@ -163,7 +163,7 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`block px-4 py-3 rounded-lg transition-colors ${
                     isActive('/about')
-                      ? 'bg-cyan-50 text-cyan-600 font-medium'
+                      ? 'bg-gray-100 text-[#0F172A] font-medium'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
@@ -176,7 +176,7 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`block px-4 py-3 rounded-lg transition-colors ${
                     isActive('/blog')
-                      ? 'bg-cyan-50 text-cyan-600 font-medium'
+                      ? 'bg-gray-100 text-[#0F172A] font-medium'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
@@ -189,7 +189,7 @@ export default function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`block px-4 py-3 rounded-lg transition-colors ${
                     isActive('/contact')
-                      ? 'bg-cyan-50 text-cyan-600 font-medium'
+                      ? 'bg-gray-100 text-[#0F172A] font-medium'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
@@ -205,13 +205,13 @@ export default function Header() {
               href="https://timerex.net/s/info_f990_429a/709e9191"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-center rounded-lg font-medium hover:from-cyan-600 hover:to-blue-700 transition-all shadow-lg"
+              className="block w-full py-4 bg-[#0F172A] text-white text-center rounded-lg font-medium hover:bg-[#1e293b] transition-all"
               onClick={() => setIsOpen(false)}
             >
-              無料相談
+              相談する
             </a>
             <p className="text-center text-gray-500 text-sm mt-3">
-              30分無料相談
+              まず30分、状況を整理
             </p>
           </div>
         </div>

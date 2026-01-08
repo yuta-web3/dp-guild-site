@@ -623,7 +623,7 @@ export default function ResultsPage() {
               あなたのビジネスも成果を出しませんか？
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto mb-12">
-              まずは30分の無料相談で、お客様の課題をお聞かせください
+              まず30分、状況を整理します
             </p>
 
             <a
@@ -632,7 +632,7 @@ export default function ResultsPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center px-8 py-4 bg-white text-[#0F172A] rounded-md font-medium hover:bg-gray-100 transition-colors"
             >
-              無料相談を予約する
+              相談を予約する
               <ArrowRight className="w-5 h-5 ml-2" />
             </a>
           </motion.div>
