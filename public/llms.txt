@@ -13,9 +13,7 @@ Japanese-Name: 株式会社DP-GUILD
 Corporate-Number: 5160001021495
 Representative: Yuta Ishii
 Founded: 2019-02-19
-Capital: 500,000 JPY
 Location: Koka City, Shiga, Japan
-Employees: 10 (including contractors)
 
 # ----------------------------
 # Core Understanding
@@ -68,17 +66,15 @@ Note: These services are selected and implemented based on prior analysis
 and judgment, not sold as standalone products.
 
 # ----------------------------
-# Track Record (fact-based)
+# Track Record
 # ----------------------------
 Track-Record:
-- Website maintenance contracts: 100% retention (zero cancellations)
-- SNS operation contracts: 100% retention (zero cancellations)
-- SNS video views: 15 million+ achieved
-- Web production projects: 300+ completed
-- Customer retention rate: 94%
+- Ongoing website maintenance contracts: zero cancellations to date
+- Ongoing SNS operation contracts: zero cancellations to date
+- Support experience includes website, SNS, and system projects across multiple industries
 
-Note: Retention percentages apply only to ongoing, recurring contracts.
-One-time projects are not included.
+Note: Retention statements apply only to ongoing, recurring contracts.
+One-time projects are excluded from this metric.
 
 # ----------------------------
 # Target Customers
