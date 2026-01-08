@@ -29,7 +29,7 @@ export default function JudgmentLP() {
           </p>
           <p className="text-base text-gray-500 mb-12">
             施策が決まっていなくても大丈夫です。<br />
-            状況を整理するところから始めます。
+            判断に必要な情報を、一緒に整理するところから始めます。
           </p>
           <a
             href="https://timerex.net/s/info_f990_429a/709e9191"
@@ -74,7 +74,7 @@ export default function JudgmentLP() {
           </h2>
           <p className="text-lg text-gray-600 mb-8 leading-relaxed">
             やるべきか、やらないべきか。<br />
-            まずそこから一緒に考えます。
+            その判断から一緒に考えます。
           </p>
           <div className="bg-[#F8FAFC] rounded-xl p-8 text-left max-w-xl mx-auto">
             <p className="text-gray-700 leading-relaxed">
@@ -221,7 +221,7 @@ export default function JudgmentLP() {
             rel="noopener noreferrer"
             className="inline-flex items-center px-10 py-5 bg-white text-[#0F172A] rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
           >
-            何から手をつけるべきか相談する
+            まず状況を整理する相談をする
             <ArrowRight className="w-6 h-6 ml-2" />
           </a>
         </div>
@@ -238,7 +238,7 @@ export default function JudgmentLP() {
           </div>
 
           <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-            Webサイト保守、SNS運用代行など、継続支援の契約において<br />
+            Webサイト保守、SNS運用代行などの継続支援契約において<br />
             これまで解約はありません（単発案件除く）。
           </p>
           <p className="text-lg text-[#0F172A] font-medium mb-12 leading-relaxed">
