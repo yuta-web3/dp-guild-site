@@ -646,8 +646,7 @@ export default function ResultsPage() {
             <div>
               <div className="text-2xl font-bold text-white mb-4">DP-GUILD</div>
               <p className="text-gray-400 mb-6">
-                マーケティング戦略の立案から実行まで<br />
-                一気通貫でサポートするデジタルマーケティングエージェンシー
+                中小企業の「何から手をつけるか」を一緒に決める会社
               </p>
             </div>
 

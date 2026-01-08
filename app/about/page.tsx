@@ -276,7 +276,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              頼れるITパートナーとして
+              「何から手をつけるか」を一緒に決める
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
               滋賀から始まる全国展開。確かなデジタル化と業務効率化を実現し、
@@ -390,39 +390,24 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="space-y-20">
-            {/* Mission - Left Text, Right Visual */}
+            {/* Mission - テキストのみ */}
             <motion.div
-              className="flex flex-col md:flex-row items-center gap-12"
+              className="max-w-3xl mx-auto text-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="flex-1">
-                <div className="bg-[#0F172A] text-transparent bg-clip-text text-sm font-bold mb-2">MISSION</div>
-                <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
-                  確かな技術で、ビジネスの成長を加速
-                </h3>
-                <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  クライアントと伴走し、課題に応じた最適解でデジタル化と業務効率化を実現。
-                  単なる技術提供者ではなく、お客様の成功を共に創り上げる「頼れるITパートナー」として、
-                  真に価値あるソリューションを提供し続けます。
-                </p>
-                <div className="flex items-start space-x-4">
-                  <CheckCircle className="w-6 h-6 text-[#0F172A] mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-[#0F172A] mb-2">お客様と共に</h4>
-                    <p className="text-gray-600">課題の本質を見極め、最適な解決策を共創</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="rounded-2xl overflow-hidden shadow-lg">
-                  <img
-                    src="/images/team/benjamin-child-GWe0dlVD9e0-unsplash.jpg"
-                    alt="お客様と共に"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div className="text-[#0F172A] font-semibold text-sm mb-2">MISSION</div>
+              <h3 className="text-3xl font-bold text-[#0F172A] mb-6">
+                判断を支援し、成果に近づける
+              </h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+                施策ありきではなく、「今、何をやるべきか」の判断から伴走する。<br />
+                判断の精度を上げることで、無駄な投資を減らし、成果に近づける。
+              </p>
+              <div className="inline-flex items-center justify-center space-x-3 text-gray-600">
+                <CheckCircle className="w-5 h-5" />
+                <span>施策は判断の結果として選ばれる</span>
               </div>
             </motion.div>
 
@@ -461,10 +446,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-4">
-              サービスの顔
+              判断の結果、こうなることがあります
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              4つの領域で、お客様のデジタル変革を包括的にサポート
+              私たちは「作る会社」ではなく「決める会社」です。判断の結果として、以下の施策を実行することがあります。
             </p>
           </motion.div>
 
@@ -819,11 +804,11 @@ export default function AboutPage() {
                 <blockquote className="relative">
                   <div className="absolute -top-4 -left-2 text-6xl text-[#0F172A]/20 font-serif">&ldquo;</div>
                   <p className="text-lg md:text-xl text-gray-300 leading-relaxed italic mb-6">
-                    私たちDP-GUILDは、お客様にとって&ldquo;頼れるITパートナー&rdquo;でありたいと考えています
+                    私たちDP-GUILDは、「何から手をつけるか」を一緒に決める会社です
                   </p>
                   <p className="text-lg md:text-xl text-gray-300 leading-relaxed italic mb-6">
-                    技術的な解決策の提供にとどまらず、お客様と共に課題に向き合い、
-                    真に価値のあるソリューションを共創することを大切にしています
+                    施策を売るのではなく、判断を支援する。
+                    その判断の結果として、最適な施策を一緒に実行します
                   </p>
                   <p className="text-lg md:text-xl text-gray-300 leading-relaxed italic">
                     滋賀という地域から始まった私たちの挑戦を、全国のお客様に届け、
