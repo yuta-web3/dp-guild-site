@@ -118,8 +118,11 @@ export default function JudgmentLP() {
             <p className="text-lg text-gray-600 mb-2">
               施策は「判断」の結果として選ばれます。
             </p>
-            <p className="text-lg text-[#0F172A] font-medium">
+            <p className="text-lg text-[#0F172A] font-medium mb-4">
               「何を相談すればいいか分からない」でOK。そこから始めます。
+            </p>
+            <p className="text-base text-gray-500">
+              判断は状況によって変わります。決めきりではなく、一緒に整理し続けます。
             </p>
           </div>
 
@@ -235,8 +238,8 @@ export default function JudgmentLP() {
           </div>
 
           <p className="text-lg text-gray-600 mb-4 leading-relaxed">
-            Webサイト保守、SNS運用代行など、継続型の契約において<br />
-            これまで解約はありません。
+            Webサイト保守、SNS運用代行など、継続支援の契約において<br />
+            これまで解約はありません（単発案件除く）。
           </p>
           <p className="text-lg text-[#0F172A] font-medium mb-12 leading-relaxed">
             判断と改善を繰り返す関係だから、続いています。
