@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getBlogById, getBlogs, type FAQ } from '@/lib/microcms';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -42,6 +42,47 @@ function generateFAQJsonLd(faq: FAQ[]) {
   };
 }
 
+// 著者情報（固定）
+const AUTHOR = {
+  name: '石井 勇多',
+  jobTitle: '代表取締役',
+  organization: '株式会社DP-GUILD',
+};
+
+// Article JSON-LD構造化データ生成
+function generateArticleJsonLd(blog: { title: string; description: string; publishedAt: string; updatedAt: string; eyecatch?: { url: string } }, id: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: blog.title,
+    description: blog.description,
+    image: blog.eyecatch?.url || 'https://dp-guild.com/og-image.png',
+    datePublished: blog.publishedAt,
+    dateModified: blog.updatedAt,
+    author: {
+      '@type': 'Person',
+      name: AUTHOR.name,
+      jobTitle: AUTHOR.jobTitle,
+      worksFor: {
+        '@type': 'Organization',
+        name: AUTHOR.organization,
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: '株式会社DP-GUILD',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://dp-guild.com/logo.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://dp-guild.com/blog/${id}`,
+    },
+  };
+}
+
 // 静的生成用のパス取得
 export async function generateStaticParams() {
   const { contents } = await getBlogs(100);
@@ -66,6 +107,13 @@ export default async function BlogDetailPage({ params }: Props) {
 
   return (
     <div className="font-sans text-gray-900 bg-white min-h-screen">
+      {/* Article JSON-LD構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateArticleJsonLd(blog, id)),
+        }}
+      />
       {/* FAQ JSON-LD構造化データ */}
       {blog.faq && blog.faq.length > 0 && (
         <script
@@ -116,7 +164,7 @@ export default async function BlogDetailPage({ params }: Props) {
             {blog.title}
           </h1>
 
-          {/* Category & Date */}
+          {/* Category & Date & Author */}
           <div className="flex flex-wrap items-center gap-4 mb-8">
             {blog.category && (
               <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
@@ -126,6 +174,10 @@ export default async function BlogDetailPage({ params }: Props) {
             <div className="flex items-center text-gray-500 text-sm">
               <Calendar className="w-4 h-4 mr-1" />
               {new Date(blog.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')}
+            </div>
+            <div className="flex items-center text-gray-500 text-sm">
+              <User className="w-4 h-4 mr-1" />
+              {AUTHOR.name}
             </div>
           </div>
 
