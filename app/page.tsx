@@ -334,6 +334,9 @@ export default function JudgmentLP() {
             まず状況を整理する相談をする
             <ArrowRight className="w-5 h-5 md:w-6 md:h-6 ml-2" />
           </a>
+          <p className="text-white/50 text-sm mt-6">
+            ※ 相談後に「今は何もしない」という結論になることもあります
+          </p>
         </div>
       </section>
 
