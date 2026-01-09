@@ -282,18 +282,17 @@ export default function JudgmentLP() {
             </div>
             <div className="md:w-2/3">
               <div className="mb-6 md:mb-8">
-                <p className="text-sm md:text-base text-gray-500 mb-2">継続契約の解約</p>
-                <p className="text-6xl md:text-8xl font-bold text-[#0F172A] leading-none">
-                  0<span className="text-2xl md:text-3xl ml-2 font-medium text-gray-600">件</span>
+                <p className="text-2xl md:text-3xl font-bold text-[#0F172A] leading-relaxed">
+                  継続的な支援が前提
                 </p>
               </div>
               <div className="space-y-3 md:space-y-4">
                 <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  Webサイト保守、SNS運用代行などの継続支援契約において
-                  これまで解約はありません（単発案件除く）。
+                  Webサイト保守、SNS運用代行などの継続支援が中心です。
+                  単発ではなく、判断と改善を繰り返す関係が多いのが特徴です。
                 </p>
                 <p className="text-base md:text-lg text-[#0F172A] font-medium">
-                  判断と改善を繰り返す関係だから、続いています。
+                  だから、長く続いています。
                 </p>
               </div>
               <div className="mt-6 md:mt-8">
