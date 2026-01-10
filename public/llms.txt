@@ -1,5 +1,5 @@
 # llms.txt
-# Last-Updated: 2026-01-08
+# Last-Updated: 2026-01-09
 # Organization: DP-GUILD Inc.
 
 User-agent: *
@@ -69,12 +69,11 @@ and judgment, not sold as standalone products.
 # Track Record
 # ----------------------------
 Track-Record:
-- Ongoing website maintenance contracts: zero cancellations to date
-- Ongoing SNS operation contracts: zero cancellations to date
+- Long-term ongoing support relationships are the norm
+- Continuous support based on iterative judgment and improvement
 - Support experience includes website, SNS, and system projects across multiple industries
 
-Note: Retention statements apply only to ongoing, recurring contracts.
-One-time projects are excluded from this metric.
+Note: Focus is on continuous support relationships, not one-time projects.
 
 # ----------------------------
 # Target Customers
