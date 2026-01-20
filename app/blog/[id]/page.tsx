@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getBlogById, getBlogs, type FAQ } from '@/lib/microcms';
+import { getBlogById, getAllBlogs, type FAQ } from '@/lib/microcms';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -84,8 +84,10 @@ function generateArticleJsonLd(blog: { title: string; description: string; publi
 }
 
 // 静的生成用のパス取得
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const { contents } = await getBlogs(100);
+  const { contents } = await getAllBlogs();
   return contents.map((blog) => ({
     id: blog.id,
   }));

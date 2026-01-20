@@ -78,3 +78,30 @@ export async function getBlogsByCategory(categoryId: string, limit?: number) {
   });
   return response;
 }
+
+// ブログ全件取得（ページネーション対応）
+export async function getAllBlogs() {
+  const allContents: Blog[] = [];
+  let offset = 0;
+  const limit = 100;
+  
+  while (true) {
+    const response = await client.get<BlogListResponse>({
+      endpoint: 'blogs',
+      queries: {
+        limit,
+        offset,
+        orders: '-publishedAt',
+      },
+    });
+    
+    allContents.push(...response.contents);
+    
+    if (allContents.length >= response.totalCount) {
+      break;
+    }
+    offset += limit;
+  }
+  
+  return { contents: allContents, totalCount: allContents.length };
+}
