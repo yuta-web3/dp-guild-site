@@ -14,6 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     return {
       title: blog.title,
       description: blog.description || blog.aio_answer,
+      alternates: {
+        canonical: `/blog/${id}`,
+      },
       openGraph: {
         title: blog.title,
         description: blog.description || blog.aio_answer,
