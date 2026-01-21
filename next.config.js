@@ -23,31 +23,7 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
-      // 旧WordPress パラメータURL対策（重複コンテンツ解消）
-      {
-        source: '/',
-        has: [{ type: 'query', key: 'author' }],
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/',
-        has: [{ type: 'query', key: 'm' }],
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/',
-        has: [{ type: 'query', key: 'p' }],
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/',
-        has: [{ type: 'query', key: 'page_id' }],
-        destination: '/',
-        permanent: true,
-      },
+      
     ];
   },
 };
