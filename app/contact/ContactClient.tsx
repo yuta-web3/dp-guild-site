@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Mail, Calendar, Send, Loader2, CheckCircle, AlertCircle, MapPin, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Link from 'next/link';
 
 export default function ContactClient() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -88,7 +90,7 @@ export default function ContactClient() {
         throw new Error(result.error || 'エラーが発生しました');
       }
 
-      setSubmitStatus('success');
+      router.push('/contact/thanks');
       setFormData({
         name: '',
         email: '',
