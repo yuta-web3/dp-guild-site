@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ContactThanksPage() {
   return (
-    <div className="font-sans text-gray-900 bg-white min-h-screen">
+    <div className="font-sans text-gray-900 bg-white min-h-screen flex flex-col">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm py-5 border-b border-gray-100">
         <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
@@ -28,7 +28,7 @@ export default function ContactThanksPage() {
       </header>
 
       {/* Main Content */}
-      <main className="pt-32 pb-20">
+      <main className="pt-32 pb-20 flex-1">
         <div className="container mx-auto px-4 md:px-8 max-w-2xl text-center">
           {/* Success Icon */}
           <div className="w-20 h-20 mx-auto mb-8 bg-green-100 rounded-full flex items-center justify-center">
