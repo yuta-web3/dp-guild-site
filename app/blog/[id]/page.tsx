@@ -223,27 +223,31 @@ export default async function BlogDetailPage({ params }: Props) {
             </section>
           )}
 
-          {/* CTA - 2択（Zoom + 問い合わせフォーム） */}
-          <div className="mt-16 bg-[#f8f9fa] border-l-4 border-[#0F172A] p-6 rounded-r-lg">
-            <p className="text-gray-700 leading-relaxed text-[15px]">
-              ご自身の状況に当てはまるか判断に迷う場合や、より詳しい情報が必要な場合は
+          {/* CTA - 強化版 */}
+          <div className="mt-16 bg-[#0F172A] text-white p-8 md:p-10 rounded-xl">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-center">
+              お困りごとはありませんか？
+            </h2>
+            <p className="text-gray-300 text-center mb-8 text-sm md:text-base">
+              「何から手をつければいいかわからない」という状態でも大丈夫です。<br className="hidden md:block" />
+              まずはお気軽にご相談ください。
+            </p>
+            <div className="flex flex-col md:flex-row gap-4 justify-center">
               <a
                 href="https://timerex.net/s/info_f990_429a/709e9191"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 font-bold hover:underline mx-1"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0F172A] rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
               >
-                相談する（Zoom）
+                無料で相談する（Zoom）
               </a>
-              をご利用ください。Zoomが難しい方は
               <a
                 href="/contact"
-                className="text-gray-600 font-bold hover:underline mx-1"
+                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-[#0F172A] transition-colors"
               >
                 お問い合わせフォーム
               </a>
-              からご連絡ください。
-            </p>
+            </div>
           </div>
         </div>
       </article>
