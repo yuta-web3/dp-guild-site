@@ -198,6 +198,22 @@ export default async function BlogDetailPage({ params }: Props) {
             </div>
           )}
 
+          {/* 中盤CTA - シンプルバナー */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-gray-700 text-sm md:text-base">
+              <span className="mr-2">💡</span>
+              SNS・Web・DXのお困りごと、まずは相談してみませんか？
+            </p>
+            <a
+              href="https://timerex.net/s/info_f990_429a/709e9191"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whitespace-nowrap px-5 py-2 bg-[#0F172A] text-white rounded-md text-sm font-medium hover:bg-[#1e293b] transition-colors"
+            >
+              無料相談はこちら
+            </a>
+          </div>
+
           {/* Content - ガイドライン準拠のスタイリング */}
           <div
             className="article-content"
