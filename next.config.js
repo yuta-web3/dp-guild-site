@@ -12,18 +12,28 @@ const nextConfig = {
         destination: '/blog/snsoutsourcecost01',
         permanent: true,
       },
-      // 旧サイトURL対策
+      // 旧サイトURL対策: /case → /results
+      {
+        source: '/case',
+        destination: '/results',
+        permanent: true,
+      },
       {
         source: '/case/:path*',
         destination: '/results',
         permanent: true,
       },
+      // 旧サイトURL対策: /service → /
       {
         source: '/service',
         destination: '/',
         permanent: true,
       },
-      
+      {
+        source: '/service/:path*',
+        destination: '/',
+        permanent: true,
+      },
     ];
   },
 };
