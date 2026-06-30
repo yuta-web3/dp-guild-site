@@ -7,12 +7,6 @@ import { contactSchema, type ContactFormData } from '@/lib/contact-schema';
 import { motion } from 'framer-motion';
 import { Send, Loader2, CheckCircle, AlertCircle, User, Mail, Building2, MessageSquare } from 'lucide-react';
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -58,13 +52,6 @@ export default function ContactForm() {
 
       setSubmitStatus('success');
       reset();
-      // GA4: フォーム送信成功をコンバージョンとして計測
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'generate_lead', {
-          form_id: 'contact',
-          page_location: window.location.href,
-        });
-      }
       // 成功後、新しいタイムスタンプを設定
       const newTs = Date.now();
       setValue('timestamp', newTs);
