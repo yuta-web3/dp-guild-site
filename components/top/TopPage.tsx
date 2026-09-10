@@ -121,6 +121,16 @@ export default function TopPage() {
       });
     };
 
+    // ファーストビューのリンクから飛んできたら、その項目を開いておく
+    const openFromHash = () => {
+      const id = window.location.hash.replace('#', '');
+      if (!id) return;
+      const target = root.querySelector<HTMLDetailsElement>(`details.case2#${CSS.escape(id)}`);
+      if (target) target.open = true;
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     onScroll();
@@ -202,6 +212,7 @@ export default function TopPage() {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', openFromHash);
       window.removeEventListener('resize', onScroll);
       if (resize) window.removeEventListener('resize', resize);
       window.clearTimeout(t1);
@@ -379,8 +390,8 @@ export default function TopPage() {
                     <textarea
                       id="top-content"
                       required
-                      rows={4}
-                      placeholder="サイトを作り直したい／SNSを立ち上げたい／社内の作業を減らしたい など"
+                      rows={3}
+                      placeholder="例）サイトから問い合わせが来ない"
                       value={form.content}
                       onChange={(e) => setForm({ ...form, content: e.target.value })}
                     />
@@ -421,41 +432,52 @@ export default function TopPage() {
             </div>
             <div className="cases2">
               {topCases.map((c, i) => (
-                <article className={`case2 rv ${i % 2 === 0 ? 'tilt' : 'tilt2'}`} data-d={String(i % 2)} id={c.id} key={c.id}>
-                  <div className="hd">
-                    <h3>{c.problem}</h3>
-                    <span className="wh">{c.who}</span>
-                  </div>
-                  <div className="step">
-                    <div className="sl">何が起きていたか</div>
-                    <p>{c.situation}</p>
-                  </div>
-                  <div className="step solve">
-                    <div className="sl">どう解いたか</div>
-                    <p>{c.did}</p>
-                  </div>
-                  <div className="step">
-                    <div className="sl">どうなったか</div>
-                    <p>{c.result}</p>
-                  </div>
-                  {c.voice && (
-                    <div className="vo">
-                      <q>{c.voice}</q>
+                <details
+                  className={`case2 rv ${i % 2 === 0 ? 'tilt' : 'tilt2'}`}
+                  data-d={String(i % 2)}
+                  id={c.id}
+                  key={c.id}
+                  open={i === 0}
+                >
+                  <summary>
+                    <span className="sm">
+                      <span className="pb">{c.problem}</span>
+                      <span className="wh">{c.who}</span>
+                    </span>
+                    <span className="tg" aria-hidden="true" />
+                  </summary>
+                  <div className="in2">
+                    <div className="step">
+                      <div className="sl">何が起きていたか</div>
+                      <p>{c.situation}</p>
                     </div>
-                  )}
-                  <div className="nx">
-                    <a className="ask" href="#contact">
-                      同じことでお困りなら、ここに書いて送ってください
-                      <i />
-                    </a>
-                    {c.service && (
-                      <Link href={`/services/${c.service.slug}`}>
-                        {c.service.label}の内容と料金を見る
-                        <i />
-                      </Link>
+                    <div className="step solve">
+                      <div className="sl">どう解いたか</div>
+                      <p>{c.did}</p>
+                    </div>
+                    <div className="step">
+                      <div className="sl">どうなったか</div>
+                      <p>{c.result}</p>
+                    </div>
+                    {c.voice && (
+                      <div className="vo">
+                        <q>{c.voice}</q>
+                      </div>
                     )}
+                    <div className="nx">
+                      <a className="ask" href="#contact">
+                        同じことでお困りなら、ここに書いて送ってください
+                        <i />
+                      </a>
+                      {c.service && (
+                        <Link href={`/services/${c.service.slug}`}>
+                          {c.service.label}の内容と料金を見る
+                          <i />
+                        </Link>
+                      )}
+                    </div>
                   </div>
-                </article>
+                </details>
               ))}
             </div>
           </section>

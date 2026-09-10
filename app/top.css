@@ -143,3 +143,33 @@
   .lp .cube .draw{stroke-dashoffset:0!important}
   .lp .cubewrap{display:none}
 }
+
+/* ---- 入力欄（複数行）。他の欄と体裁を揃える ---- */
+.lp .fld textarea{display:block;width:100%;font:inherit;font-size:14px;padding:11px 13px;
+  color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:0;
+  resize:vertical;min-height:86px;line-height:1.85;line-break:strict}
+.lp .fld textarea::placeholder{color:var(--faint)}
+.lp .fld textarea:focus{outline:2px solid var(--bl);outline-offset:-1px;background:var(--ground)}
+
+/* ---- 実績はトグル。4件が全部開いていると、読む前にスクロールが長くなる ---- */
+.lp details.case2{padding:0}
+.lp details.case2 summary{list-style:none;cursor:pointer;display:grid;
+  grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2vw,26px);transition:background .22s}
+.lp details.case2 summary::-webkit-details-marker{display:none}
+.lp details.case2 summary:hover{background:var(--paper)}
+.lp details.case2 summary .sm{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.lp details.case2 summary .pb{font-family:var(--disp);font-weight:900;
+  font-size:clamp(15px,1.6vw,18px);letter-spacing:-.015em;line-height:1.5;color:var(--ink)}
+.lp details.case2 summary .wh{font-size:11.5px;font-weight:700;color:var(--mut)}
+/* 開閉の印 */
+.lp details.case2 summary .tg{position:relative;width:16px;height:16px;flex:none}
+.lp details.case2 summary .tg::before,
+.lp details.case2 summary .tg::after{content:"";position:absolute;background:var(--bl);
+  transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.lp details.case2 summary .tg::before{left:0;top:7.5px;width:16px;height:1.5px}
+.lp details.case2 summary .tg::after{left:7.5px;top:0;width:1.5px;height:16px}
+.lp details.case2[open] summary .tg::after{transform:scaleY(0)}
+.lp details.case2[open] summary{background:var(--paper);border-bottom:1px solid var(--rule)}
+.lp details.case2 .in2{padding:clamp(16px,1.8vw,24px) clamp(18px,2vw,26px) clamp(18px,2vw,26px)}
+.lp details.case2 .in2 .step:first-child{margin-top:0}
