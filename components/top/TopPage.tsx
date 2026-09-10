@@ -437,7 +437,6 @@ export default function TopPage() {
                   data-d={String(i % 2)}
                   id={c.id}
                   key={c.id}
-                  open={i === 0}
                 >
                   <summary>
                     <span className="sm">
