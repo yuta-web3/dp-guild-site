@@ -83,3 +83,51 @@
   padding:11px 4px;border-bottom:1px solid var(--rule2);font-size:13px}
 .lp .info .row .k{font-size:11.5px;font-weight:700;color:var(--faint)}
 @media(max-width:640px){.lp .info .row{grid-template-columns:1fr;gap:2px}}
+
+/* ---- ロゴの不可能立体（ファーストビュー） ---- */
+/* 相談リストの下から、左へはみ出させる。非対称を作る */
+.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;
+  left:clamp(-190px,-11vw,-70px);top:clamp(300px,34vw,430px);
+  width:clamp(300px,32vw,430px);aspect-ratio:1/1.06}
+.lp .cubewrap svg{width:100%;height:100%;overflow:visible}
+.lp .cube g.face{will-change:transform}
+.lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:5;stroke-linejoin:miter;
+  filter:drop-shadow(0 3px 10px rgba(53,96,224,.22))}
+.lp .cube path.thin{stroke-width:3;opacity:.9}
+.lp .cube path.hide{stroke:var(--ground);stroke-width:15;filter:none;opacity:1}
+.lp .cube .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.lp.boot .cube .draw{animation:cubedraw .72s cubic-bezier(.3,1,.4,1) forwards}
+.lp.boot .cube .draw.d1{animation-delay:.30s}
+.lp.boot .cube .draw.d2{animation-delay:.35s}
+.lp.boot .cube .draw.d3{animation-delay:.40s}
+.lp.boot .cube .draw.d4{animation-delay:.46s}
+.lp.boot .cube .draw.d5{animation-delay:.51s}
+.lp.boot .cube .draw.d6{animation-delay:.56s}
+.lp.boot .cube .draw.d7{animation-delay:.62s}
+.lp.boot .cube .draw.d8{animation-delay:.66s}
+.lp.boot .cube .draw.d9{animation-delay:.70s}
+@keyframes cubedraw{to{stroke-dashoffset:0}}
+@media(max-width:1040px){
+  .lp .cubewrap{left:auto;right:-70px;top:auto;position:relative;margin:26px 0 0;
+    width:min(260px,60vw);opacity:.5}
+}
+@media(max-width:620px){.lp .cubewrap{display:none}}
+
+/* 相談リストの行は、方向を変えて時間差で入る */
+.lp .caseitem.rv.left{transform:translateX(-26px)}
+.lp .caseitem.rv.right{transform:translateX(26px)}
+
+/* 実績カードはホバーで枠線のグラデーションが回る */
+.lp .case2{position:relative}
+.lp .case2::before{content:"";position:absolute;inset:-1px;pointer-events:none;opacity:0;
+  transition:opacity .3s;
+  background:conic-gradient(from var(--ang),transparent 0 62%,var(--cy) 72%,var(--vi) 86%,transparent 94%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;padding:1px}
+.lp .case2:hover::before{opacity:1;animation:spin 3.2s linear infinite}
+
+@media (prefers-reduced-motion:reduce){
+  .lp .cube .draw{stroke-dashoffset:0!important}
+  .lp .cubewrap{display:none}
+}

@@ -46,6 +46,15 @@ export default function TopPage() {
     fv.forEach((el) => {
       el.style.transitionDelay = `${(0.06 + parseFloat(el.dataset.fd || '0') * 0.08).toFixed(3)}s`;
     });
+    // 立方体：描画長を確定させてから線を引く
+    root.querySelectorAll<SVGPathElement>('.cube path.draw').forEach((path) => {
+      try {
+        path.style.setProperty('--len', String(path.getTotalLength()));
+      } catch {
+        path.style.setProperty('--len', '900');
+      }
+    });
+
     root.classList.add('boot');
     fv.forEach((el) => el.classList.add('in'));
 
@@ -72,6 +81,7 @@ export default function TopPage() {
     };
 
     const hdr = root.querySelector<HTMLElement>('.hdr');
+    const faces = Array.from(root.querySelectorAll<SVGGElement>('.cube .face'));
     let lastY = 0;
     let ticking = false;
 
@@ -80,6 +90,18 @@ export default function TopPage() {
       velRef.current = velRef.current * 0.82 + Math.abs(y - lastY) * 0.18;
       lastY = y;
       hdr?.classList.toggle('stuck', y > 20);
+      if (RM) return;
+
+      // 最初のひと転がりから動くよう、減速カーブを使う
+      const p = Math.min(1, y / (window.innerHeight * 0.9));
+      const e = 1 - Math.pow(1 - p, 1.7);
+      faces.forEach((g) => {
+        const fx = parseFloat(g.dataset.fx || '0');
+        const fy = parseFloat(g.dataset.fy || '0');
+        const dist = 260 * e;
+        g.style.transform = `translate(${(fx * dist).toFixed(1)}px,${(fy * dist).toFixed(1)}px) rotate(${(fx * 11 * e).toFixed(2)}deg)`;
+        g.style.opacity = String(1 - e * 0.88);
+      });
     };
 
     const handleScroll = () => {
@@ -216,6 +238,42 @@ export default function TopPage() {
       <div className="shell">
         {/* ==================== ファーストビュー ==================== */}
         <section className="fv">
+          {/* ロゴの不可能立体。線が1本ずつ引かれて組み上がり、スクロールで分解して飛んでいく */}
+          <div className="cubewrap" aria-hidden="true">
+            <svg className="cube" viewBox="0 0 500 530">
+              <defs>
+                <linearGradient id="cubeg" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#0FBFB0" />
+                  <stop offset="42%" stopColor="#3560E0" />
+                  <stop offset="74%" stopColor="#7A45E8" />
+                  <stop offset="100%" stopColor="#C267F0" />
+                </linearGradient>
+              </defs>
+              <g className="face" data-fx="0" data-fy="-1">
+                <path className="draw d1" d="M250 60 L423.2 160 L250 260 L76.8 160 Z" />
+                <path className="draw d4 thin" d="M250 102 L350.5 160 L250 218 L149.5 160 Z" />
+              </g>
+              <g className="face" data-fx="-0.87" data-fy="0.5">
+                <path className="draw d2" d="M76.8 160 L250 260 L250 460 L76.8 360 Z" />
+                <path className="draw d5 thin" d="M113.2 223 L213.6 281 L213.6 397 L113.2 339 Z" />
+              </g>
+              <g className="face" data-fx="0.87" data-fy="0.5">
+                <path className="draw d3" d="M250 260 L423.2 160 L423.2 360 L250 460 Z" />
+                <path className="draw d6 thin" d="M286.4 281 L386.8 223 L386.8 339 L286.4 397 Z" />
+              </g>
+              <g className="face" data-fx="0" data-fy="1.4">
+                <path className="hide" d="M250 218 L250 302" />
+                <path className="draw d7 thin" d="M250 218 L250 302" />
+                <path className="hide" d="M213.6 281 L250 302 L286.4 281" />
+                <path className="draw d8 thin" d="M213.6 281 L250 302 L286.4 281" />
+              </g>
+              <g className="face" data-fx="0" data-fy="-1">
+                <path className="hide" d="M330 172 L250 218 L170 172" />
+                <path className="draw d9 thin" d="M330 172 L250 218 L170 172" />
+              </g>
+            </svg>
+          </div>
+
           <div className="fvtxt">
             <p className="greet rv up" data-fd="0">
               お越しいただき、ありがとうございます。
@@ -227,9 +285,14 @@ export default function TopPage() {
               近いものを押してください。何をして、どうなったかが読めます。
             </p>
 
-            <div className="caselist rv up" data-fd="3">
-              {topCases.map((c) => (
-                <a className="caseitem" href={`#${c.id}`} key={c.id}>
+            <div className="caselist">
+              {topCases.map((c, i) => (
+                <a
+                  className={`caseitem rv ${i % 2 === 0 ? 'left' : 'right'}`}
+                  data-fd={String(3 + i)}
+                  href={`#${c.id}`}
+                  key={c.id}
+                >
                   <span className="pb">
                     {c.problem}
                     <span className="wh">{c.who}</span>
@@ -343,7 +406,7 @@ export default function TopPage() {
             </div>
             <div className="cases2">
               {topCases.map((c, i) => (
-                <article className="case2 rv up" data-d={String(i % 2)} id={c.id} key={c.id}>
+                <article className={`case2 rv ${i % 2 === 0 ? 'tilt' : 'tilt2'}`} data-d={String(i % 2)} id={c.id} key={c.id}>
                   <div className="hd">
                     <h3>{c.problem}</h3>
                     <span className="wh">{c.who}</span>
