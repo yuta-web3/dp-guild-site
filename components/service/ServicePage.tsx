@@ -178,14 +178,14 @@ export default function ServicePage({ service }: { service: Service }) {
         const draw = () => {
           cx.clearRect(0, 0, W, H);
           off = (off + 0.13) % SP;
-          const dens = Math.min(1, 0.3 + velRef.current * 0.028);
+          const dens = Math.min(1, 0.55 + velRef.current * 0.03);
           for (let i = 0; i < segs.length; i++) {
             const s = segs[i];
             s.life += s.sp;
             if (s.life > 1) s.life -= 1;
             const a = Math.sin(s.life * Math.PI);
             if (a < 0.02) continue;
-            const al = a * dens * 0.13;
+            const al = a * dens * 0.34;
             cx.strokeStyle =
               i % 7 === 0
                 ? `rgba(15,191,176,${al * 1.7})`

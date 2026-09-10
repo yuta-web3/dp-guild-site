@@ -159,14 +159,14 @@ export default function TopPage() {
         const draw = () => {
           cx.clearRect(0, 0, W, H);
           off = (off + 0.13) % SP;
-          const dens = Math.min(1, 0.3 + velRef.current * 0.028);
+          const dens = Math.min(1, 0.55 + velRef.current * 0.03);
           for (let i = 0; i < segs.length; i++) {
             const s = segs[i];
             s.life += s.sp;
             if (s.life > 1) s.life -= 1;
             const a = Math.sin(s.life * Math.PI);
             if (a < 0.02) continue;
-            const al = a * dens * 0.13;
+            const al = a * dens * 0.34;
             cx.strokeStyle =
               i % 7 === 0
                 ? `rgba(15,191,176,${al * 1.7})`
@@ -248,7 +248,7 @@ export default function TopPage() {
         <section className="fv">
           <div className="fvtxt">
             <div className="fvtop">
-              <div>
+              <div className="fvhead">
                 <p className="greet rv up" data-fd="0">
                   お越しいただき、ありがとうございます。
                 </p>
@@ -258,6 +258,7 @@ export default function TopPage() {
                 <p className="guide rv up" data-fd="2">
                   近いものを押してください。何をして、どうなったかが読めます。
                 </p>
+
               </div>
 
               {/* ロゴの不可能立体。線が1本ずつ引かれて組み上がり、スクロールで分解して飛んでいく。
@@ -317,6 +318,7 @@ export default function TopPage() {
                 </a>
               ))}
             </div>
+
           </div>
         </section>
 
