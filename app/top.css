@@ -1,7 +1,11 @@
 /* トップページ固有のスタイル。共通部分は app/lp-base.css（.lp 配下） */
 
 /* トップは相談リストが主役。サービスページより左を広く使う */
-.lp .fvtxt{max-width:min(780px,100%)}
+.lp .fvtxt{max-width:min(780px,100%);position:relative;z-index:2}
+
+/* 画面いっぱいに引き伸ばさない。中身の高さで終わらせる。
+   余らせると、その分だけ無駄なスクロールになる */
+.lp .fv{min-height:0;padding:78px 0 clamp(28px,3vw,44px)}
 
 /* ---- ファーストビュー：挨拶といただいた相談 ---- */
 .lp .greet{font-size:13px;color:var(--mut);font-weight:500}
@@ -86,9 +90,12 @@
 
 /* ---- ロゴの不可能立体（ファーストビュー） ---- */
 /* 相談リストの下から、左へはみ出させる。非対称を作る */
-.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;
-  left:clamp(-190px,-11vw,-70px);top:clamp(300px,34vw,430px);
-  width:clamp(300px,32vw,430px);aspect-ratio:1/1.06}
+/* 読む順序の起点に置く。見出しの背後から上へはみ出させ、
+   組み上がったところが最初に目に入るようにする。
+   左下に置くと視線が左下へ落ちて、右のフォームから最も遠くなる */
+.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.5;
+  right:clamp(-40px,-2vw,-10px);top:clamp(-150px,-11vw,-70px);
+  width:clamp(280px,30vw,400px);aspect-ratio:1/1.06}
 .lp .cubewrap svg{width:100%;height:100%;overflow:visible}
 .lp .cube g.face{will-change:transform}
 .lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:5;stroke-linejoin:miter;
@@ -108,8 +115,7 @@
 .lp.boot .cube .draw.d9{animation-delay:.70s}
 @keyframes cubedraw{to{stroke-dashoffset:0}}
 @media(max-width:1040px){
-  .lp .cubewrap{left:auto;right:-70px;top:auto;position:relative;margin:26px 0 0;
-    width:min(260px,60vw);opacity:.5}
+  .lp .cubewrap{right:-80px;top:-90px;width:min(240px,52vw);opacity:.34}
 }
 @media(max-width:620px){.lp .cubewrap{display:none}}
 
