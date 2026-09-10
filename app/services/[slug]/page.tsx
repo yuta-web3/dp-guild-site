@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ServicePage from '@/components/service/ServicePage';
 import { getService, serviceSlugs } from '@/lib/services';
-import './lp.css';
+import '../../lp-base.css';
 
 // サービスページの器。中身は lib/services.ts のデータで差し替わる。
 // サービスを増やすときは lib/services.ts に1件足すだけ。
