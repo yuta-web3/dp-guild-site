@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import SiteHeader from '@/components/SiteHeader';
 
 export const metadata: Metadata = {
   title: 'お問い合わせ完了',
@@ -13,19 +14,7 @@ export const metadata: Metadata = {
 export default function ContactThanksPage() {
   return (
     <div className="font-sans text-gray-900 bg-white min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm py-5 border-b border-gray-100">
-        <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-[#0F172A]">
-            DP-GUILD
-          </Link>
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/results" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">実績・事例</Link>
-            <Link href="/about" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">会社概要</Link>
-            <Link href="/blog" className="text-[#7F7F7F] hover:text-[#0F172A] transition-colors">ブログ</Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader here="お問い合わせ" cta />
 
       {/* Main Content */}
       <main className="pt-32 pb-20 flex-1">

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import { topCases, topDoors, company } from '@/lib/top-cases';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
@@ -80,7 +81,6 @@ export default function TopPage() {
       }
     };
 
-    const hdr = root.querySelector<HTMLElement>('.hdr');
     const faces = Array.from(root.querySelectorAll<SVGGElement>('.cube .face'));
     // 組み上がるまでは分解させない。「組み上がった」瞬間が無いと時間軸にならない
     let assembled = false;
@@ -94,7 +94,6 @@ export default function TopPage() {
       const y = window.scrollY;
       velRef.current = velRef.current * 0.82 + Math.abs(y - lastY) * 0.18;
       lastY = y;
-      hdr?.classList.toggle('stuck', y > 20);
       if (RM || !assembled) return;
 
       // 組み上がったあと、ファーストビューを抜けるまでの間で分解しきる
@@ -246,13 +245,7 @@ export default function TopPage() {
     <div className="lp" ref={rootRef}>
       <canvas className="iso" ref={canvasRef} aria-hidden="true" />
 
-      <header className="hdr">
-        <Link href="/" className="mark">
-          <Image src="/images/logo.png" alt="" width={24} height={24} priority />
-          <b>DP-GUILD</b>
-        </Link>
-        <div className="svc">{company.name}</div>
-      </header>
+      <SiteHeader inset />
 
       <div className="shell">
         {/* ==================== ファーストビュー ==================== */}

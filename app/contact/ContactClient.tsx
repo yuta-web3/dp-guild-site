@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Mail, Calendar, Send, Loader2, CheckCircle, AlertCircle, MapPin, ArrowRight } from 'lucide-react';
-import Header from '@/components/Header';
+import SiteHeader from '@/components/SiteHeader';
 import Link from 'next/link';
 
 export default function ContactClient() {
@@ -127,7 +127,7 @@ export default function ContactClient() {
 
   return (
     <div className="font-sans text-gray-900 bg-white">
-      <Header />
+      <SiteHeader here="お問い合わせ" cta dark />
 
       {/* Hero Section */}
       <section className="bg-[#0F172A] pt-32 pb-20 px-5 md:px-8">

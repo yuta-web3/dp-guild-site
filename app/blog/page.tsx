@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getBlogs } from '@/lib/microcms';
 import { ArrowRight, Calendar } from 'lucide-react';
-import Header from '@/components/Header';
+import SiteHeader from '@/components/SiteHeader';
 
 export const revalidate = 60; // ISR: 60秒ごとに再検証
 
@@ -10,7 +10,7 @@ export default async function BlogPage() {
 
   return (
     <div className="font-sans text-gray-900 bg-white min-h-screen">
-      <Header />
+      <SiteHeader here="読みもの" cta dark />
 
       {/* Hero */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155]">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SiteHeader from '@/components/SiteHeader';
 import type { Service } from '@/lib/services';
 
 // 9枚のタイルの飛来位置。バラバラの方向から来て 3×3 に組み上がる。
@@ -102,7 +102,6 @@ export default function ServicePage({ service }: { service: Service }) {
       }
     };
 
-    const hdr = root.querySelector<HTMLElement>('.hdr');
     const layer = root.querySelector<HTMLElement>('.gridlayer');
     const grid = root.querySelector<HTMLElement>('.tiles');
     const steps = root.querySelector<HTMLElement>('.steps');
@@ -114,7 +113,6 @@ export default function ServicePage({ service }: { service: Service }) {
       const y = window.scrollY;
       velRef.current = velRef.current * 0.82 + Math.abs(y - lastY) * 0.18;
       lastY = y;
-      hdr?.classList.toggle('stuck', y > 20);
       if (RM) return;
 
       const p = Math.min(1, y / (window.innerHeight * 0.9));
@@ -271,13 +269,7 @@ export default function ServicePage({ service }: { service: Service }) {
     <div className="lp" ref={rootRef}>
       <canvas className="iso" ref={canvasRef} aria-hidden="true" />
 
-      <header className="hdr">
-        <Link href="/" className="mark">
-          <Image src="/images/logo.png" alt="" width={24} height={24} priority />
-          <b>DP-GUILD</b>
-        </Link>
-        <div className="svc">{service.label}</div>
-      </header>
+      <SiteHeader here={service.label} inset />
 
       <div className="shell">
         {/* ==================== ファーストビュー ==================== */}

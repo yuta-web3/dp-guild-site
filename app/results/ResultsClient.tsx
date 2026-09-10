@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle, GitBranch, XCircle, CheckCircle, TrendingUp } from 'lucide-react';
-import Header from '@/components/Header';
+import SiteHeader from '@/components/SiteHeader';
 
 export default function ResultsClient() {
   // 判断ログデータ
@@ -96,7 +96,7 @@ export default function ResultsClient() {
 
   return (
     <div className="font-sans text-gray-900 bg-white">
-      <Header />
+      <SiteHeader here="実績・事例" cta dark />
 
       {/* Hero Section */}
       <section className="relative min-h-[40vh] flex items-center bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155] pt-32 pb-16">

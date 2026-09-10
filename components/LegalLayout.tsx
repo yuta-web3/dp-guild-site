@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 
 // 法務系ページ（利用規約・特商法・プラポリ）共通レイアウト
 //
@@ -25,7 +25,7 @@ export default function LegalLayout({
 }) {
   return (
     <div className="font-sans text-gray-900 bg-white">
-      <Header />
+      <SiteHeader here={title} cta />
 
       {LEGAL_DRAFT && (
         <div className="pt-20">

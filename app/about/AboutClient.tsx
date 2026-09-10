@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Building2, MapPin, User, Mail, ArrowRight, CheckCircle, TrendingUp, Users, Calendar } from 'lucide-react';
-import Header from '@/components/Header';
+import SiteHeader from '@/components/SiteHeader';
 
 export default function AboutClient() {
   const companyInfo = [
@@ -17,7 +17,7 @@ export default function AboutClient() {
 
   return (
     <div className="font-sans text-gray-900 bg-white">
-      <Header />
+      <SiteHeader here="会社概要" cta dark />
 
       {/* Hero Section */}
       <section className="relative min-h-[60vh] flex items-center bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155] pt-32 pb-20 overflow-hidden">
