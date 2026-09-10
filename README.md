@@ -103,6 +103,17 @@ dp-guild-site/
 - FAQセクション + JSON-LD構造化データ
 - CTAセクション（FAQ直後）
 
+## ドキュメント
+
+| ファイル | 内容 |
+|---|---|
+| `docs/SERVICE_PAGES.md` | **サービスページ（/services/[slug]）の仕様。サービスを追加するときはここを読む** |
+| `docs/DESIGN_PROMPT.md` | トップページ作り直し用のデザイン指示プロンプト |
+| `docs/CONTACT_FORM_SETUP.md` | お問い合わせフォームの設定 |
+| `docs/DNS_CONFIG.md` / `docs/DNS_MIGRATION_PLAN.md` | DNS |
+| `docs/SECURITY_AND_OPENNEXT.md` | セキュリティ |
+| `docs/supabase-setup.sql` | Supabaseの初期設定 |
+
 ## リンク
 
 - **本番URL**: https://dp-guild-site.pages.dev
