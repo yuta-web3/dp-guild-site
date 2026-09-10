@@ -1,11 +1,15 @@
 /* トップページ固有のスタイル。共通部分は app/lp-base.css（.lp 配下） */
 
-/* トップは相談リストが主役。サービスページより左を広く使う */
-.lp .fvtxt{max-width:min(780px,100%);position:relative;z-index:2}
-
 /* 画面いっぱいに引き伸ばさない。中身の高さで終わらせる。
    余らせると、その分だけ無駄なスクロールになる */
-.lp .fv{min-height:0;padding:78px 0 clamp(28px,3vw,44px)}
+.lp .fv{min-height:0;padding:74px 0 clamp(28px,3vw,44px)}
+.lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
+
+/* 上段は2列。左が挨拶と見出し、右が立方体。
+   立方体に居場所を作らないと、余った隙間に押し込むことになる */
+.lp .fvtop{display:grid;grid-template-columns:minmax(0,1fr) clamp(230px,25vw,330px);
+  gap:clamp(16px,3vw,44px);align-items:start}
+@media(max-width:900px){.lp .fvtop{grid-template-columns:1fr}}
 
 /* ---- ファーストビュー：挨拶といただいた相談 ---- */
 .lp .greet{font-size:13px;color:var(--mut);font-weight:500}
@@ -90,12 +94,11 @@
 
 /* ---- ロゴの不可能立体（ファーストビュー） ---- */
 /* 相談リストの下から、左へはみ出させる。非対称を作る */
-/* 読む順序の起点に置く。見出しの背後から上へはみ出させ、
-   組み上がったところが最初に目に入るようにする。
-   左下に置くと視線が左下へ落ちて、右のフォームから最も遠くなる */
-.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.5;
-  right:clamp(-40px,-2vw,-10px);top:clamp(-150px,-11vw,-70px);
-  width:clamp(280px,30vw,400px);aspect-ratio:1/1.06}
+/* 上段の右。切らずに全体を見せる。
+   組み上がるところを見せてから分解する、という順番を成立させるため、
+   はみ出しや重なりで一部を隠さない */
+.lp .cubewrap{position:relative;z-index:1;pointer-events:none;
+  width:100%;aspect-ratio:1/1.06;margin-top:-6px}
 .lp .cubewrap svg{width:100%;height:100%;overflow:visible}
 .lp .cube g.face{will-change:transform}
 .lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:5;stroke-linejoin:miter;
@@ -103,19 +106,19 @@
 .lp .cube path.thin{stroke-width:3;opacity:.9}
 .lp .cube path.hide{stroke:var(--ground);stroke-width:15;filter:none;opacity:1}
 .lp .cube .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
-.lp.boot .cube .draw{animation:cubedraw .72s cubic-bezier(.3,1,.4,1) forwards}
-.lp.boot .cube .draw.d1{animation-delay:.30s}
-.lp.boot .cube .draw.d2{animation-delay:.35s}
-.lp.boot .cube .draw.d3{animation-delay:.40s}
-.lp.boot .cube .draw.d4{animation-delay:.46s}
-.lp.boot .cube .draw.d5{animation-delay:.51s}
-.lp.boot .cube .draw.d6{animation-delay:.56s}
-.lp.boot .cube .draw.d7{animation-delay:.62s}
-.lp.boot .cube .draw.d8{animation-delay:.66s}
-.lp.boot .cube .draw.d9{animation-delay:.70s}
+.lp.boot .cube .draw{animation:cubedraw .55s cubic-bezier(.3,1,.4,1) forwards}
+.lp.boot .cube .draw.d1{animation-delay:.02s}
+.lp.boot .cube .draw.d2{animation-delay:.06s}
+.lp.boot .cube .draw.d3{animation-delay:.10s}
+.lp.boot .cube .draw.d4{animation-delay:.15s}
+.lp.boot .cube .draw.d5{animation-delay:.19s}
+.lp.boot .cube .draw.d6{animation-delay:.23s}
+.lp.boot .cube .draw.d7{animation-delay:.28s}
+.lp.boot .cube .draw.d8{animation-delay:.31s}
+.lp.boot .cube .draw.d9{animation-delay:.34s}
 @keyframes cubedraw{to{stroke-dashoffset:0}}
-@media(max-width:1040px){
-  .lp .cubewrap{right:-80px;top:-90px;width:min(240px,52vw);opacity:.34}
+@media(max-width:900px){
+  .lp .cubewrap{width:min(230px,50vw);margin:18px 0 0 auto}
 }
 @media(max-width:620px){.lp .cubewrap{display:none}}
 

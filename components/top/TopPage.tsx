@@ -44,7 +44,7 @@ export default function TopPage() {
     // ファーストビューは監視せず、読み込み直後に決まった順で再生する
     const fv = Array.from(root.querySelectorAll<HTMLElement>('[data-fd]'));
     fv.forEach((el) => {
-      el.style.transitionDelay = `${(0.06 + parseFloat(el.dataset.fd || '0') * 0.08).toFixed(3)}s`;
+      el.style.transitionDelay = `${(0.42 + parseFloat(el.dataset.fd || '0') * 0.08).toFixed(3)}s`;
     });
     // 立方体：描画長を確定させてから線を引く
     root.querySelectorAll<SVGPathElement>('.cube path.draw').forEach((path) => {
@@ -82,6 +82,11 @@ export default function TopPage() {
 
     const hdr = root.querySelector<HTMLElement>('.hdr');
     const faces = Array.from(root.querySelectorAll<SVGGElement>('.cube .face'));
+    // 組み上がるまでは分解させない。「組み上がった」瞬間が無いと時間軸にならない
+    let assembled = false;
+    const assembleTimer = window.setTimeout(() => {
+      assembled = true;
+    }, 950);
     let lastY = 0;
     let ticking = false;
 
@@ -90,10 +95,12 @@ export default function TopPage() {
       velRef.current = velRef.current * 0.82 + Math.abs(y - lastY) * 0.18;
       lastY = y;
       hdr?.classList.toggle('stuck', y > 20);
-      if (RM) return;
+      if (RM || !assembled) return;
 
-      // 最初のひと転がりから動くよう、減速カーブを使う
-      const p = Math.min(1, y / (window.innerHeight * 0.9));
+      // 組み上がったあと、ファーストビューを抜けるまでの間で分解しきる
+      const fvEl = root.querySelector<HTMLElement>('.fv');
+      const span = Math.max(320, fvEl ? fvEl.offsetHeight : window.innerHeight * 0.6);
+      const p = Math.min(1, y / span);
       const e = 1 - Math.pow(1 - p, 1.7);
       faces.forEach((g) => {
         const fx = parseFloat(g.dataset.fx || '0');
@@ -199,6 +206,7 @@ export default function TopPage() {
       if (resize) window.removeEventListener('resize', resize);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
+      window.clearTimeout(assembleTimer);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -238,8 +246,23 @@ export default function TopPage() {
       <div className="shell">
         {/* ==================== ファーストビュー ==================== */}
         <section className="fv">
-          {/* ロゴの不可能立体。線が1本ずつ引かれて組み上がり、スクロールで分解して飛んでいく */}
-          <div className="cubewrap" aria-hidden="true">
+          <div className="fvtxt">
+            <div className="fvtop">
+              <div>
+                <p className="greet rv up" data-fd="0">
+                  お越しいただき、ありがとうございます。
+                </p>
+                <h1 className="lead rv up" data-fd="1">
+                  これまでに、こういうご相談をいただきました。
+                </h1>
+                <p className="guide rv up" data-fd="2">
+                  近いものを押してください。何をして、どうなったかが読めます。
+                </p>
+              </div>
+
+              {/* ロゴの不可能立体。線が1本ずつ引かれて組み上がり、スクロールで分解して飛んでいく。
+                  文字より先に組み上げ終える（最後に動いたものへ視線が行くため） */}
+              <div className="cubewrap" aria-hidden="true">
             <svg className="cube" viewBox="0 0 500 530">
               <defs>
                 <linearGradient id="cubeg" x1="0" y1="1" x2="1" y2="0">
@@ -271,19 +294,9 @@ export default function TopPage() {
                 <path className="hide" d="M330 172 L250 218 L170 172" />
                 <path className="draw d9 thin" d="M330 172 L250 218 L170 172" />
               </g>
-            </svg>
-          </div>
-
-          <div className="fvtxt">
-            <p className="greet rv up" data-fd="0">
-              お越しいただき、ありがとうございます。
-            </p>
-            <h1 className="lead rv up" data-fd="1">
-              これまでに、こういうご相談をいただきました。
-            </h1>
-            <p className="guide rv up" data-fd="2">
-              近いものを押してください。何をして、どうなったかが読めます。
-            </p>
+                </svg>
+              </div>
+            </div>
 
             <div className="caselist">
               {topCases.map((c, i) => (
