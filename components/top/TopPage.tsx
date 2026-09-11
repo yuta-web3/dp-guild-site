@@ -102,11 +102,13 @@ export default function TopPage() {
       const p = Math.min(1, y / span);
       const e = 1 - Math.pow(1 - p, 1.7);
       faces.forEach((g) => {
-        const fx = parseFloat(g.dataset.fx || '0');
+        // 左へ飛ぶ面はそのままだと本文の上を横切る。全体を右へ寄せ、
+        // 文字にかかる前に消えきるよう透明化も前倒しする
+        const fx = parseFloat(g.dataset.fx || '0') * 0.55 + 0.62;
         const fy = parseFloat(g.dataset.fy || '0');
         const dist = 260 * e;
         g.style.transform = `translate(${(fx * dist).toFixed(1)}px,${(fy * dist).toFixed(1)}px) rotate(${(fx * 11 * e).toFixed(2)}deg)`;
-        g.style.opacity = String(1 - e * 0.88);
+        g.style.opacity = String(Math.max(0, 1 - e * 1.45));
       });
     };
 
@@ -144,7 +146,7 @@ export default function TopPage() {
       const cx = cv.getContext('2d');
       if (cx) {
         const DPR = Math.min(2, window.devicePixelRatio || 1);
-        const SP = 64;
+        const SP = 92; // 線の間隔。詰めすぎると文字と干渉して読みにくくなる
         const TAN = Math.tan(Math.PI / 6);
         let W = 0;
         let H = 0;
@@ -256,8 +258,10 @@ export default function TopPage() {
                 <p className="greet rv up" data-fd="0">
                   お越しいただき、ありがとうございます。
                 </p>
+                {/* 文節ごとに区切る。こうしないと「こういうご／相談を」のように
+                    語の途中で改行され、読むのに引っかかる */}
                 <h1 className="lead rv up" data-fd="1">
-                  これまでに、こういうご相談をいただきました。
+                  <span>これまでに、</span><span>こういうご相談を</span><span>いただきました。</span>
                 </h1>
                 <p className="guide rv up" data-fd="2">
                   近いものを押してください。何をして、どうなったかが読めます。
@@ -265,42 +269,43 @@ export default function TopPage() {
 
               </div>
 
+            </div>
+
               {/* ロゴの不可能立体。線が1本ずつ引かれて組み上がり、スクロールで分解して飛んでいく。
-                  文字より先に組み上げ終える（最後に動いたものへ視線が行くため） */}
-              <div className="cubewrap" aria-hidden="true">
+                文字より先に組み上げ終える（最後に動いたものへ視線が行くため） */}
+            <div className="cubewrap" aria-hidden="true">
             <svg className="cube" viewBox="0 0 500 530">
-              <defs>
-                <linearGradient id="cubeg" x1="0" y1="1" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#0FBFB0" />
-                  <stop offset="42%" stopColor="#3560E0" />
-                  <stop offset="74%" stopColor="#7A45E8" />
-                  <stop offset="100%" stopColor="#C267F0" />
-                </linearGradient>
-              </defs>
-              <g className="face" data-fx="0" data-fy="-1">
-                <path className="draw d1" d="M250 60 L423.2 160 L250 260 L76.8 160 Z" />
-                <path className="draw d4 thin" d="M250 102 L350.5 160 L250 218 L149.5 160 Z" />
-              </g>
-              <g className="face" data-fx="-0.87" data-fy="0.5">
-                <path className="draw d2" d="M76.8 160 L250 260 L250 460 L76.8 360 Z" />
-                <path className="draw d5 thin" d="M113.2 223 L213.6 281 L213.6 397 L113.2 339 Z" />
-              </g>
-              <g className="face" data-fx="0.87" data-fy="0.5">
-                <path className="draw d3" d="M250 260 L423.2 160 L423.2 360 L250 460 Z" />
-                <path className="draw d6 thin" d="M286.4 281 L386.8 223 L386.8 339 L286.4 397 Z" />
-              </g>
-              <g className="face" data-fx="0" data-fy="1.4">
-                <path className="hide" d="M250 218 L250 302" />
-                <path className="draw d7 thin" d="M250 218 L250 302" />
-                <path className="hide" d="M213.6 281 L250 302 L286.4 281" />
-                <path className="draw d8 thin" d="M213.6 281 L250 302 L286.4 281" />
-              </g>
-              <g className="face" data-fx="0" data-fy="-1">
-                <path className="hide" d="M330 172 L250 218 L170 172" />
-                <path className="draw d9 thin" d="M330 172 L250 218 L170 172" />
-              </g>
-                </svg>
-              </div>
+            <defs>
+              <linearGradient id="cubeg" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stopColor="#0FBFB0" />
+                <stop offset="42%" stopColor="#3560E0" />
+                <stop offset="74%" stopColor="#7A45E8" />
+                <stop offset="100%" stopColor="#C267F0" />
+              </linearGradient>
+            </defs>
+            <g className="face" data-fx="0" data-fy="-1">
+              <path className="draw d1" d="M250 60 L423.2 160 L250 260 L76.8 160 Z" />
+              <path className="draw d4 thin" d="M250 102 L350.5 160 L250 218 L149.5 160 Z" />
+            </g>
+            <g className="face" data-fx="-0.87" data-fy="0.5">
+              <path className="draw d2" d="M76.8 160 L250 260 L250 460 L76.8 360 Z" />
+              <path className="draw d5 thin" d="M113.2 223 L213.6 281 L213.6 397 L113.2 339 Z" />
+            </g>
+            <g className="face" data-fx="0.87" data-fy="0.5">
+              <path className="draw d3" d="M250 260 L423.2 160 L423.2 360 L250 460 Z" />
+              <path className="draw d6 thin" d="M286.4 281 L386.8 223 L386.8 339 L286.4 397 Z" />
+            </g>
+            <g className="face" data-fx="0" data-fy="1.4">
+              <path className="hide" d="M250 218 L250 302" />
+              <path className="draw d7 thin" d="M250 218 L250 302" />
+              <path className="hide" d="M213.6 281 L250 302 L286.4 281" />
+              <path className="draw d8 thin" d="M213.6 281 L250 302 L286.4 281" />
+            </g>
+            <g className="face" data-fx="0" data-fy="-1">
+              <path className="hide" d="M330 172 L250 218 L170 172" />
+              <path className="draw d9 thin" d="M330 172 L250 218 L170 172" />
+            </g>
+              </svg>
             </div>
 
             <div className="caselist">

@@ -4,17 +4,30 @@
    余らせると、その分だけ無駄なスクロールになる */
 .lp .fv{min-height:0;padding:74px 0 clamp(28px,3vw,44px)}
 .lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
+/* 文章の裏だけ格子を弱める。輪郭を出すと「板」になるので、
+   縁は完全に透明まで落とす */
+.lp .fvtxt::before{content:"";position:absolute;z-index:-1;
+  inset:-26px -40px -20px -40px;pointer-events:none;
+  background:radial-gradient(120% 90% at 26% 42%,
+    var(--ground) 0 38%,
+    color-mix(in srgb,var(--ground) 62%,transparent) 66%,
+    transparent 100%)}
 
 /* 立方体は背景レイヤーに置く。同じ段に並べると、その高さぶん
    文章が押し下げられて死んだ余白になる。背景なら文章の位置は動かない */
 .lp .fvtop{position:relative}
-.lp .fvhead{position:relative;z-index:2;padding-right:clamp(0px,26vw,330px)}
-@media(max-width:900px){.lp .fvhead{padding-right:0}}
+/* 見出しもリストも右を同じだけ空ける。そこが立方体の帯。
+   ここを揃えないと立方体が「何をしたか読む」を横切る */
+.lp .fvhead{position:relative;z-index:2}
+.lp .fvhead,.lp .caselist{padding-right:clamp(0px,17.5vw,258px)}
+@media(max-width:900px){.lp .fvhead,.lp .caselist{padding-right:0}}
 
 /* ---- ファーストビュー：挨拶といただいた相談 ---- */
 .lp .greet{font-size:13px;color:var(--mut);font-weight:500}
 .lp .lead{font-family:var(--disp);font-weight:900;letter-spacing:-.025em;
   font-size:clamp(21px,2.4vw,29px);line-height:1.45;margin:10px 0 0}
+/* 折り返しは文節の切れ目でだけ起きるようにする */
+.lp .lead span{display:inline-block}
 .lp .guide{margin-top:10px;font-size:13px;color:var(--mut);line-height:1.8}
 
 .lp .caselist{margin-top:clamp(18px,2.2vw,28px);border-top:1px solid var(--rule)}
@@ -96,15 +109,24 @@
 /* 相談リストの下から、左へはみ出させる。非対称を作る */
 /* 見出しの右。切らずに全体を見せる（組み上がりを見せてから分解するため）。
    絶対配置なので、下の相談リストの位置には一切影響しない */
-.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.62;
-  right:clamp(-20px,-1vw,0px);top:-10px;
-  width:clamp(190px,24vw,300px);aspect-ratio:1/1.06}
-.lp .cubewrap svg{width:100%;height:100%;overflow:visible}
+.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.85;
+  right:-6px;top:50%;transform:translateY(-50%);
+  width:clamp(170px,17vw,244px);aspect-ratio:1/1.06}
+.lp .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
+
+/* 立方体の裏だけ背景の格子を消す。線どうしが混ざって、
+   どちらも読めなくなるのを防ぐ。輪郭は出さず中心から薄く抜く */
+.lp .cubewrap::before{content:"";position:absolute;z-index:0;
+  inset:-14% -10%;
+  background:radial-gradient(closest-side,
+    var(--ground) 0 46%,
+    color-mix(in srgb,var(--ground) 72%,transparent) 68%,
+    transparent 100%)}
 .lp .cube g.face{will-change:transform}
-.lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:5;stroke-linejoin:miter;
+.lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:6;stroke-linejoin:miter;
   filter:drop-shadow(0 3px 10px rgba(53,96,224,.22))}
-.lp .cube path.thin{stroke-width:3;opacity:.9}
-.lp .cube path.hide{stroke:var(--ground);stroke-width:15;filter:none;opacity:1}
+.lp .cube path.thin{stroke-width:3.6;opacity:.92}
+.lp .cube path.hide{stroke:var(--ground);stroke-width:17;filter:none;opacity:1}
 .lp .cube .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
 .lp.boot .cube .draw{animation:cubedraw .55s cubic-bezier(.3,1,.4,1) forwards}
 .lp.boot .cube .draw.d1{animation-delay:.02s}
@@ -117,11 +139,9 @@
 .lp.boot .cube .draw.d8{animation-delay:.31s}
 .lp.boot .cube .draw.d9{animation-delay:.34s}
 @keyframes cubedraw{to{stroke-dashoffset:0}}
-@media(max-width:900px){
-  .lp .cubewrap{position:absolute;right:-30px;top:-20px;width:min(180px,42vw);opacity:.3}
-}
-@media(max-width:560px){.lp .cubewrap{display:none}}
-@media(max-width:620px){.lp .cubewrap{display:none}}
+/* 帯を確保できない幅では立方体を出さない。
+   薄くして文字に重ねると、装飾も文字もどちらも読めなくなる */
+@media(max-width:900px){.lp .cubewrap{display:none}}
 
 /* 相談リストの行は、方向を変えて時間差で入る。
    着地後（.in）は必ず元の位置に戻す。ここを :not(.in) で限定しないと
