@@ -19,7 +19,7 @@
 /* 見出しもリストも右を同じだけ空ける。そこが立方体の帯。
    ここを揃えないと立方体が「何をしたか読む」を横切る */
 .lp .fvhead{position:relative;z-index:2}
-.lp .fvhead,.lp .caselist{padding-right:clamp(0px,17.5vw,258px)}
+.lp .fvhead,.lp .caselist{padding-right:clamp(0px,15.5vw,225px)}
 @media(max-width:900px){.lp .fvhead,.lp .caselist{padding-right:0}}
 
 /* ---- ファーストビュー：挨拶といただいた相談 ---- */
@@ -111,7 +111,7 @@
    絶対配置なので、下の相談リストの位置には一切影響しない */
 .lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.85;
   right:-6px;top:50%;transform:translateY(-50%);
-  width:clamp(170px,17vw,244px);aspect-ratio:1/1.06}
+  width:clamp(150px,14.8vw,212px);aspect-ratio:1/1.06}
 .lp .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
 
 /* 立方体の裏だけ背景の格子を消す。線どうしが混ざって、
