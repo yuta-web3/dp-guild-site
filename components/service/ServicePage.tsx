@@ -394,7 +394,7 @@ export default function ServicePage({ service }: { service: Service }) {
                   <p className="dd">
                     {service.doc
                       ? 'ダウンロードが始まらない場合は、お送りしたメールをご確認ください。'
-                      : 'ご入力のメールアドレス宛に、担当より1営業日以内に資料をお送りします。'}
+                      : 'ご入力のメールアドレス宛に、担当より2営業日以内に資料をお送りします。'}
                   </p>
                 </div>
               ) : (

@@ -28,7 +28,7 @@ const autoReplyHtml = (name: string, serviceLabel: string, docUrl: string | null
              <p style="margin:24px 0;">
                <a href="${docUrl}" style="display:inline-block;background:#101522;color:#fff;text-decoration:none;padding:14px 28px;font-weight:bold;">資料をダウンロード</a>
              </p>`
-          : `<p>ご請求いただいた資料は、担当より1営業日以内にお送りいたします。</p>`
+          : `<p>ご請求いただいた資料は、担当より2営業日以内にお送りいたします。</p>`
       }
       <p>ご不明な点がありましたら、本メールにそのままご返信ください。</p>
       <div style="margin-top:28px;padding-top:18px;border-top:1px solid #e5e7eb;font-size:14px;color:#6b7280;">

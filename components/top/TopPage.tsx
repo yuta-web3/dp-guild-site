@@ -15,7 +15,7 @@ export default function TopPage() {
 
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
-  const [form, setForm] = useState({ name: '', email: '', content: '' });
+  const [form, setForm] = useState({ company: '', name: '', email: '', content: '' });
   const [honeypot, setHoneypot] = useState('');
   const startedAt = useRef(0);
 
@@ -232,7 +232,7 @@ export default function TopPage() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, company: '', honeypot, timestamp: startedAt.current }),
+        body: JSON.stringify({ ...form, honeypot, timestamp: startedAt.current }),
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || '送信に失敗しました');
@@ -341,18 +341,33 @@ export default function TopPage() {
                 <br />
                 送ってください
               </h2>
-              <p>まとまっていなくて大丈夫です。1営業日以内に返信します。</p>
+              <p>まとまっていなくて大丈夫です。2営業日以内に返信します。</p>
             </div>
             <div className="bd">
               {status === 'done' ? (
                 <div className="done">
                   <p className="dt">送信しました</p>
                   <p className="dd">
-                    1営業日以内に、ご入力のメールアドレス宛にご連絡します。
+                    2営業日以内に、ご入力のメールアドレス宛にご連絡します。
                   </p>
                 </div>
               ) : (
                 <>
+                  {/* 任意。分かっていると、返信の前にサイトを見て
+                      具体的な話ができる。必須にすると検討段階の人が止まる */}
+                  <div className="fld">
+                    <label htmlFor="top-company">
+                      会社名・屋号 <span className="op">任意</span>
+                    </label>
+                    <input
+                      id="top-company"
+                      type="text"
+                      autoComplete="organization"
+                      placeholder="株式会社◯◯"
+                      value={form.company}
+                      onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    />
+                  </div>
                   <div className="fld">
                     <label htmlFor="top-name">
                       お名前 <span className="rq">必須</span>
@@ -601,7 +616,7 @@ export default function TopPage() {
       <div className="mbar">
         <div className="p">
           相談する
-          <small>1営業日以内に返信します</small>
+          <small>2営業日以内に返信します</small>
         </div>
         <a href="#contact">書いて送る</a>
       </div>
