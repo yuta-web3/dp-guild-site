@@ -32,7 +32,7 @@ export default function ServicePage({ service }: { service: Service }) {
 
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
-  const [form, setForm] = useState({ company: '', name: '', email: '', phone: '' });
+  const [form, setForm] = useState({ company: '', website: '', name: '', email: '', phone: '' });
   const [honeypot, setHoneypot] = useState('');
   const startedAt = useRef(0);
 
@@ -411,6 +411,21 @@ export default function ServicePage({ service }: { service: Service }) {
                       placeholder="株式会社DP-GUILD"
                       value={form.company}
                       onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    />
+                  </div>
+                  {/* 会社名より直接的。開けばどういう会社か分かる */}
+                  <div className="fld">
+                    <label htmlFor="doc-website">
+                      サイトのURL <span className="op">任意</span>
+                    </label>
+                    <input
+                      id="doc-website"
+                      type="text"
+                      inputMode="url"
+                      autoComplete="url"
+                      placeholder="example.com"
+                      value={form.website}
+                      onChange={(e) => setForm({ ...form, website: e.target.value })}
                     />
                   </div>
                   <div className="fld">

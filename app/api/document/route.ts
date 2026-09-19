@@ -43,7 +43,7 @@ const autoReplyHtml = (name: string, serviceLabel: string, docUrl: string | null
 `;
 
 async function notifySlack(d: {
-  company: string; name: string; email: string; phone?: string; serviceLabel: string;
+  company: string; name: string; email: string; phone?: string; website?: string; serviceLabel: string;
 }) {
   if (!process.env.SLACK_WEBHOOK_URL) return;
   try {
@@ -58,6 +58,7 @@ async function notifySlack(d: {
             type: 'section',
             fields: [
               { type: 'mrkdwn', text: `*会社名:*\n${d.company}` },
+              { type: 'mrkdwn', text: `*サイト:*\n${d.website || 'なし'}` },
               { type: 'mrkdwn', text: `*お名前:*\n${d.name}` },
               { type: 'mrkdwn', text: `*メール:*\n${d.email}` },
               { type: 'mrkdwn', text: `*電話:*\n${d.phone || 'なし'}` },
@@ -111,6 +112,7 @@ export async function POST(request: NextRequest) {
             `【資料請求】${service.label}`,
             `サービス: ${service.slug}`,
             `電話番号: ${data.phone || 'なし'}`,
+            `サイト: ${data.website || 'なし'}`,
           ].join('\n'),
           created_at: new Date().toISOString(),
           status: 'document_request',
@@ -146,6 +148,7 @@ export async function POST(request: NextRequest) {
             <h2>資料請求がありました</h2>
             <p><strong>サービス:</strong> ${escape(service.label)}</p>
             <p><strong>会社名:</strong> ${escape(data.company)}</p>
+            <p><strong>サイト:</strong> ${escape(data.website || 'なし')}</p>
             <p><strong>お名前:</strong> ${escape(data.name)}</p>
             <p><strong>メール:</strong> ${escape(data.email)}</p>
             <p><strong>電話番号:</strong> ${escape(data.phone || 'なし')}</p>

@@ -21,6 +21,12 @@ export const documentSchema = z.object({
     .or(z.literal('')),
 
   // どのサービスの資料か（lib/services.ts の slug）
+  // サイトのURL。会社名より直接的で、そのまま開いて中身を見られる
+  website: z.string()
+    .max(300, 'URLは300文字以内で入力してください')
+    .optional()
+    .or(z.literal('')),
+
   service: z.string().min(1).max(60),
 
   // スパム対策

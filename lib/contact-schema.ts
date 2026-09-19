@@ -14,6 +14,12 @@ export const contactSchema = z.object({
     .optional()
     .or(z.literal('')),
 
+  // サイトのURL。会社名より直接的で、そのまま開いて中身を見られる
+  website: z.string()
+    .max(300, 'URLは300文字以内で入力してください')
+    .optional()
+    .or(z.literal('')),
+
   content: z.string()
     .min(1, '要件・相談内容は必須です')
     .min(10, '要件・相談内容は10文字以上で入力してください')

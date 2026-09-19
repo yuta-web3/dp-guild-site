@@ -15,7 +15,7 @@ export default function TopPage() {
 
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
-  const [form, setForm] = useState({ company: '', name: '', email: '', content: '' });
+  const [form, setForm] = useState({ company: '', website: '', name: '', email: '', content: '' });
   const [honeypot, setHoneypot] = useState('');
   const startedAt = useRef(0);
 
@@ -366,6 +366,21 @@ export default function TopPage() {
                       placeholder="株式会社◯◯"
                       value={form.company}
                       onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    />
+                  </div>
+                  {/* 会社名より直接的。開けばどういう会社か分かる */}
+                  <div className="fld">
+                    <label htmlFor="top-website">
+                      サイトのURL <span className="op">任意</span>
+                    </label>
+                    <input
+                      id="top-website"
+                      type="text"
+                      inputMode="url"
+                      autoComplete="url"
+                      placeholder="example.com"
+                      value={form.website}
+                      onChange={(e) => setForm({ ...form, website: e.target.value })}
                     />
                   </div>
                   <div className="fld">

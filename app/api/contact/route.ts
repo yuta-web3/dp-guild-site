@@ -8,7 +8,7 @@ export const runtime = 'edge';
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // メールテンプレート
-const createEmailHtml = (data: { name: string; email: string; company?: string; content: string }) => `
+const createEmailHtml = (data: { name: string; email: string; company?: string; website?: string; content: string }) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,6 +40,11 @@ const createEmailHtml = (data: { name: string; email: string; company?: string; 
         <div class="label">メールアドレス</div>
         <div class="value">${data.email}</div>
       </div>
+      ${data.website ? `
+        <div class="row">
+          <div class="label">サイト</div>
+          <div class="value"><a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}">${data.website}</a></div>
+        </div>` : ''}
       ${data.company ? `
       <div class="field">
         <div class="label">会社名</div>
@@ -67,7 +72,7 @@ const createEmailHtml = (data: { name: string; email: string; company?: string; 
 
 
 // Slack通知
-async function sendSlackNotification(data: { name: string; email: string; company?: string; content: string }) {
+async function sendSlackNotification(data: { name: string; email: string; company?: string; website?: string; content: string }) {
   if (!process.env.SLACK_WEBHOOK_URL) return;
 
   try {
@@ -90,6 +95,7 @@ async function sendSlackNotification(data: { name: string; email: string; compan
               { type: 'mrkdwn', text: `*お名前:*\n${data.name}` },
               { type: 'mrkdwn', text: `*メール:*\n${data.email}` },
               { type: 'mrkdwn', text: `*会社名:*\n${data.company || 'なし'}` },
+              { type: 'mrkdwn', text: `*サイト:*\n${data.website || 'なし'}` },
               { type: 'mrkdwn', text: `*送信日時:*\n${new Date().toLocaleString('ja-JP')}` }
             ]
           },
@@ -147,7 +153,11 @@ export async function POST(request: NextRequest) {
             name: validatedData.name,
             email: validatedData.email,
             company: validatedData.company || null,
-            content: validatedData.content,
+            // inquiries に website 列が無いため、本文の先頭に入れて確実に残す。
+            // 列を追加したら website: validatedData.website に分離する
+            content: validatedData.website
+              ? `［サイト］${validatedData.website}\n\n${validatedData.content}`
+              : validatedData.content,
             created_at: new Date().toISOString(),
             status: 'pending'
           });
