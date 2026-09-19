@@ -91,8 +91,8 @@ export const topDoors: TopDoor[] = [
   {
     id: 'attract',
     title: '集客したい',
-    desc: '人が来ない、来ても動かない。どこで止まっているかを実測してから直します。',
-    href: '/contact',
+    desc: '人が来ていないのか、来ているのに動いていないのか。やることが逆になるので、そこから整理します。',
+    href: '/needs/attract',
   },
   {
     id: 'recruit',

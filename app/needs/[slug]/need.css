@@ -1,0 +1,56 @@
+/* 入口ページ固有。共通は lp-base.css、FVの体裁は top.css を借りている */
+
+/* FVは「自分の状態を見つける」ところまで。立方体は置かない（読ませる方が先） */
+.lp .fv .caseitem{cursor:default}
+.lp .fv .caseitem:hover{background:transparent;padding-left:4px;padding-right:4px}
+.lp .fvhead,.lp .caselist{padding-right:0}
+
+/* セクションの間隔。lp-base.css の既定（最大74px）は読み物には広すぎる */
+.lp .body .sec{padding-top:clamp(32px,3.4vw,48px)}
+
+/* ---- 教育。ここが主役なので、本文を大きく行間を広く ---- */
+.lp .learn{margin-top:20px;max-width:680px}
+.lp .learn p{font-size:15px;line-height:2.05;margin-top:17px;color:var(--ink)}
+.lp .learn p:first-child{margin-top:0;font-size:16px;font-weight:700;line-height:1.95}
+
+/* ---- 手段を比べる ---- */
+.lp .apps{margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(14px,1.6vw,20px)}
+@media(max-width:760px){.lp .apps{grid-template-columns:1fr}}
+.lp .app{border:1px solid var(--rule);background:var(--ground);
+  padding:clamp(17px,1.9vw,24px)}
+.lp .app h3{font-family:var(--disp);font-size:clamp(15px,1.6vw,18px);font-weight:900;
+  letter-spacing:-.015em;line-height:1.5}
+.lp .app .ef{font-size:13px;line-height:1.85;color:var(--mut);margin-top:8px;
+  padding-bottom:13px;border-bottom:1px solid var(--rule)}
+.lp .app dl{margin:0}
+.lp .app dl > div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;
+  padding:9px 0;border-bottom:1px solid var(--rule2)}
+.lp .app dl > div:last-child{border-bottom:0;padding-bottom:0}
+.lp .app dt{font-size:11.5px;font-weight:700;color:var(--faint)}
+.lp .app dd{margin:0;font-size:13px;line-height:1.7;color:var(--ink)}
+
+/* ---- 体制で分ける ---- */
+.lp .brs{margin-top:20px;display:grid;gap:clamp(16px,1.8vw,22px)}
+.lp .br{border:1px solid var(--ink);background:var(--ground);
+  padding:clamp(20px,2.2vw,30px);position:relative}
+.lp .br .cond{display:inline-block;font-size:12px;font-weight:700;color:#fff;
+  background:var(--ink);padding:5px 12px;margin-bottom:13px}
+.lp .br h3{font-family:var(--disp);font-size:clamp(17px,1.9vw,22px);font-weight:900;
+  letter-spacing:-.02em;line-height:1.45}
+.lp .br .bd2{font-size:14px;line-height:1.95;color:var(--ink);margin-top:10px;
+  padding-bottom:15px;border-bottom:1px solid var(--rule);max-width:640px}
+.lp .br dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 clamp(16px,2vw,28px)}
+@media(max-width:560px){.lp .br dl{grid-template-columns:1fr}}
+.lp .br dl > div{padding:11px 0;border-bottom:1px solid var(--rule2)}
+.lp .br dt{font-size:11.5px;font-weight:700;color:var(--faint)}
+.lp .br dd{margin:2px 0 0;font-size:13.5px;line-height:1.7;color:var(--ink)}
+
+.lp .brgo{display:inline-flex;align-items:center;gap:9px;margin-top:17px;
+  font-family:var(--disp);font-weight:900;font-size:14px;color:#fff;background:var(--ink);
+  padding:13px 20px;text-decoration:none;transition:background .25s}
+.lp .brgo:hover{background:#1E2A46}
+.lp .brgo i{display:block;width:18px;height:1px;background:#fff;transition:width .22s}
+.lp .brgo:hover i{width:28px}
+.lp .brnote{margin-top:15px;font-size:12.5px;color:var(--mut)}
