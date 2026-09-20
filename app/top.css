@@ -72,9 +72,9 @@
 .lp .case2 .nx .ask i{background:var(--ink)}
 
 /* ---- 何を頼めるか ---- */
-.lp .doors{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+.lp .doors{margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   gap:clamp(12px,1.4vw,18px)}
-@media(max-width:640px){.lp .doors{grid-template-columns:1fr}}
+@media(max-width:900px){.lp .doors{grid-template-columns:1fr}}
 .lp .door{border:1px solid var(--rule);background:var(--ground);padding:20px 20px 18px;
   text-decoration:none;display:flex;flex-direction:column;
   transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .3s,border-color .3s}

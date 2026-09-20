@@ -95,22 +95,16 @@ export const topDoors: TopDoor[] = [
     href: '/needs/attract',
   },
   {
-    id: 'recruit',
-    title: '採用したい',
-    desc: '求人票では伝わらない中身を、見える形にします。SNSの立ち上げから。',
-    href: '/contact',
+    id: 'sell',
+    title: '売りたい（ネットショップ）',
+    desc: '商品ページまで来ていないのか、来たのに買われていないのか。作り直す前に実測します。',
+    href: '/needs/sell',
   },
   {
-    id: 'build',
-    title: 'つくってほしい',
-    desc: 'サイト、EC、アプリ、業務システム。作って終わりにせず、運べる形で渡します。',
-    href: '/contact',
-  },
-  {
-    id: 'automate',
+    id: 'improve',
     title: '社内を楽にしたい',
-    desc: 'いまの手順を変えずに、手を動かす回数だけ減らす。そこから自動化します。',
-    href: '/contact',
+    desc: '高機能なものを入れても、機能の8割は使われません。まず手を動かす回数を減らします。',
+    href: '/needs/improve',
   },
 ];
 

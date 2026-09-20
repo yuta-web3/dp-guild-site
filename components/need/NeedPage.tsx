@@ -285,7 +285,9 @@ export default function NeedPage({ need }: { need: Need }) {
                     id="need-content"
                     required
                     rows={3}
-                    placeholder="例）Instagramを始めたが数本で止まっている"
+                    /* 入力例はページごとに変える。集客のページで在庫の例が出ると、
+                       自分の話ではないと思われる */
+                    placeholder={`例）${need.symptoms[0]}`}
                     value={form.content}
                     onChange={(e) => setForm({ ...form, content: e.target.value })}
                   />
