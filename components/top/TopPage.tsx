@@ -3,10 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
-import { layers, company } from '@/lib/top-cases';
+import { company } from '@/lib/top-cases';
 import { works, workKinds, beyond, type Work } from '@/lib/works';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
+
+// FVに出す代表の5件。用件が偏らないように選んでいる
+const FV_WORKS = ['school-video', 'product-site', 'portal', 'ninja-ec', 'stock'];
 
 export default function TopPage() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -268,7 +271,7 @@ export default function TopPage() {
                   <span>つくって、集めて、</span><span>回るところまで。</span>
                 </h1>
                 <p className="guide rv up" data-fd="2">
-                  見た目だけでなく、情報設計・データ分析・集客・保守まで同じチームでやります。
+                  見た目だけでなく、情報設計・データ分析・集客・保守までやります。
                 </p>
 
               </div>
@@ -312,24 +315,42 @@ export default function TopPage() {
               </svg>
             </div>
 
-            {/* やれること。会社の幅をここで見せる。別ページへは送らない */}
-            <div className="layers">
-              {layers.map((l, i) => (
-                <div className={`layer rv ${i % 2 === 0 ? 'left' : 'right'}`} data-fd={String(3 + i)} key={l.id}>
-                  <h2>{l.title}</h2>
-                  <ul>
-                    {l.items.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                  <p>{l.note}</p>
-                </div>
-              ))}
+            {/* 本文「やってきたこと」の要約。3列の「作る・集める・回す」は
+                どこまでが何の範囲か分からず読みにくかったので外した。
+                押すとページ内の一覧がその用件で絞られる（別ページへは送らない） */}
+            <div className="caselist">
+              {FV_WORKS.map((id, i) => {
+                const w = works.find((x) => x.id === id)!;
+                return (
+                  <a
+                    className={`caseitem rv ${i % 2 === 0 ? 'left' : 'right'}`}
+                    data-fd={String(3 + i)}
+                    href="#works"
+                    key={w.id}
+                    onClick={() => setKind(w.kind)}
+                  >
+                    <span className="pb">
+                      {w.title}
+                      {w.number && (
+                        <span className="nb">
+                          {w.number.label} <b>{w.number.value}</b>
+                        </span>
+                      )}
+                      <span className="wh">{w.client}</span>
+                    </span>
+                    {/* 右は全行そろえて「どこまでやったか」 */}
+                    <span className="go">
+                      {w.scope.join('・')}
+                      <i />
+                    </span>
+                  </a>
+                );
+              })}
             </div>
 
             {/* 請求の理由。社内で通すための一式は資料で渡す */}
-            <p className="toask rv up" data-fd="6">
-              社内でご検討いただくために、<b>実績・体制・できることの全体</b>を1冊の会社案内にまとめています。
+            <p className="toask rv up" data-fd="8">
+              ほかの実績は下に。社名と数字を含む詳しい事例は、<b>社内でご検討いただけるよう1冊の会社案内</b>にまとめています。
             </p>
 
           </div>
