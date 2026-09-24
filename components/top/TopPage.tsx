@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
-import { layers, stance, outcomes, company } from '@/lib/top-cases';
-import { judgmentCases } from '@/lib/cases';
+import { layers, company } from '@/lib/top-cases';
+import { works, workKinds, beyond, type Work } from '@/lib/works';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
@@ -18,6 +17,8 @@ export default function TopPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [form, setForm] = useState({ company: '', website: '', name: '', email: '', phone: '' });
   const [honeypot, setHoneypot] = useState('');
+  // 実績の絞り込み。全部見せると長いので、用件で絞れるようにする
+  const [kind, setKind] = useState<Work['kind'] | 'all'>('all');
   const startedAt = useRef(0);
 
   useEffect(() => {
@@ -267,7 +268,7 @@ export default function TopPage() {
                   <span>つくって、集めて、</span><span>回るところまで。</span>
                 </h1>
                 <p className="guide rv up" data-fd="2">
-                  サイトもSNSも社内の仕組みも、同じ人が見ています。
+                  見た目だけでなく、情報設計・データ分析・集客・保守まで同じチームでやります。
                 </p>
 
               </div>
@@ -326,10 +327,9 @@ export default function TopPage() {
               ))}
             </div>
 
-            {/* 資料請求の理由をここで作る。何をどう判断したかはページに載せない */}
+            {/* 請求の理由。社内で通すための一式は資料で渡す */}
             <p className="toask rv up" data-fd="6">
-              どれから手をつけるかは、状況で変わります。実際にどう判断したかを
-              <b>6件</b>、会社案内にまとめました。
+              社内でご検討いただくために、<b>実績・体制・できることの全体</b>を1冊の会社案内にまとめています。
             </p>
 
           </div>
@@ -339,13 +339,13 @@ export default function TopPage() {
         <aside className="rail" id="contact">
           <form className="card" onSubmit={onSubmit} noValidate>
             <div className="top">
-              <div className="k">会社案内（無料）</div>
+              <div className="k">社内でのご検討用に</div>
               <h2>
-                どんな会社か
+                会社案内を
                 <br />
-                見てください
+                お送りします
               </h2>
-              <p>実際にどう判断したか6件と、できること・料金をまとめています。</p>
+              <p>実績・体制・できることの全体を1冊に。そのまま社内に回せる形です。</p>
             </div>
             <div className="bd">
               {status === 'done' ? (
@@ -460,73 +460,77 @@ export default function TopPage() {
             FVはここに書いてあることの要約。FVで判断できなかった人が
             読む場所なので、削らずに書く。ただし別ページへは送らない */}
         <main className="body">
-          {/* どういう会社か。資料を請求する理由がここにある */}
+
+          {/* ホームページは見た目しか比べられない。見た目の外側を先に見せる */}
           <section className="sec">
             <div className="sechead rv left" data-d="0">
               <span className="n mono">01</span>
-              <h2 className="sp">どういう会社か</h2>
-            </div>
-            <div className="stance rv up" data-d="1">
-              <p className="sl">{stance.lead}</p>
-              <p className="sb2">{stance.body}</p>
-              <p className="sp2">{stance.point}</p>
-            </div>
-
-            <p className="sub2 rv up" data-d="2">判断した結果、こうなることがあります。</p>
-            <ul className="outs">
-              {outcomes.map((o, i) => (
-                <li className="out rv up" data-d={String(3 + i)} key={o.when}>
-                  <b>{o.when}</b>
-                  <span>{o.then}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          {/* 判断事例。却下した案とその理由まで見せる */}
-          <section className="sec">
-            <div className="sechead rv left" data-d="0">
-              <span className="n mono">02</span>
-              <h2 className="sp">実際にどう判断したか</h2>
+              <h2 className="sp">見た目の外側でやっていること</h2>
             </div>
             <p className="sub2 rv up" data-d="1">
-              売れるものを勧めたのではなく、何を却下したかまで書いています。
+              見た目だけなら、今はどこに頼んでも大きくは変わりません。差が出るのは公開したあとです。
             </p>
-            <div className="cases2">
-              {judgmentCases.map((c, i) => (
-                <details className="case2 rv up" data-d={String(i)} key={c.id}>
-                  <summary>
-                    <span className="cn mono">{c.id}</span>
-                    <span className="ct">{c.consultation}</span>
-                    <span className="cw">{c.client}</span>
-                    <span className="ci" aria-hidden="true" />
-                  </summary>
-                  <div className="cbody">
-                    <div className="step">
-                      <p className="sl">出した選択肢</p>
-                      <ul className="opts">
-                        {c.options.map((o) => (
-                          <li key={o}>{o}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="step no">
-                      <p className="sl">却下した案と、その理由</p>
-                      <p>{c.rejected}</p>
-                    </div>
-                    <div className="step solve">
-                      <p className="sl">決めたこと</p>
-                      <p>{c.finalDecision}</p>
-                      <p className="why">{c.reason}</p>
-                    </div>
-                    <div className="step">
-                      <p className="sl">どうなったか</p>
-                      <p>{c.after}</p>
-                    </div>
-                  </div>
-                </details>
+            <div className="bys">
+              {beyond.map((b, i) => (
+                <div className="by rv up" data-d={String(i)} key={b.t}>
+                  <h3>{b.t}</h3>
+                  <p>{b.d}</p>
+                  {b.ex && <p className="ex">実例：{b.ex}</p>}
+                </div>
               ))}
             </div>
+          </section>
+
+          {/* やってきたこと。何を作ったか・どこまでやったか */}
+          <section className="sec" id="works">
+            <div className="sechead rv left" data-d="0">
+              <span className="n mono">02</span>
+              <h2 className="sp">やってきたこと</h2>
+            </div>
+            <p className="sub2 rv up" data-d="1">
+              何を作ったかと、どこまで担当したかを書いています。近い用件で絞り込めます。
+            </p>
+            <div className="wtabs rv up" data-d="2" role="tablist">
+              <button type="button" className={kind === 'all' ? 'on' : ''} onClick={() => setKind('all')}>
+                すべて
+              </button>
+              {workKinds.map((k) => (
+                <button type="button" key={k.id} className={kind === k.id ? 'on' : ''} onClick={() => setKind(k.id)}>
+                  {k.label}
+                </button>
+              ))}
+            </div>
+            <div className="wks">
+              {works
+                .filter((w) => kind === 'all' || w.kind === kind)
+                .map((w) => (
+                  <article className="wk" key={w.id}>
+                    <div className="wh">
+                      <span className="wc">{w.name ?? w.client}</span>
+                      {w.number && (
+                        <span className="wn">
+                          <b>{w.number.value}</b>
+                          {w.number.label}
+                        </span>
+                      )}
+                    </div>
+                    <h3>{w.title}</h3>
+                    <ul className="wd">
+                      {w.did.map((d) => (
+                        <li key={d}>{d}</li>
+                      ))}
+                    </ul>
+                    <ul className="ws">
+                      {w.scope.map((sc) => (
+                        <li key={sc}>{sc}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+            </div>
+            <p className="wmore rv up" data-d="0">
+              社名・数字を含む詳しい事例は、会社案内に載せています。
+            </p>
           </section>
 
           {/* 誰がやるか */}
@@ -538,9 +542,8 @@ export default function TopPage() {
             <div className="ceo2 rv up" data-d="0">
               <p className="nm">{company.ceo}</p>
               <p className="tx">
-                2019年、滋賀県甲賀市で創業。地域の中小企業に向き合う中で、施策より先に
-                「何から手をつけるか」の判断が要ると気づきました。だから、売れるものを
-                勧めるのではなく、要らないものは要らないと言います。
+                2019年、滋賀県甲賀市で創業。サイト・SNS・動画・社内システムまで、自分で手を動かしてきました。
+                ショート動画は累計1,000本以上を制作し、最高1,600万回再生。業務委託を含む{company.staff.replace('（業務委託含む）', '')}の体制で対応します。
               </p>
             </div>
           </section>
@@ -561,10 +564,10 @@ export default function TopPage() {
             </div>
           </section>
 
-          {/* 読み終えた人のゴール。FVと同じ場所へ */}
+          {/* 読み終えた人のゴール。FVと同じ */}
           <section className="sec">
             <div className="endcta rv up" data-d="0">
-              <p className="et">ここまでの内容と、料金をまとめた会社案内をお送りします。</p>
+              <p className="et">社内でのご検討用に、実績・体制をまとめた会社案内をお送りします。</p>
               <a className="eb" href="#contact">会社案内をもらう<i /></a>
             </div>
           </section>
