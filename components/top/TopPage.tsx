@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
-import { layers, steps, company } from '@/lib/top-cases';
+import { layers, stance, outcomes, company } from '@/lib/top-cases';
 import { judgmentCases } from '@/lib/cases';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
@@ -460,31 +460,27 @@ export default function TopPage() {
             FVはここに書いてあることの要約。FVで判断できなかった人が
             読む場所なので、削らずに書く。ただし別ページへは送らない */}
         <main className="body">
-
-          {/* どう進めるか。FVの3層と内容が重ならないよう、進め方を書く */}
+          {/* どういう会社か。資料を請求する理由がここにある */}
           <section className="sec">
             <div className="sechead rv left" data-d="0">
               <span className="n mono">01</span>
-              <h2 className="sp">どう進めるか</h2>
+              <h2 className="sp">どういう会社か</h2>
             </div>
-            <p className="sub2 rv up" data-d="1">
-              作り始める前に、文章で合意を取ります。お客様の手間はヒアリングが一番多く、あとは確認だけです。
-            </p>
-            <ol className="howto">
-              {steps.map((st, i) => (
-                <li className="ht rv up" data-d={String(i)} key={st.t}>
-                  <span className="sn mono">{String(i + 1).padStart(2, '0')}</span>
-                  <div className="sb">
-                    <h3>{st.t}</h3>
-                    <p>{st.d}</p>
-                  </div>
-                  <span className="sy">
-                    そちらの手間
-                    <b>{st.yours}</b>
-                  </span>
+            <div className="stance rv up" data-d="1">
+              <p className="sl">{stance.lead}</p>
+              <p className="sb2">{stance.body}</p>
+              <p className="sp2">{stance.point}</p>
+            </div>
+
+            <p className="sub2 rv up" data-d="2">判断した結果、こうなることがあります。</p>
+            <ul className="outs">
+              {outcomes.map((o, i) => (
+                <li className="out rv up" data-d={String(3 + i)} key={o.when}>
+                  <b>{o.when}</b>
+                  <span>{o.then}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
           </section>
 
           {/* 判断事例。却下した案とその理由まで見せる */}
