@@ -5,9 +5,8 @@
 .lp .fv{min-height:0;padding:74px 0 clamp(20px,2.2vw,30px)}
 /* 本文セクションを持たないページなので、フッターまでを詰める。
    ただし立方体が入る高さは残す（余白ではなく、動きの置き場所） */
-.lp .shell{padding-bottom:clamp(24px,3vw,44px)}
-/* 立方体が3層と取り合いにならない高さ。余白ではなく動きの置き場所 */
-.lp .fvtxt{min-height:clamp(340px,44vw,640px)}
+.lp .shell{padding-bottom:clamp(18px,2vw,28px)}
+
 .lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
 /* 文章の裏だけ格子を弱める。輪郭を出すと「板」になるので、
    縁は完全に透明まで落とす */
@@ -54,7 +53,7 @@
 }
 
 /* ---- やれること3層。会社の幅をここで見せる ---- */
-.lp .layers{margin-top:clamp(18px,2.2vw,26px);
+.lp .layers{position:relative;z-index:2;margin-top:clamp(18px,2.2vw,26px);
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,18px)}
 @media(max-width:880px){.lp .layers{grid-template-columns:1fr;gap:0}}
 
@@ -71,7 +70,7 @@
 .lp .layer p{margin-top:10px;font-size:12.5px;line-height:1.75;color:var(--mut)}
 
 /* 資料を請求する理由。ページに載せないものが資料にあると示す */
-.lp .toask{margin-top:clamp(16px,1.9vw,24px);max-width:720px;
+.lp .toask{position:relative;z-index:2;margin-top:clamp(16px,1.9vw,24px);max-width:720px;
   font-size:13.5px;line-height:1.85;color:var(--ink);
   padding-left:14px;border-left:3px solid var(--cy)}
 .lp .toask b{font-weight:900}
@@ -120,9 +119,9 @@
 /* 相談リストの下から、左へはみ出させる。非対称を作る */
 /* 見出しの右。切らずに全体を見せる（組み上がりを見せてから分解するため）。
    絶対配置なので、下の相談リストの位置には一切影響しない */
-.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.85;
-  right:-6px;top:auto;bottom:0;transform:none;
-  width:clamp(150px,14.8vw,212px);aspect-ratio:1/1.06}
+.lp .cubewrap{position:absolute;z-index:0;pointer-events:none;opacity:.3;
+  right:clamp(-30px,-2vw,0px);top:50%;transform:translateY(-48%);
+  width:clamp(200px,24vw,340px);aspect-ratio:1/1.06}
 .lp .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
 
 /* 立方体の裏だけ背景の格子を消す。線どうしが混ざって、
@@ -130,8 +129,8 @@
 .lp .cubewrap::before{content:"";position:absolute;z-index:0;
   inset:-14% -10%;
   background:radial-gradient(closest-side,
-    var(--ground) 0 46%,
-    color-mix(in srgb,var(--ground) 72%,transparent) 68%,
+    color-mix(in srgb,var(--ground) 80%,transparent) 0 44%,
+    color-mix(in srgb,var(--ground) 40%,transparent) 68%,
     transparent 100%)}
 .lp .cube g.face{will-change:transform}
 .lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:6;stroke-linejoin:miter;
@@ -188,17 +187,23 @@
 
 /* ============ 本文（FVの詳細） ============ */
 
-/* できること */
-.lp .lay2{margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(14px,1.6vw,22px)}
-@media(max-width:880px){.lp .lay2{grid-template-columns:1fr}}
-.lp .l2{border:1px solid var(--rule);background:var(--ground);padding:clamp(16px,1.8vw,22px)}
-.lp .l2 h3{font-family:var(--disp);font-weight:900;letter-spacing:-.02em;
-  font-size:clamp(15px,1.6vw,18px);line-height:1.45}
-.lp .l2 ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 7px}
-.lp .l2 li{font-size:12px;font-weight:700;color:var(--ink);
-  background:var(--paper);border:1px solid var(--rule);padding:5px 10px}
-.lp .l2 p{margin-top:11px;font-size:12.5px;line-height:1.8;color:var(--mut)}
+
+/* どう進めるか */
+/* lp-base.css にサービスページ用の .steps があるので名前を分ける */
+.lp .howto{list-style:none;margin:18px 0 0;padding:0;border-top:1px solid var(--rule)}
+.lp .ht{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:start;
+  padding:15px 2px;border-bottom:1px solid var(--rule)}
+.lp .ht .sn{font-size:11px;color:var(--faint);padding-top:3px}
+.lp .ht h3{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:-.015em}
+.lp .ht .sb p{font-size:13px;line-height:1.85;color:var(--mut);margin-top:4px}
+.lp .ht .sy{display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+  font-size:10.5px;color:var(--faint);white-space:nowrap;text-align:right}
+.lp .ht .sy b{font-family:var(--disp);font-weight:900;font-size:13px;color:var(--ink)}
+@media(max-width:640px){
+  .lp .ht{grid-template-columns:auto minmax(0,1fr);gap:10px}
+  .lp .ht .sy{grid-column:2;flex-direction:row;align-items:baseline;gap:7px;
+    justify-content:flex-start;text-align:left;margin-top:5px}
+}
 
 /* 判断事例 */
 .lp .cases2{margin-top:18px;display:grid;gap:10px}

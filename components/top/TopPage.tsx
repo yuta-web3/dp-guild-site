@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
-import { layers, company } from '@/lib/top-cases';
+import { layers, steps, company } from '@/lib/top-cases';
 import { judgmentCases } from '@/lib/cases';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
@@ -461,28 +461,30 @@ export default function TopPage() {
             読む場所なので、削らずに書く。ただし別ページへは送らない */}
         <main className="body">
 
-          {/* できること（詳しく） */}
+          {/* どう進めるか。FVの3層と内容が重ならないよう、進め方を書く */}
           <section className="sec">
             <div className="sechead rv left" data-d="0">
               <span className="n mono">01</span>
-              <h2 className="sp">できること</h2>
+              <h2 className="sp">どう進めるか</h2>
             </div>
             <p className="sub2 rv up" data-d="1">
-              つくるところ、人を集めるところ、社内で回すところ。どれも同じ人が見ています。
+              作り始める前に、文章で合意を取ります。お客様の手間はヒアリングが一番多く、あとは確認だけです。
             </p>
-            <div className="lay2">
-              {layers.map((l, i) => (
-                <div className="l2 rv up" data-d={String(i)} key={l.id}>
-                  <h3>{l.title}</h3>
-                  <ul>
-                    {l.items.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                  <p>{l.note}</p>
-                </div>
+            <ol className="howto">
+              {steps.map((st, i) => (
+                <li className="ht rv up" data-d={String(i)} key={st.t}>
+                  <span className="sn mono">{String(i + 1).padStart(2, '0')}</span>
+                  <div className="sb">
+                    <h3>{st.t}</h3>
+                    <p>{st.d}</p>
+                  </div>
+                  <span className="sy">
+                    そちらの手間
+                    <b>{st.yours}</b>
+                  </span>
+                </li>
               ))}
-            </div>
+            </ol>
           </section>
 
           {/* 判断事例。却下した案とその理由まで見せる */}
