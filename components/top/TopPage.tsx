@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
 import { layers, company } from '@/lib/top-cases';
+import { judgmentCases } from '@/lib/cases';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
@@ -48,6 +49,15 @@ export default function TopPage() {
       el.style.transitionDelay = `${(0.42 + parseFloat(el.dataset.fd || '0') * 0.08).toFixed(3)}s`;
     });
 
+    // 立方体：描画長を確定させてから線を引く
+    root.querySelectorAll<SVGPathElement>('.cube path.draw').forEach((path) => {
+      try {
+        path.style.setProperty('--len', String(path.getTotalLength()));
+      } catch {
+        path.style.setProperty('--len', '900');
+      }
+    });
+
     root.classList.add('boot');
     fv.forEach((el) => el.classList.add('in'));
 
@@ -73,6 +83,12 @@ export default function TopPage() {
       }
     };
 
+    const faces = Array.from(root.querySelectorAll<SVGGElement>('.cube .face'));
+    // 組み上がるまでは分解させない。「組み上がった」瞬間が無いと時間軸にならない
+    let assembled = false;
+    const assembleTimer = window.setTimeout(() => {
+      assembled = true;
+    }, 950);
     let lastY = 0;
     let ticking = false;
 
@@ -80,6 +96,22 @@ export default function TopPage() {
       const y = window.scrollY;
       velRef.current = velRef.current * 0.82 + Math.abs(y - lastY) * 0.18;
       lastY = y;
+      if (RM || !assembled) return;
+
+      // 組み上がったあと、ファーストビューを抜けるまでの間で分解しきる
+      const fvEl = root.querySelector<HTMLElement>('.fv');
+      const span = Math.max(320, fvEl ? fvEl.offsetHeight : window.innerHeight * 0.6);
+      const p = Math.min(1, y / span);
+      const e = 1 - Math.pow(1 - p, 1.7);
+      faces.forEach((g) => {
+        // 左へ飛ぶ面はそのままだと本文の上を横切る。全体を右へ寄せ、
+        // 文字にかかる前に消えきるよう透明化も前倒しする
+        const fx = parseFloat(g.dataset.fx || '0') * 0.55 + 0.62;
+        const fy = parseFloat(g.dataset.fy || '0');
+        const dist = 260 * e;
+        g.style.transform = `translate(${(fx * dist).toFixed(1)}px,${(fy * dist).toFixed(1)}px) rotate(${(fx * 11 * e).toFixed(2)}deg)`;
+        g.style.opacity = String(Math.max(0, 1 - e * 1.45));
+      });
 
     };
 
@@ -189,6 +221,7 @@ export default function TopPage() {
       if (resize) window.removeEventListener('resize', resize);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
+      window.clearTimeout(assembleTimer);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -239,6 +272,43 @@ export default function TopPage() {
 
               </div>
 
+            </div>
+
+              {/* ロゴの不可能立体。線が1本ずつ引かれて組み上がり、スクロールで分解して飛んでいく。
+                文字より先に組み上げ終える（最後に動いたものへ視線が行くため） */}
+            <div className="cubewrap" aria-hidden="true">
+            <svg className="cube" viewBox="0 0 500 530">
+            <defs>
+              <linearGradient id="cubeg" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stopColor="#0FBFB0" />
+                <stop offset="42%" stopColor="#3560E0" />
+                <stop offset="74%" stopColor="#7A45E8" />
+                <stop offset="100%" stopColor="#C267F0" />
+              </linearGradient>
+            </defs>
+            <g className="face" data-fx="0" data-fy="-1">
+              <path className="draw d1" d="M250 60 L423.2 160 L250 260 L76.8 160 Z" />
+              <path className="draw d4 thin" d="M250 102 L350.5 160 L250 218 L149.5 160 Z" />
+            </g>
+            <g className="face" data-fx="-0.87" data-fy="0.5">
+              <path className="draw d2" d="M76.8 160 L250 260 L250 460 L76.8 360 Z" />
+              <path className="draw d5 thin" d="M113.2 223 L213.6 281 L213.6 397 L113.2 339 Z" />
+            </g>
+            <g className="face" data-fx="0.87" data-fy="0.5">
+              <path className="draw d3" d="M250 260 L423.2 160 L423.2 360 L250 460 Z" />
+              <path className="draw d6 thin" d="M286.4 281 L386.8 223 L386.8 339 L286.4 397 Z" />
+            </g>
+            <g className="face" data-fx="0" data-fy="1.4">
+              <path className="hide" d="M250 218 L250 302" />
+              <path className="draw d7 thin" d="M250 218 L250 302" />
+              <path className="hide" d="M213.6 281 L250 302 L286.4 281" />
+              <path className="draw d8 thin" d="M213.6 281 L250 302 L286.4 281" />
+            </g>
+            <g className="face" data-fx="0" data-fy="-1">
+              <path className="hide" d="M330 172 L250 218 L170 172" />
+              <path className="draw d9 thin" d="M330 172 L250 218 L170 172" />
+            </g>
+              </svg>
             </div>
 
             {/* やれること。会社の幅をここで見せる。別ページへは送らない */}
@@ -385,6 +455,123 @@ export default function TopPage() {
           </p>
         </aside>
 
+
+        {/* ==================== 本文 ====================
+            FVはここに書いてあることの要約。FVで判断できなかった人が
+            読む場所なので、削らずに書く。ただし別ページへは送らない */}
+        <main className="body">
+
+          {/* できること（詳しく） */}
+          <section className="sec">
+            <div className="sechead rv left" data-d="0">
+              <span className="n mono">01</span>
+              <h2 className="sp">できること</h2>
+            </div>
+            <p className="sub2 rv up" data-d="1">
+              つくるところ、人を集めるところ、社内で回すところ。どれも同じ人が見ています。
+            </p>
+            <div className="lay2">
+              {layers.map((l, i) => (
+                <div className="l2 rv up" data-d={String(i)} key={l.id}>
+                  <h3>{l.title}</h3>
+                  <ul>
+                    {l.items.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                  <p>{l.note}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* 判断事例。却下した案とその理由まで見せる */}
+          <section className="sec">
+            <div className="sechead rv left" data-d="0">
+              <span className="n mono">02</span>
+              <h2 className="sp">実際にどう判断したか</h2>
+            </div>
+            <p className="sub2 rv up" data-d="1">
+              売れるものを勧めたのではなく、何を却下したかまで書いています。
+            </p>
+            <div className="cases2">
+              {judgmentCases.map((c, i) => (
+                <details className="case2 rv up" data-d={String(i)} key={c.id}>
+                  <summary>
+                    <span className="cn mono">{c.id}</span>
+                    <span className="ct">{c.consultation}</span>
+                    <span className="cw">{c.client}</span>
+                    <span className="ci" aria-hidden="true" />
+                  </summary>
+                  <div className="cbody">
+                    <div className="step">
+                      <p className="sl">出した選択肢</p>
+                      <ul className="opts">
+                        {c.options.map((o) => (
+                          <li key={o}>{o}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="step no">
+                      <p className="sl">却下した案と、その理由</p>
+                      <p>{c.rejected}</p>
+                    </div>
+                    <div className="step solve">
+                      <p className="sl">決めたこと</p>
+                      <p>{c.finalDecision}</p>
+                      <p className="why">{c.reason}</p>
+                    </div>
+                    <div className="step">
+                      <p className="sl">どうなったか</p>
+                      <p>{c.after}</p>
+                    </div>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          {/* 誰がやるか */}
+          <section className="sec">
+            <div className="sechead rv left" data-d="0">
+              <span className="n mono">03</span>
+              <h2 className="sp">誰がやるか</h2>
+            </div>
+            <div className="ceo2 rv up" data-d="0">
+              <p className="nm">{company.ceo}</p>
+              <p className="tx">
+                2019年、滋賀県甲賀市で創業。地域の中小企業に向き合う中で、施策より先に
+                「何から手をつけるか」の判断が要ると気づきました。だから、売れるものを
+                勧めるのではなく、要らないものは要らないと言います。
+              </p>
+            </div>
+          </section>
+
+          {/* 会社のこと */}
+          <section className="sec">
+            <div className="sechead rv left" data-d="0">
+              <span className="n mono">04</span>
+              <h2 className="sp">会社のこと</h2>
+            </div>
+            <div className="info rv up" data-d="0">
+              <div className="row"><span>会社名</span><span>{company.name}</span></div>
+              <div className="row"><span>所在地</span><span>{company.zip} {company.address}</span></div>
+              <div className="row"><span>設立</span><span>{company.founded}</span></div>
+              <div className="row"><span>代表者</span><span>{company.ceo}</span></div>
+              <div className="row"><span>法人番号</span><span>{company.corporateNumber}</span></div>
+              <div className="row"><span>体制</span><span>{company.staff}</span></div>
+            </div>
+          </section>
+
+          {/* 読み終えた人のゴール。FVと同じ場所へ */}
+          <section className="sec">
+            <div className="endcta rv up" data-d="0">
+              <p className="et">ここまでの内容と、料金をまとめた会社案内をお送りします。</p>
+              <a className="eb" href="#contact">会社案内をもらう<i /></a>
+            </div>
+          </section>
+
+        </main>
       </div>
 
       {/* ==================== フッター ==================== */}

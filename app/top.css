@@ -3,8 +3,11 @@
 /* 画面いっぱいに引き伸ばさない。中身の高さで終わらせる。
    余らせると、その分だけ無駄なスクロールになる */
 .lp .fv{min-height:0;padding:74px 0 clamp(20px,2.2vw,30px)}
-/* 本文セクションを持たないページなので、フッターまでを詰める */
+/* 本文セクションを持たないページなので、フッターまでを詰める。
+   ただし立方体が入る高さは残す（余白ではなく、動きの置き場所） */
 .lp .shell{padding-bottom:clamp(24px,3vw,44px)}
+/* 立方体が3層と取り合いにならない高さ。余白ではなく動きの置き場所 */
+.lp .fvtxt{min-height:clamp(340px,44vw,640px)}
 .lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
 /* 文章の裏だけ格子を弱める。輪郭を出すと「板」になるので、
    縁は完全に透明まで落とす */
@@ -74,27 +77,10 @@
 .lp .toask b{font-weight:900}
 
 /* ---- 実績（相談の詳細） ---- */
-.lp .cases2{margin-top:18px;display:grid;gap:clamp(20px,2.4vw,32px)}
-.lp .case2{border:1px solid var(--rule);background:var(--ground);padding:clamp(20px,2.2vw,30px);
-  scroll-margin-top:70px}
-.lp .case2 .hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;
-  padding-bottom:12px;border-bottom:1px solid var(--rule)}
-.lp .case2 h3{font-size:clamp(16px,1.7vw,20px);font-weight:900;letter-spacing:-.015em;line-height:1.5}
-.lp .case2 .wh{font-size:11.5px;font-weight:700;color:var(--mut)}
 .lp .case2 .step{margin-top:15px;padding-left:14px;border-left:2px solid var(--rule)}
 .lp .case2 .step.solve{border-left-color:var(--cy)}
 .lp .case2 .step .sl{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.03em}
 .lp .case2 .step p{font-size:13.5px;line-height:1.9;color:var(--ink);margin-top:3px}
-.lp .case2 .vo{margin-top:16px;padding:14px 16px;background:var(--paper)}
-.lp .case2 .vo q{display:block;font-family:var(--disp);font-weight:700;font-size:14.5px;
-  line-height:1.85;quotes:"「" "」"}
-.lp .case2 .nx{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;
-  margin-top:18px;padding-top:14px;border-top:1px solid var(--rule2)}
-.lp .case2 .nx a{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--bl)}
-.lp .case2 .nx a i{display:block;width:16px;height:1px;background:var(--bl);transition:width .22s}
-.lp .case2 .nx a:hover i{width:26px}
-.lp .case2 .nx .ask{color:var(--ink)}
-.lp .case2 .nx .ask i{background:var(--ink)}
 
 /* ---- 何を頼めるか ---- */
 .lp .doors{margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
@@ -130,6 +116,44 @@
 .lp .info .row .k{font-size:11.5px;font-weight:700;color:var(--faint)}
 @media(max-width:640px){.lp .info .row{grid-template-columns:1fr;gap:2px}}
 
+/* ---- ロゴの不可能立体（ファーストビュー） ---- */
+/* 相談リストの下から、左へはみ出させる。非対称を作る */
+/* 見出しの右。切らずに全体を見せる（組み上がりを見せてから分解するため）。
+   絶対配置なので、下の相談リストの位置には一切影響しない */
+.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.85;
+  right:-6px;top:auto;bottom:0;transform:none;
+  width:clamp(150px,14.8vw,212px);aspect-ratio:1/1.06}
+.lp .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
+
+/* 立方体の裏だけ背景の格子を消す。線どうしが混ざって、
+   どちらも読めなくなるのを防ぐ。輪郭は出さず中心から薄く抜く */
+.lp .cubewrap::before{content:"";position:absolute;z-index:0;
+  inset:-14% -10%;
+  background:radial-gradient(closest-side,
+    var(--ground) 0 46%,
+    color-mix(in srgb,var(--ground) 72%,transparent) 68%,
+    transparent 100%)}
+.lp .cube g.face{will-change:transform}
+.lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:6;stroke-linejoin:miter;
+  filter:drop-shadow(0 3px 10px rgba(53,96,224,.22))}
+.lp .cube path.thin{stroke-width:3.6;opacity:.92}
+.lp .cube path.hide{stroke:var(--ground);stroke-width:17;filter:none;opacity:1}
+.lp .cube .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
+.lp.boot .cube .draw{animation:cubedraw .55s cubic-bezier(.3,1,.4,1) forwards}
+.lp.boot .cube .draw.d1{animation-delay:.02s}
+.lp.boot .cube .draw.d2{animation-delay:.06s}
+.lp.boot .cube .draw.d3{animation-delay:.10s}
+.lp.boot .cube .draw.d4{animation-delay:.15s}
+.lp.boot .cube .draw.d5{animation-delay:.19s}
+.lp.boot .cube .draw.d6{animation-delay:.23s}
+.lp.boot .cube .draw.d7{animation-delay:.28s}
+.lp.boot .cube .draw.d8{animation-delay:.31s}
+.lp.boot .cube .draw.d9{animation-delay:.34s}
+@keyframes cubedraw{to{stroke-dashoffset:0}}
+/* 帯を確保できない幅では立方体を出さない。
+   薄くして文字に重ねると、装飾も文字もどちらも読めなくなる */
+@media(max-width:1040px){.lp .cubewrap{display:none}}
+
 /* 相談リストの行は、方向を変えて時間差で入る。
    着地後（.in）は必ず元の位置に戻す。ここを :not(.in) で限定しないと
    詳細度が勝ってしまい、行がずれたまま残る */
@@ -155,25 +179,80 @@
 .lp .fld textarea::placeholder{color:var(--faint)}
 .lp .fld textarea:focus{outline:2px solid var(--bl);outline-offset:-1px;background:var(--ground)}
 
-/* ---- 実績はトグル。4件が全部開いていると、読む前にスクロールが長くなる ---- */
-.lp details.case2{padding:0}
-.lp details.case2 summary{list-style:none;cursor:pointer;display:grid;
-  grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;
-  padding:clamp(16px,1.8vw,22px) clamp(18px,2vw,26px);transition:background .22s}
-.lp details.case2 summary::-webkit-details-marker{display:none}
-.lp details.case2 summary:hover{background:var(--paper)}
-.lp details.case2 summary .sm{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
-.lp details.case2 summary .pb{font-family:var(--disp);font-weight:900;
-  font-size:clamp(15px,1.6vw,18px);letter-spacing:-.015em;line-height:1.5;color:var(--ink)}
-.lp details.case2 summary .wh{font-size:11.5px;font-weight:700;color:var(--mut)}
-/* 開閉の印 */
-.lp details.case2 summary .tg{position:relative;width:16px;height:16px;flex:none}
-.lp details.case2 summary .tg::before,
-.lp details.case2 summary .tg::after{content:"";position:absolute;background:var(--bl);
-  transition:transform .25s cubic-bezier(.16,1,.3,1)}
-.lp details.case2 summary .tg::before{left:0;top:7.5px;width:16px;height:1.5px}
-.lp details.case2 summary .tg::after{left:7.5px;top:0;width:1.5px;height:16px}
-.lp details.case2[open] summary .tg::after{transform:scaleY(0)}
-.lp details.case2[open] summary{background:var(--paper);border-bottom:1px solid var(--rule)}
-.lp details.case2 .in2{padding:clamp(16px,1.8vw,24px) clamp(18px,2vw,26px) clamp(18px,2vw,26px)}
-.lp details.case2 .in2 .step:first-child{margin-top:0}
+
+@media (prefers-reduced-motion:reduce){
+  .lp .cube .draw{stroke-dashoffset:0!important}
+  .lp .cubewrap{display:none}
+}
+
+
+/* ============ 本文（FVの詳細） ============ */
+
+/* できること */
+.lp .lay2{margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(14px,1.6vw,22px)}
+@media(max-width:880px){.lp .lay2{grid-template-columns:1fr}}
+.lp .l2{border:1px solid var(--rule);background:var(--ground);padding:clamp(16px,1.8vw,22px)}
+.lp .l2 h3{font-family:var(--disp);font-weight:900;letter-spacing:-.02em;
+  font-size:clamp(15px,1.6vw,18px);line-height:1.45}
+.lp .l2 ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 7px}
+.lp .l2 li{font-size:12px;font-weight:700;color:var(--ink);
+  background:var(--paper);border:1px solid var(--rule);padding:5px 10px}
+.lp .l2 p{margin-top:11px;font-size:12.5px;line-height:1.8;color:var(--mut)}
+
+/* 判断事例 */
+.lp .cases2{margin-top:18px;display:grid;gap:10px}
+.lp .case2{border:1px solid var(--rule);background:var(--ground);scroll-margin-top:70px}
+.lp .case2 summary{list-style:none;cursor:pointer;display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto auto;gap:12px;align-items:center;
+  padding:16px clamp(14px,1.6vw,20px);transition:background .22s}
+.lp .case2 summary::-webkit-details-marker{display:none}
+.lp .case2 summary:hover{background:var(--paper)}
+.lp .case2 .cn{font-size:11px;color:var(--faint);flex:none}
+.lp .case2 .ct{font-family:var(--disp);font-weight:900;font-size:clamp(14px,1.5vw,16.5px);
+  letter-spacing:-.015em;line-height:1.5;color:var(--ink)}
+.lp .case2 .cw{font-size:11.5px;font-weight:700;color:var(--mut);white-space:nowrap}
+.lp .case2 .ci{position:relative;width:13px;height:13px;flex:none}
+.lp .case2 .ci::before,.lp .case2 .ci::after{content:"";position:absolute;
+  background:var(--mut);transition:transform .25s}
+.lp .case2 .ci::before{left:0;top:6px;width:13px;height:1px}
+.lp .case2 .ci::after{left:6px;top:0;width:1px;height:13px}
+.lp .case2[open] .ci::after{transform:scaleY(0)}
+@media(max-width:640px){
+  .lp .case2 summary{grid-template-columns:auto minmax(0,1fr) auto;gap:9px}
+  .lp .case2 .cw{display:none}
+}
+
+.lp .cbody{padding:0 clamp(14px,1.6vw,20px) clamp(16px,1.8vw,22px)}
+.lp .case2 .step{margin-top:14px;padding-left:14px;border-left:2px solid var(--rule)}
+.lp .case2 .step.no{border-left-color:#C2453A}
+.lp .case2 .step.solve{border-left-color:var(--cy)}
+.lp .case2 .step .sl{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.03em}
+.lp .case2 .step p{font-size:13.5px;line-height:1.9;color:var(--ink);margin-top:3px}
+.lp .case2 .step .why{font-size:12.5px;color:var(--mut);margin-top:6px}
+.lp .case2 .opts{list-style:none;margin:5px 0 0;padding:0}
+.lp .case2 .opts li{font-size:13px;line-height:1.85;color:var(--mut)}
+
+/* 誰がやるか */
+.lp .ceo2{border-left:3px solid var(--ink);padding:4px 0 4px 16px;margin-top:18px;max-width:700px}
+.lp .ceo2 .nm{font-family:var(--disp);font-weight:900;font-size:15px}
+.lp .ceo2 .tx{margin-top:9px;font-size:13.5px;line-height:1.95;color:var(--ink)}
+
+/* 会社のこと */
+.lp .info{margin-top:18px;max-width:700px;border-top:1px solid var(--rule)}
+.lp .info .row{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;
+  padding:12px 2px;border-bottom:1px solid var(--rule);font-size:13.5px}
+.lp .info .row span:first-child{font-weight:700;color:var(--mut);font-size:12.5px}
+@media(max-width:640px){.lp .info .row{grid-template-columns:1fr;gap:2px}}
+
+/* 読み終えた人のゴール */
+.lp .endcta{margin-top:10px;border:1px solid var(--ink);padding:clamp(20px,2.4vw,32px);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.lp .endcta .et{font-family:var(--disp);font-weight:900;font-size:clamp(15px,1.7vw,19px);
+  letter-spacing:-.015em;line-height:1.6}
+.lp .endcta .eb{display:inline-flex;align-items:center;gap:10px;flex:none;
+  font-family:var(--disp);font-weight:900;font-size:14.5px;color:#fff;background:var(--ink);
+  padding:15px 24px;text-decoration:none;transition:background .25s}
+.lp .endcta .eb:hover{background:#1E2A46}
+.lp .endcta .eb i{display:block;width:18px;height:1px;background:#fff;transition:width .22s}
+.lp .endcta .eb:hover i{width:28px}
