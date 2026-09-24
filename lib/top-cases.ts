@@ -79,32 +79,37 @@ export const topCases: TopCase[] = [
   },
 ];
 
-/** 「何を頼めるか」の入口。用件から選べるようにする */
-export type TopDoor = {
+/** やれること。会社の幅はここで見せる。
+ *  HP/LP制作だけの会社に見えないよう、つくる・集める・回すの3層で描く。
+ *  別ページへ送らない。ここに書いてあるものが全部。詳しくは資料で渡す。 */
+export type Layer = {
   id: string;
+  /** 見出し。訪問者の言葉で */
   title: string;
-  desc: string;
-  href: string;
+  /** 具体。何を指しているのか一目で分かるように */
+  items: string[];
+  /** 1行の補足 */
+  note: string;
 };
 
-export const topDoors: TopDoor[] = [
+export const layers: Layer[] = [
   {
-    id: 'attract',
-    title: '集客したい',
-    desc: '人が来ていないのか、来ているのに動いていないのか。やることが逆になるので、そこから整理します。',
-    href: '/needs/attract',
+    id: 'build',
+    title: '見えるところをつくる',
+    items: ['ホームページ', 'ランディングページ', 'ネットショップ', 'アプリ'],
+    note: '作って終わりにせず、社内で直せる形で渡します。',
   },
   {
-    id: 'sell',
-    title: '売りたい（ネットショップ）',
-    desc: '商品ページまで来ていないのか、来たのに買われていないのか。作り直す前に実測します。',
-    href: '/needs/sell',
+    id: 'reach',
+    title: '人を集める',
+    items: ['検索対策', 'AI検索', 'SNS', '動画', '広告'],
+    note: '貯まる手段と消える手段を分けて、順番を決めます。',
   },
   {
-    id: 'improve',
-    title: '社内を楽にしたい',
-    desc: '高機能なものを入れても、機能の8割は使われません。まず手を動かす回数を減らします。',
-    href: '/needs/improve',
+    id: 'run',
+    title: '中の仕組みをつくる',
+    items: ['社内システム', '在庫・受発注', '自動化', '要件定義だけ'],
+    note: '既製品で足りるならそう言います。作る話はしません。',
   },
 ];
 

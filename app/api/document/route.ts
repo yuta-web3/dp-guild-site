@@ -85,7 +85,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Please take your time to fill the form' }, { status: 400 });
     }
 
-    const service = services[data.service];
+    // サービス指定が無ければ会社案内。トップページからの請求がこれにあたる
+    const COMPANY_DOC = {
+      slug: 'company',
+      label: '会社案内',
+      doc: null as string | null,
+    };
+    const service = data.service ? services[data.service] : COMPANY_DOC;
     if (!service) {
       return NextResponse.json({ error: 'Unknown service' }, { status: 400 });
     }

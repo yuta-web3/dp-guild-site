@@ -27,7 +27,8 @@ export const documentSchema = z.object({
     .optional()
     .or(z.literal('')),
 
-  service: z.string().min(1).max(60),
+  // 会社案内はサービスに紐づかないので任意。無ければ会社案内として扱う
+  service: z.string().max(60).optional().or(z.literal('')),
 
   // スパム対策
   honeypot: z.string().max(0),

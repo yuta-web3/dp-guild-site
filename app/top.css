@@ -2,7 +2,9 @@
 
 /* 画面いっぱいに引き伸ばさない。中身の高さで終わらせる。
    余らせると、その分だけ無駄なスクロールになる */
-.lp .fv{min-height:0;padding:74px 0 clamp(28px,3vw,44px)}
+.lp .fv{min-height:0;padding:74px 0 clamp(20px,2.2vw,30px)}
+/* 本文セクションを持たないページなので、フッターまでを詰める */
+.lp .shell{padding-bottom:clamp(24px,3vw,44px)}
 .lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
 /* 文章の裏だけ格子を弱める。輪郭を出すと「板」になるので、
    縁は完全に透明まで落とす */
@@ -47,6 +49,29 @@
   .lp .caseitem{grid-template-columns:1fr;gap:6px}
   .lp .caseitem .wh{display:block;margin-left:0}
 }
+
+/* ---- やれること3層。会社の幅をここで見せる ---- */
+.lp .layers{margin-top:clamp(18px,2.2vw,26px);
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,18px)}
+@media(max-width:880px){.lp .layers{grid-template-columns:1fr;gap:0}}
+
+.lp .layer{border-top:2px solid var(--ink);padding:13px 2px 0}
+@media(max-width:880px){
+  .lp .layer{border-top:1px solid var(--rule);padding:13px 2px}
+  .lp .layer:first-child{border-top:2px solid var(--ink)}
+}
+.lp .layer h2{font-family:var(--disp);font-weight:900;letter-spacing:-.02em;
+  font-size:clamp(15px,1.6vw,18px);line-height:1.45}
+.lp .layer ul{list-style:none;margin:9px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 7px}
+.lp .layer li{font-size:12px;font-weight:700;color:var(--ink);
+  background:var(--paper);border:1px solid var(--rule);padding:5px 10px}
+.lp .layer p{margin-top:10px;font-size:12.5px;line-height:1.75;color:var(--mut)}
+
+/* 資料を請求する理由。ページに載せないものが資料にあると示す */
+.lp .toask{margin-top:clamp(16px,1.9vw,24px);max-width:720px;
+  font-size:13.5px;line-height:1.85;color:var(--ink);
+  padding-left:14px;border-left:3px solid var(--cy)}
+.lp .toask b{font-weight:900}
 
 /* ---- 実績（相談の詳細） ---- */
 .lp .cases2{margin-top:18px;display:grid;gap:clamp(20px,2.4vw,32px)}
@@ -105,44 +130,6 @@
 .lp .info .row .k{font-size:11.5px;font-weight:700;color:var(--faint)}
 @media(max-width:640px){.lp .info .row{grid-template-columns:1fr;gap:2px}}
 
-/* ---- ロゴの不可能立体（ファーストビュー） ---- */
-/* 相談リストの下から、左へはみ出させる。非対称を作る */
-/* 見出しの右。切らずに全体を見せる（組み上がりを見せてから分解するため）。
-   絶対配置なので、下の相談リストの位置には一切影響しない */
-.lp .cubewrap{position:absolute;z-index:1;pointer-events:none;opacity:.85;
-  right:-6px;top:50%;transform:translateY(-50%);
-  width:clamp(150px,14.8vw,212px);aspect-ratio:1/1.06}
-.lp .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
-
-/* 立方体の裏だけ背景の格子を消す。線どうしが混ざって、
-   どちらも読めなくなるのを防ぐ。輪郭は出さず中心から薄く抜く */
-.lp .cubewrap::before{content:"";position:absolute;z-index:0;
-  inset:-14% -10%;
-  background:radial-gradient(closest-side,
-    var(--ground) 0 46%,
-    color-mix(in srgb,var(--ground) 72%,transparent) 68%,
-    transparent 100%)}
-.lp .cube g.face{will-change:transform}
-.lp .cube path{fill:none;stroke:url(#cubeg);stroke-width:6;stroke-linejoin:miter;
-  filter:drop-shadow(0 3px 10px rgba(53,96,224,.22))}
-.lp .cube path.thin{stroke-width:3.6;opacity:.92}
-.lp .cube path.hide{stroke:var(--ground);stroke-width:17;filter:none;opacity:1}
-.lp .cube .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len)}
-.lp.boot .cube .draw{animation:cubedraw .55s cubic-bezier(.3,1,.4,1) forwards}
-.lp.boot .cube .draw.d1{animation-delay:.02s}
-.lp.boot .cube .draw.d2{animation-delay:.06s}
-.lp.boot .cube .draw.d3{animation-delay:.10s}
-.lp.boot .cube .draw.d4{animation-delay:.15s}
-.lp.boot .cube .draw.d5{animation-delay:.19s}
-.lp.boot .cube .draw.d6{animation-delay:.23s}
-.lp.boot .cube .draw.d7{animation-delay:.28s}
-.lp.boot .cube .draw.d8{animation-delay:.31s}
-.lp.boot .cube .draw.d9{animation-delay:.34s}
-@keyframes cubedraw{to{stroke-dashoffset:0}}
-/* 帯を確保できない幅では立方体を出さない。
-   薄くして文字に重ねると、装飾も文字もどちらも読めなくなる */
-@media(max-width:900px){.lp .cubewrap{display:none}}
-
 /* 相談リストの行は、方向を変えて時間差で入る。
    着地後（.in）は必ず元の位置に戻す。ここを :not(.in) で限定しないと
    詳細度が勝ってしまい、行がずれたまま残る */
@@ -159,10 +146,7 @@
   -webkit-mask-composite:xor;mask-composite:exclude;padding:1px}
 .lp .case2:hover::before{opacity:1;animation:spin 3.2s linear infinite}
 
-@media (prefers-reduced-motion:reduce){
-  .lp .cube .draw{stroke-dashoffset:0!important}
-  .lp .cubewrap{display:none}
-}
+
 
 /* ---- 入力欄（複数行）。他の欄と体裁を揃える ---- */
 .lp .fld textarea{display:block;width:100%;font:inherit;font-size:14px;padding:11px 13px;
