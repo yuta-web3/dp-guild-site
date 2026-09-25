@@ -121,6 +121,17 @@ export const works: Work[] = [
     number: { value: '増加', label: '訪問者数・売上' },
   },
   {
+    id: 'mct-ec',
+    short: 'MCTオイルのネットショップ',
+    kind: 'ec',
+    // 石井さん 2026-09-25「MCTオイルのECサイトをShopifyで作った」。
+    // 担当範囲・数字は未確認なので、聞いた事実だけ書いている
+    client: '食品（MCTオイル）',
+    title: 'ShopifyでMCTオイルのネットショップを構築',
+    scope: ['制作'],
+    did: ['Shopifyでネットショップを構築'],
+  },
+  {
     id: 'school-video',
     short: 'スクールの集客動画',
     kind: 'sns',
@@ -136,12 +147,12 @@ export const works: Work[] = [
   },
   {
     id: 'sns-ops',
-    short: 'ヘルスケアのSNS運用',
+    short: '訪問看護の採用SNS',
     kind: 'sns',
-    client: 'ヘルスケア',
-    title: 'SNSの運用代行（継続中）',
+    client: '訪問看護',
+    title: '採用のためのSNS運用（継続中）',
     scope: ['運用', '集客'],
-    did: ['投稿の企画・制作・公開までを毎月引き受けて継続'],
+    did: ['採用に向けた投稿の企画・制作・公開までを毎月引き受けて継続'],
   },
   {
     id: 'stock',
