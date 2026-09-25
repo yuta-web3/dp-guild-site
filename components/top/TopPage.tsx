@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
-import { company } from '@/lib/top-cases';
+import { company, ceoCareer } from '@/lib/top-cases';
 import { works, workKinds, beyond, type Work } from '@/lib/works';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
@@ -579,11 +579,16 @@ export default function TopPage() {
                 />
               </div>
               <div className="cx">
-              <p className="nm">{company.ceo}</p>
-              <p className="tx">
-                2019年、滋賀県甲賀市で創業。サイト・SNS・動画・社内システムまで、自分で手を動かしてきました。
-                ショート動画は累計1,000本以上を制作し、最高1,600万回再生。業務委託を含む{company.staff.replace('（業務委託含む）', '')}の体制で対応します。
-              </p>
+                <p className="nm">{company.ceo}</p>
+                <p className="tx">
+                  コンサルとして大手のプロジェクトに入ってきた経験と、自分で作って動かしてきた経験の両方があります。
+                  業務委託を含む{company.staff.replace('（業務委託含む）', '')}の体制で対応します。
+                </p>
+                <ul className="cr">
+                  {ceoCareer.map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </section>
