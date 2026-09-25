@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
 import { company } from '@/lib/top-cases';
 import { works, workKinds, beyond, type Work } from '@/lib/works';
@@ -344,8 +345,9 @@ export default function TopPage() {
                         </span>
                       ))}
                     </span>
+                    {/* 件数は出さない。少なく見えて「仕事していない」印象になる（石井さん 2026-09-25） */}
                     <span className="go">
-                      {list.length}件
+                      代表例を見る
                       <i />
                     </span>
                   </a>
@@ -355,7 +357,7 @@ export default function TopPage() {
 
             {/* 請求の理由。社内で通すための一式は資料で渡す */}
             <p className="toask rv up" data-fd="8">
-              ほかの実績は下に。社名と数字を含む詳しい事例は、<b>社内でご検討いただけるよう1冊の会社案内</b>にまとめています。
+              代表的な実績は下に。社名と数字を含む詳しい事例は、<b>社内でご検討いただけるよう1冊の会社案内</b>にまとめています。
             </p>
 
           </div>
@@ -514,7 +516,7 @@ export default function TopPage() {
               <h2 className="sp">やってきたこと</h2>
             </div>
             <p className="sub2 rv up" data-d="1">
-              何を作ったかと、どこまで担当したかを書いています。近い用件で絞り込めます。
+              代表的なものを載せています。何を作ったかと、どこまで担当したか。近い用件で絞り込めます。
             </p>
             <div className="wtabs rv up" data-d="2" role="tablist">
               <button type="button" className={kind === 'all' ? 'on' : ''} onClick={() => setKind('all')}>
@@ -565,12 +567,24 @@ export default function TopPage() {
               <span className="n mono">03</span>
               <h2 className="sp">誰がやるか</h2>
             </div>
+            {/* 顔を出す（石井さん 2026-09-25）。誰がやるかは、顔が見えて初めて伝わる */}
             <div className="ceo2 rv up" data-d="0">
+              <div className="ph">
+                <Image
+                  src="/images/team/ceo-photo.jpg"
+                  alt={`${company.ceo}`}
+                  width={400}
+                  height={500}
+                  sizes="(max-width:640px) 60vw, 200px"
+                />
+              </div>
+              <div className="cx">
               <p className="nm">{company.ceo}</p>
               <p className="tx">
                 2019年、滋賀県甲賀市で創業。サイト・SNS・動画・社内システムまで、自分で手を動かしてきました。
                 ショート動画は累計1,000本以上を制作し、最高1,600万回再生。業務委託を含む{company.staff.replace('（業務委託含む）', '')}の体制で対応します。
               </p>
+              </div>
             </div>
           </section>
 

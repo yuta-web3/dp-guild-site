@@ -298,3 +298,12 @@
 .lp .caselist.kinds .it{display:inline}
 .lp .caselist.kinds .sep{margin:0 12px;color:var(--faint);font-weight:400}
 .lp .caselist.kinds .go{white-space:nowrap}
+
+/* 誰がやるか：左に顔写真、右に文章 */
+.lp .ceo2{display:grid;grid-template-columns:clamp(150px,15vw,200px) minmax(0,1fr);gap:clamp(18px,2.2vw,30px);
+  align-items:start;border-left:0;padding:0;max-width:760px}
+.lp .ceo2 .ph{aspect-ratio:4/5;overflow:hidden;background:var(--paper)}
+/* 元写真は上半身全体で顔が小さいので、顔（横50%・縦37%あたり）を中心に拡大して切り取る */
+.lp .ceo2 .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block;transform:scale(1.7);transform-origin:52% 38%}
+.lp .ceo2 .cx{border-left:3px solid var(--ink);padding:2px 0 2px 16px}
+@media(max-width:640px){.lp .ceo2{grid-template-columns:1fr}.lp .ceo2 .ph{max-width:220px}}
