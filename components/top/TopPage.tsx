@@ -8,9 +8,6 @@ import { works, workKinds, beyond, type Work } from '@/lib/works';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
-// FVに出す代表の5件。用件が偏らないように選んでいる
-const FV_WORKS = ['school-video', 'product-site', 'portal', 'ninja-ec', 'stock'];
-
 export default function TopPage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -315,32 +312,40 @@ export default function TopPage() {
               </svg>
             </div>
 
-            {/* 本文「やってきたこと」の要約。3列の「作る・集める・回す」は
-                どこまでが何の範囲か分からず読みにくかったので外した。
+            {/* 本文「やってきたこと」の要約。来る人は用件を決めて来ているので、
+                まず自分の用件の行を探せるよう用件ごとに1行。
+                何を作ったかは名詞でそのまま書く（凝った言い回しは伝わらない）。
                 押すとページ内の一覧がその用件で絞られる（別ページへは送らない） */}
-            <div className="caselist">
-              {FV_WORKS.map((id, i) => {
-                const w = works.find((x) => x.id === id)!;
+            <div className="caselist kinds">
+              {workKinds.map((k, i) => {
+                const list = works.filter((w) => w.kind === k.id);
+                // 数字のある実績を先に出す。数字は必ずその実績のすぐ後ろに付ける
+                // （行の末尾にまとめると、隣の実績の数字に見えてしまう）
+                const shown = [...list].sort((a, b) => Number(!!b.number) - Number(!!a.number)).slice(0, 2);
                 return (
                   <a
                     className={`caseitem rv ${i % 2 === 0 ? 'left' : 'right'}`}
                     data-fd={String(3 + i)}
                     href="#works"
-                    key={w.id}
-                    onClick={() => setKind(w.kind)}
+                    key={k.id}
+                    onClick={() => setKind(k.id)}
                   >
+                    <span className="kl">{k.label}</span>
                     <span className="pb">
-                      {w.title}
-                      {w.number && (
-                        <span className="nb">
-                          {w.number.label} <b>{w.number.value}</b>
+                      {shown.map((w, j) => (
+                        <span className="it" key={w.id}>
+                          {j > 0 && <span className="sep">／</span>}
+                          {w.short}
+                          {w.number && (
+                            <span className="nb">
+                              {w.number.label} <b>{w.number.value}</b>
+                            </span>
+                          )}
                         </span>
-                      )}
-                      <span className="wh">{w.client}</span>
+                      ))}
                     </span>
-                    {/* 右は全行そろえて「どこまでやったか」 */}
                     <span className="go">
-                      {w.scope.join('・')}
+                      {list.length}件
                       <i />
                     </span>
                   </a>

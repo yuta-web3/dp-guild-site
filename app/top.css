@@ -289,3 +289,12 @@
 .lp .caseitem .go i{background:var(--mut)}
 .lp .caseitem .pb{word-break:auto-phrase}
 .lp .toask{text-wrap:wrap}
+
+/* FV：用件ごとの行。左に用件、真ん中に何を作ったか、右に件数 */
+.lp .caselist.kinds .caseitem{grid-template-columns:clamp(120px,12vw,160px) minmax(0,1fr) auto}
+.lp .caselist.kinds .kl{font-family:var(--disp);font-weight:900;font-size:13.5px;color:var(--ink)}
+.lp .caselist.kinds .pb{font-size:clamp(13.5px,1.35vw,15px);font-weight:700}
+@media(max-width:640px){.lp .caselist.kinds .caseitem{grid-template-columns:1fr}}
+.lp .caselist.kinds .it{display:inline}
+.lp .caselist.kinds .sep{margin:0 12px;color:var(--faint);font-weight:400}
+.lp .caselist.kinds .go{white-space:nowrap}

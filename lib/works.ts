@@ -22,6 +22,8 @@ export type Work = {
   client: string;
   /** 何を作った・やったか（1行） */
   title: string;
+  /** FV用。何を作ったかを名詞でそのまま。凝った言い回しにしない */
+  short: string;
   /** どこまでやったか */
   scope: Scope[];
   /** 具体的にやったこと */
@@ -43,6 +45,7 @@ export const workKinds: { id: Work['kind']; label: string }[] = [
 export const works: Work[] = [
   {
     id: 'portal',
+    short: '全国の店舗を探せるポータルサイト',
     kind: 'site',
     client: 'エンタメ・飲食ポータル',
     title: '全国の店舗を探せるポータルサイト',
@@ -55,6 +58,7 @@ export const works: Work[] = [
   },
   {
     id: 'product-site',
+    short: 'カーセキュリティメーカーの製品サイト',
     kind: 'site',
     client: 'カーセキュリティメーカー',
     title: '製品サイトの構築と、検索から消えていた原因の修復',
@@ -67,6 +71,7 @@ export const works: Work[] = [
   },
   {
     id: 'multilingual',
+    short: '観光向けの多言語サイト',
     kind: 'site',
     client: '観光・インバウンド',
     title: '日本語・英語・中国語の多言語サイト',
@@ -79,6 +84,7 @@ export const works: Work[] = [
   },
   {
     id: 'rehab-lp',
+    short: 'リハビリ施設のLP',
     kind: 'site',
     client: '脳疾患特化リハビリ',
     title: '広告より先に、検索から来る人の受け皿を作る',
@@ -91,6 +97,7 @@ export const works: Work[] = [
   },
   {
     id: 'studio',
+    short: 'ストレッチスタジオのサイトと予約',
     kind: 'site',
     client: '新規開業のストレッチスタジオ',
     title: '開業時のサイトと予約の仕組み',
@@ -102,6 +109,7 @@ export const works: Work[] = [
   },
   {
     id: 'ninja-ec',
+    short: '忍者服のネットショップ',
     kind: 'ec',
     client: '伝統衣装（忍者服）の工房',
     title: '世界観で選ばれる商品のネットショップ',
@@ -114,6 +122,7 @@ export const works: Work[] = [
   },
   {
     id: 'school-video',
+    short: 'スクールの集客動画',
     kind: 'sns',
     client: 'デザインスクール',
     title: '教える動画で、受講生を集める',
@@ -127,6 +136,7 @@ export const works: Work[] = [
   },
   {
     id: 'sns-ops',
+    short: 'ヘルスケアのSNS運用',
     kind: 'sns',
     client: 'ヘルスケア',
     title: 'SNSの運用代行（継続中）',
@@ -135,6 +145,7 @@ export const works: Work[] = [
   },
   {
     id: 'stock',
+    short: '醸造メーカーの在庫管理',
     kind: 'system',
     client: '醸造メーカー',
     title: '在庫管理を、使われる形で入れる',
@@ -147,6 +158,7 @@ export const works: Work[] = [
   },
   {
     id: 'rfp',
+    short: '食品メーカーのシステム選定',
     kind: 'system',
     client: '大手食品メーカー',
     title: 'システム導入の要件定義とベンダー選定',
@@ -158,6 +170,7 @@ export const works: Work[] = [
   },
   {
     id: 'webar',
+    short: 'イベント用のWebAR',
     kind: 'system',
     client: 'イベント',
     title: 'スマホで恐竜が実物大で現れるWebAR',
