@@ -300,3 +300,11 @@
 @media(max-width:1040px){
   .lp .lpfoot .inner{padding:0 clamp(16px,3vw,36px)}
 }
+
+
+/* ============ 視認性 ============
+   文字と中身が乗るところは必ず白い背景にする（石井さん 2026-09-24）。
+   背景の格子が文字の裏を通ると読みにくい。格子が見えるのは中身の外側だけ。
+   box-shadow の広がりで白い余白を足す（レイアウトは動かさない） */
+.lp .fvtxt,.lp .body{background:var(--ground);
+  box-shadow:0 0 0 clamp(14px,1.8vw,26px) var(--ground)}

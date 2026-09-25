@@ -8,14 +8,6 @@
 .lp .shell{padding-bottom:clamp(18px,2vw,28px)}
 
 .lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
-/* 文章の裏だけ格子を弱める。輪郭を出すと「板」になるので、
-   縁は完全に透明まで落とす */
-.lp .fvtxt::before{content:"";position:absolute;z-index:-1;
-  inset:-26px -40px -20px -40px;pointer-events:none;
-  background:radial-gradient(120% 90% at 26% 42%,
-    var(--ground) 0 38%,
-    color-mix(in srgb,var(--ground) 62%,transparent) 66%,
-    transparent 100%)}
 
 /* 立方体は背景レイヤーに置く。同じ段に並べると、その高さぶん
    文章が押し下げられて死んだ余白になる。背景なら文章の位置は動かない */
