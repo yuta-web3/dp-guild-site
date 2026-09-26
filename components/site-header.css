@@ -1,0 +1,70 @@
+/* サイト共通ヘッダー。
+   .lp（トップ・サービスページ）の外でも効くよう、独立したスコープにしている。
+   色はここで自前に持つ（.lp の変数に依存しない） */
+
+.site-hdr{
+  --sh-ground:#FFFFFF;
+  --sh-ink:#101522;
+  --sh-mut:#5C6577;
+  --sh-rule:rgba(16,21,34,.13);
+  --sh-cy:#0FBFB0;
+  --sh-bl:#3560E0;
+  --sh-vi:#7A45E8;
+
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;gap:16px;
+  padding:12px clamp(16px,3vw,36px);
+  border-bottom:1px solid transparent;
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  transition:background .3s,border-color .3s,padding .3s;
+}
+.site-hdr.stuck{
+  background:color-mix(in srgb, var(--sh-ground) 88%, transparent);
+  backdrop-filter:blur(14px) saturate(150%);
+  border-bottom-color:var(--sh-rule);
+  padding-top:8px;padding-bottom:8px;
+}
+
+/* すぐ下が濃い面のページ。一番上にいる間だけ白に反転させる。
+   スクロールして .stuck が付けば白い板が敷かれるので、通常の色に戻す */
+.site-hdr.ondark:not(.stuck){
+  --sh-ink:#FFFFFF;
+  --sh-mut:rgba(255,255,255,.72);
+  --sh-rule:rgba(255,255,255,.28);
+}
+.site-hdr.ondark:not(.stuck) .go{background:#FFFFFF;color:#101522}
+.site-hdr.ondark:not(.stuck) .go:hover{background:#E6EAF2}
+.site-hdr.ondark:not(.stuck) .mark img{filter:brightness(0) invert(1)}
+
+/* 右にパネルがあるページでは、パネルの手前で止める */
+.site-hdr.inset{right:var(--panel,0px)}
+@media(max-width:1040px){.site-hdr.inset{right:0}}
+
+.site-hdr .mark{display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit}
+.site-hdr .mark img{height:24px;width:24px;object-fit:contain}
+.site-hdr .mark b{
+  font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11px;letter-spacing:.2em;font-weight:700;color:var(--sh-ink);
+}
+
+.site-hdr .here{
+  margin-left:14px;padding-left:14px;border-left:1px solid var(--sh-rule);
+  font-size:11.5px;font-weight:700;color:var(--sh-mut);text-decoration:none;
+}
+a.site-hdr-here:hover{color:var(--sh-ink)}
+@media(max-width:700px){.site-hdr .here{display:none}}
+
+.site-hdr .go{
+  margin-left:auto;
+  background:var(--sh-ink);color:var(--sh-ground);
+  font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  font-weight:900;font-size:12.5px;letter-spacing:.02em;
+  padding:9px 18px;border:0;text-decoration:none;
+  display:inline-flex;align-items:center;
+  transition:background .25s;
+}
+.site-hdr .go:hover{background:#1E2A46}
+
+/* ヘッダーぶんの余白。.lp 以外のページは自前で上余白を持っているため、
+   必要なページだけ .site-hdr-pad を付ける */
+.site-hdr-pad{padding-top:56px}

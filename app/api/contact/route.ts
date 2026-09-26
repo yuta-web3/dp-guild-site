@@ -1,14 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { contactSchema } from '@/lib/contact-schema';
+import { contactSchema, lpContactSchema, type LpContactFormData } from '@/lib/contact-schema';
 
 export const runtime = 'edge';
 
 // Resend setup
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
+// ---- LP（/lp/kensho）からの送信 ----
+// utm_* / landing のどれかを持つリクエストは LP 用スキーマで検証する。
+// 既存フォームはこれまでどおり contactSchema（動作を変えない）。
+const LP_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'landing'] as const;
+function isLpRequest(body: unknown): boolean {
+  if (typeof body !== 'object' || body === null) return false;
+  return LP_KEYS.some((k) => k in body);
+}
+
+// 通知に入れる値は URL 由来なので、HTML として解釈されないようにする
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// 「経路: dm ／ 投稿: p001 ／ 着地: /lp/kensho?...」の1行
+function buildRouteLine(d: LpContactFormData): string {
+  return `経路: ${d.utm_source || '-'} ／ 投稿: ${d.utm_content || '-'} ／ 着地: ${d.landing || '-'}`;
+}
+
 // メールテンプレート
-const createEmailHtml = (data: { name: string; email: string; company?: string; content: string }) => `
+const createEmailHtml = (data: { name: string; email: string; company?: string; website?: string; content: string }) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,6 +63,11 @@ const createEmailHtml = (data: { name: string; email: string; company?: string; 
         <div class="label">メールアドレス</div>
         <div class="value">${data.email}</div>
       </div>
+      ${data.website ? `
+        <div class="row">
+          <div class="label">サイト</div>
+          <div class="value"><a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}">${data.website}</a></div>
+        </div>` : ''}
       ${data.company ? `
       <div class="field">
         <div class="label">会社名</div>
@@ -67,7 +95,10 @@ const createEmailHtml = (data: { name: string; email: string; company?: string; 
 
 
 // Slack通知
-async function sendSlackNotification(data: { name: string; email: string; company?: string; content: string }) {
+async function sendSlackNotification(
+  data: { name: string; email: string; company?: string; website?: string; content: string },
+  routeLine = '',
+) {
   if (!process.env.SLACK_WEBHOOK_URL) return;
 
   try {
@@ -90,14 +121,16 @@ async function sendSlackNotification(data: { name: string; email: string; compan
               { type: 'mrkdwn', text: `*お名前:*\n${data.name}` },
               { type: 'mrkdwn', text: `*メール:*\n${data.email}` },
               { type: 'mrkdwn', text: `*会社名:*\n${data.company || 'なし'}` },
-              { type: 'mrkdwn', text: `*送信日時:*\n${new Date().toLocaleString('ja-JP')}` }
+              { type: 'mrkdwn', text: `*サイト:*\n${data.website || 'なし'}` },
+              { type: 'mrkdwn', text: `*送信日時:*\n${new Date().toLocaleString('ja-JP')}` },
+              ...(routeLine ? [{ type: 'mrkdwn', text: `*LP:*\n${routeLine}` }] : [])
             ]
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*ご相談内容:*\n\`\`\`${data.content}\`\`\``
+              text: `*ご相談内容:*\n\`\`\`${data.content || '（未記入）'}\`\`\``
             }
           }
         ]
@@ -113,7 +146,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // バリデーション
-    const validatedData = contactSchema.parse(body);
+    // LP からの送信（utm_* / landing 付き）は LP 用スキーマ。相談内容が空でも受け付ける
+    const lpData = isLpRequest(body) ? lpContactSchema.parse(body) : null;
+    const validatedData = lpData
+      ? { ...lpData, website: undefined as string | undefined, content: lpData.content || '' }
+      : contactSchema.parse(body);
+    const routeLine = lpData ? buildRouteLine(lpData) : '';
 
     // スパム対策: ハニーポットチェック
     if (validatedData.honeypot) {
@@ -147,7 +185,13 @@ export async function POST(request: NextRequest) {
             name: validatedData.name,
             email: validatedData.email,
             company: validatedData.company || null,
-            content: validatedData.content,
+            // inquiries に website 列が無いため、本文の先頭に入れて確実に残す。
+            // 列を追加したら website: validatedData.website に分離する
+            content: validatedData.website
+              ? `［サイト］${validatedData.website}\n\n${validatedData.content}`
+              : routeLine
+                ? `［LP］${routeLine}\n\n${validatedData.content}`
+                : validatedData.content,
             created_at: new Date().toISOString(),
             status: 'pending'
           });
@@ -190,7 +234,8 @@ export async function POST(request: NextRequest) {
             <p><strong>お名前:</strong> ${validatedData.name}</p>
             <p><strong>メール:</strong> ${validatedData.email}</p>
             <p><strong>会社名:</strong> ${validatedData.company || 'なし'}</p>
-            <p><strong>内容:</strong><br>${validatedData.content.replace(/\n/g, '<br>')}</p>
+            ${routeLine ? `<p><strong>${escapeHtml(routeLine)}</strong></p>` : ''}
+            <p><strong>内容:</strong><br>${(validatedData.content || '（未記入）').replace(/\n/g, '<br>')}</p>
           `,
         });
         console.log('Notification email result:', notificationResult);
@@ -205,7 +250,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Slack通知（環境変数が設定されている場合）
-    await sendSlackNotification(validatedData);
+    await sendSlackNotification(validatedData, routeLine);
 
     return NextResponse.json({
       success: true,
