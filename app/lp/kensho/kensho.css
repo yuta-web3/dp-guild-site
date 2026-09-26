@@ -1,0 +1,129 @@
+/* 検証パッケージLP 固有。共通は app/lp-base.css（.lp 配下）。
+   白地・黒に近い文字色・強調色は1色（#3560E0）。色はハードコード。
+   スマホ幅 375px を基準にし、PC はその拡張。横スクロールは出さない */
+
+/* 1列。右の相談パネルは無いので、lp-base の版面（.shell / .rail）は使わない */
+.lp.kensho{font-size:15px;line-height:1.9;color:#101522;background:#FFFFFF;min-height:100svh}
+.lp.kensho .site-hdr{padding-left:clamp(16px,3vw,36px)}
+.lp.kensho .k-wrap{max-width:640px;margin:0 auto;padding:0 20px}
+.lp.kensho h1,.lp.kensho h2,.lp.kensho h3{word-break:auto-phrase;text-wrap:balance}
+
+/* ============ 1. 入口 ============ */
+.lp.kensho .k-hero{padding:88px 0 44px}
+.lp.kensho .k-h1{font-size:clamp(24px,6.6vw,34px);font-weight:900;line-height:1.45;letter-spacing:-.02em;
+  padding-left:14px;border-left:4px solid #3560E0}
+.lp.kensho .k-lede{margin-top:20px;font-size:15px;line-height:1.95;color:#101522;max-width:34em}
+.lp.kensho .k-ctawrap{margin-top:26px}
+
+/* 「無料で相談する」。入口とフォームの2箇所。同時に見えるのは1つ */
+.lp.kensho .k-cta{display:flex;align-items:center;justify-content:center;width:100%;
+  min-height:56px;padding:15px 20px;border:0;border-radius:0;
+  font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  font-size:17px;font-weight:900;letter-spacing:.02em;color:#FFFFFF;background:#3560E0;
+  text-decoration:none;cursor:pointer;transition:background .25s}
+.lp.kensho .k-cta:hover{background:#2A4EC0}
+.lp.kensho .k-cta:disabled{opacity:.6;cursor:default}
+@media(min-width:640px){.lp.kensho .k-ctawrap .k-cta{width:auto;min-width:280px;display:inline-flex}}
+
+/* ============ 見出しと本文 ============ */
+.lp.kensho .k-sec{padding-top:48px}
+.lp.kensho .k-sec h2{font-size:clamp(20px,5.6vw,26px);font-weight:900;line-height:1.5;letter-spacing:-.02em;
+  padding-bottom:10px;border-bottom:1px solid #101522}
+.lp.kensho .k-body{margin-top:16px;font-size:15px;line-height:1.9;color:#101522}
+
+/* 箇条書き。左の短い線で行を揃える */
+.lp.kensho .k-list{list-style:none;margin:14px 0 0;padding:0}
+.lp.kensho .k-list li{position:relative;padding:9px 0 9px 18px;font-size:15px;line-height:1.8;
+  border-bottom:1px solid rgba(16,21,34,.07)}
+.lp.kensho .k-list li::before{content:"";position:absolute;left:0;top:calc(9px + .9em);width:9px;height:2px;background:#3560E0}
+
+/* ============ 2. 証拠 ============ */
+/* 見出しの直後に画像。目を画像に落とす。画像は自社バナー（縦長 4:5） */
+.lp.kensho .k-post{margin:18px 0 0;padding:0;max-width:300px}
+.lp.kensho .k-post img{width:100%;height:auto;border:1px solid rgba(16,21,34,.13)}
+.lp.kensho .k-post figcaption{margin-top:12px;font-size:15px;line-height:1.9;color:#101522}
+
+/* ============ 4. 仕組み。薄い面に載せ、上端だけ斜めに切る ============ */
+.lp.kensho .k-how{margin-top:48px;padding:40px 20px 36px;margin-left:-20px;margin-right:-20px;
+  background:#F4F6FA;clip-path:polygon(0 12px,100% 0,100% 100%,0 100%)}
+.lp.kensho .k-steps{list-style:none;margin:22px 0 0;padding:0;position:relative}
+.lp.kensho .k-steps::before{content:"";position:absolute;left:15px;top:8px;bottom:24px;width:1px;background:rgba(16,21,34,.13)}
+.lp.kensho .k-step{display:grid;grid-template-columns:32px minmax(0,1fr);gap:14px;padding-bottom:22px;position:relative}
+.lp.kensho .k-step:last-child{padding-bottom:0}
+.lp.kensho .k-step .n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+  background:#3560E0;color:#FFFFFF;font-weight:900;font-size:14px;position:relative;z-index:1}
+.lp.kensho .k-step b{display:block;font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  font-size:18px;font-weight:900;line-height:1.7;letter-spacing:-.01em}
+.lp.kensho .k-step span:not(.n){display:block;font-size:15px;line-height:1.8;color:#101522;margin-top:2px}
+.lp.kensho .k-note{margin-top:20px;padding-left:14px;border-left:3px solid #3560E0;font-size:15px;line-height:1.9;color:#101522}
+
+/* ============ 7. 価格 ============ */
+.lp.kensho .k-price{margin-top:18px;border:1px solid #101522;padding:22px 20px}
+.lp.kensho .k-amount{font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  font-size:clamp(22px,6vw,30px);font-weight:900;letter-spacing:-.02em;line-height:1.3}
+.lp.kensho .k-amount small{font-size:14px;font-weight:700;color:#5C6577;margin-left:6px}
+.lp.kensho .k-amount.k-tbd{font-size:17px;line-height:1.6}
+.lp.kensho .k-inc{margin-top:18px;padding-top:16px;border-top:1px solid rgba(16,21,34,.13);display:grid;gap:16px}
+@media(min-width:520px){.lp.kensho .k-inc{grid-template-columns:1fr 1fr}}
+.lp.kensho .k-inc h3{font-size:13px;font-weight:700;color:#5C6577;letter-spacing:.02em}
+.lp.kensho .k-inc ul{list-style:none;margin:8px 0 0;padding:0}
+.lp.kensho .k-inc li{position:relative;padding:3px 0 3px 14px;font-size:14.5px;line-height:1.8}
+.lp.kensho .k-inc li::before{content:"";position:absolute;left:0;top:calc(3px + .85em);width:7px;height:1px;background:#101522}
+
+/* ============ 8. 必須の一文。本文と同じ大きさ・同じ色。小さくしない、薄くしない ============ */
+.lp.kensho .k-must{font-size:15px;line-height:1.9;color:#101522;opacity:1}
+
+/* ============ 9. フォーム ============ */
+.lp.kensho .k-formsec{scroll-margin-top:64px}
+.lp.kensho .k-form{margin-top:22px}
+.lp.kensho .fld{margin-bottom:14px}
+.lp.kensho .fld label{font-size:13px;color:#101522}
+.lp.kensho .fld input{font-size:16px;padding:13px 14px}   /* 16px 未満だと iOS で拡大される */
+.lp.kensho .fld textarea{display:block;width:100%;font:inherit;font-size:16px;padding:13px 14px;
+  color:#101522;background:#F4F6FA;border:1px solid rgba(16,21,34,.13);border-radius:0;
+  resize:vertical;min-height:96px;line-height:1.8}
+.lp.kensho .fld textarea::placeholder{color:#949CAC}
+.lp.kensho .fld textarea:focus{outline:2px solid #3560E0;outline-offset:-1px;background:#FFFFFF}
+.lp.kensho .k-sub{margin-top:8px}
+.lp.kensho .k-err{font-size:13px;color:#C0392B;margin-top:10px;line-height:1.7}
+.lp.kensho .k-fnote{font-size:12px;color:#5C6577;margin-top:12px;line-height:1.7}
+
+/* ============ 10. 法務 ============ */
+.lp.kensho .k-foot{margin-top:64px;padding:26px 0 44px;border-top:1px solid rgba(16,21,34,.13);
+  font-size:12.5px;color:#5C6577}
+.lp.kensho .k-foot nav{display:flex;flex-wrap:wrap;gap:8px 20px}
+.lp.kensho .k-foot nav a{color:#101522;border-bottom:1px solid rgba(16,21,34,.3)}
+.lp.kensho .k-co{margin-top:16px}
+.lp.kensho .k-cp{margin-top:6px;font-size:11.5px;color:#949CAC}
+
+/* 完了画面 */
+.lp.kensho .k-thanks{padding:120px 20px 60px;min-height:70svh}
+.lp.kensho .k-thanks h1{font-size:clamp(22px,6vw,30px);font-weight:900;letter-spacing:-.02em}
+.lp.kensho .k-thanks p{margin-top:14px;font-size:15px;line-height:1.9}
+.lp.kensho .k-thanks .k-back{display:inline-block;margin-top:26px;font-size:14px;font-weight:700;color:#101522;
+  border-bottom:1px solid rgba(16,21,34,.3)}
+
+/* ============ 動き ============
+   目を次に見せたいものへ連れて行くためだけ。
+   同時に動くのは1つ ／ 動く方向は次に読むもの（下）へ ／ 読み終わったものは二度と動かない */
+
+/* 入口：H1 → 本文 → ボタン の順に時間差で。上から下へ、わずかに降りて止まる */
+.lp.kensho .ent{opacity:0;transform:translateY(-8px)}
+.lp.kensho.boot .ent{opacity:1;transform:none;transition:opacity .45s ease-out,transform .45s ease-out}
+.lp.kensho.boot .ent.e2{transition-delay:.9s}
+.lp.kensho.boot .ent.e3{transition-delay:1.7s}
+/* ボタンは出た直後に1回だけ目を引く。繰り返さない */
+.lp.kensho.boot .k-ctawrap .k-cta{animation:k-once .5s ease-in-out 2.25s 1 both}
+@keyframes k-once{0%,100%{transform:none}50%{transform:scale(1.03)}}
+
+/* 視界に入った要素は 300ms で現れるだけ（lp-base の .rv/.in を短く、移動なしに） */
+.lp.kensho .rv{opacity:0;transform:none}
+.lp.kensho .rv.in{opacity:1;transform:none;transition:opacity .3s ease-out}
+/* 証拠の画像だけ、見出しの直後に降りてきて目を落とす */
+.lp.kensho .k-drop{transform:translateY(-10px)}
+.lp.kensho .k-drop.in{transform:none;transition:opacity .4s ease-out,transform .4s ease-out}
+
+@media (prefers-reduced-motion:reduce){
+  .lp.kensho .ent,.lp.kensho .rv,.lp.kensho .k-drop{opacity:1!important;transform:none!important;transition:none!important}
+  .lp.kensho .k-cta{animation:none!important}
+}
