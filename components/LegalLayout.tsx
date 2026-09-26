@@ -19,7 +19,8 @@ export default function LegalLayout({
   children,
 }: {
   title: string;
-  titleEn: string;
+  /** 使わない（飾りの英語は出さない）。呼び出し側との互換のため残す */
+  titleEn?: string;
   updatedAt?: string;
   children: React.ReactNode;
 }) {
@@ -42,9 +43,6 @@ export default function LegalLayout({
       {/* タイトル */}
       <section className={`${LEGAL_DRAFT ? "pt-10" : "pt-32"} pb-10 md:pb-14 px-5 md:px-8`}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs md:text-sm text-gray-400 tracking-widest uppercase mb-3 md:mb-4">
-            {titleEn}
-          </p>
           <h1 className="text-2xl md:text-4xl font-bold text-[#0F172A] leading-snug">
             {title}
           </h1>
@@ -79,8 +77,6 @@ export default function LegalLayout({
             </nav>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs mt-6">
-            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">利用規約</Link>
-            <Link href="/tokushoho" className="text-gray-400 hover:text-white transition-colors">特定商取引法に基づく表記</Link>
             <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">プライバシーポリシー</Link>
           </div>
           <div className="border-t border-gray-800 pt-6 mt-6">

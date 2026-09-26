@@ -32,9 +32,7 @@ export default function KenshoThanksPage() {
       <footer className="k-foot">
         <div className="k-wrap">
           <nav aria-label="法的情報">
-            <Link href="/tokushoho">特定商取引法に基づく表記</Link>
             <Link href="/privacy">プライバシーポリシー</Link>
-            <Link href="/terms">利用規約</Link>
           </nav>
           <p className="k-co">運営会社：株式会社DP-GUILD</p>
           <p className="k-cp">&copy; {new Date().getFullYear()} DP-GUILD. All rights reserved.</p>
