@@ -89,10 +89,12 @@ export default function KenshoPage() {
     if (!root) return;
     const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const items = Array.from(root.querySelectorAll<HTMLElement>('.rv'));
+    // .rv は毎回 DOM から取り直す。証拠の画像は URL を読んだ後に追加されるので、
+    // 最初の一覧に固定すると永遠に出ない
+    const getItems = () => Array.from(root.querySelectorAll<HTMLElement>('.rv'));
     if (RM) {
       root.classList.add('boot');
-      items.forEach((el) => el.classList.add('in'));
+      getItems().forEach((el) => el.classList.add('in'));
       return;
     }
 
@@ -106,7 +108,7 @@ export default function KenshoPage() {
     const sweep = () => {
       const h = window.innerHeight;
       let i = 0;
-      items.forEach((el) => {
+      getItems().forEach((el) => {
         if (el.classList.contains('in')) return;
         const r = el.getBoundingClientRect();
         if (r.top >= h - 40) return;
@@ -120,8 +122,10 @@ export default function KenshoPage() {
     window.addEventListener('scroll', sweep, { passive: true });
     window.addEventListener('resize', sweep);
     const t = window.setTimeout(sweep, 400);
+    const t2 = window.setTimeout(sweep, 1200);
     return () => {
       window.cancelAnimationFrame(raf);
+      window.clearTimeout(t2);
       window.removeEventListener('scroll', sweep);
       window.removeEventListener('resize', sweep);
       window.clearTimeout(t);
@@ -373,11 +377,11 @@ export default function KenshoPage() {
             </div>
 
             {/* 経路。隠し項目で送る */}
-            <input type="hidden" name="utm_source" value={tracking.utm_source} />
-            <input type="hidden" name="utm_medium" value={tracking.utm_medium} />
-            <input type="hidden" name="utm_campaign" value={tracking.utm_campaign} />
-            <input type="hidden" name="utm_content" value={tracking.utm_content} />
-            <input type="hidden" name="landing" value={tracking.landing} />
+            <input type="hidden" name="utm_source" value={tracking.utm_source} readOnly />
+            <input type="hidden" name="utm_medium" value={tracking.utm_medium} readOnly />
+            <input type="hidden" name="utm_campaign" value={tracking.utm_campaign} readOnly />
+            <input type="hidden" name="utm_content" value={tracking.utm_content} readOnly />
+            <input type="hidden" name="landing" value={tracking.landing} readOnly />
 
             {/* スパム対策の入力欄（人には見せない） */}
             <input

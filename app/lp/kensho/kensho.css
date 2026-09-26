@@ -10,7 +10,7 @@
 
 /* ============ 1. 入口 ============ */
 .lp.kensho .k-hero{padding:88px 0 44px}
-.lp.kensho .k-h1{font-size:clamp(24px,6.6vw,34px);font-weight:900;line-height:1.45;letter-spacing:-.02em;
+.lp.kensho .k-h1{margin:0;font-size:clamp(24px,6.6vw,34px);font-weight:900;line-height:1.45;letter-spacing:-.02em;
   padding-left:14px;border-left:4px solid #3560E0}
 .lp.kensho .k-lede{margin-top:20px;font-size:15px;line-height:1.95;color:#101522;max-width:34em}
 .lp.kensho .k-ctawrap{margin-top:26px}
