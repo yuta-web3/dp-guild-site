@@ -100,6 +100,10 @@ export default function KenshoPage() {
 
     // 入口の時間差は CSS の transition-delay。次の描画で .boot を付けて始める
     const raf = window.requestAnimationFrame(() => root.classList.add('boot'));
+    // 入口（H1→本文→ボタン→強調）が終わるまで、視界内の他の要素は待たせる。
+    // 「同時に動くのは1つ」を守るため。読者が先にスクロールしたら待たせない
+    const t0 = performance.now();
+    const HERO_MS = 2300;
 
     // 画面に入った要素から順に出す。掃引方式にしないと、
     // 一気にスクロールされた時に飛ばされた要素が隠れたまま残る。
@@ -113,7 +117,9 @@ export default function KenshoPage() {
         const r = el.getBoundingClientRect();
         if (r.top >= h - 40) return;
         const passed = r.bottom < 0;
-        el.style.transitionDelay = passed ? '0ms' : `${i * 220}ms`;
+        const scrolled = window.scrollY > 40;
+        const wait = scrolled ? 0 : Math.max(0, HERO_MS - (performance.now() - t0));
+        el.style.transitionDelay = passed ? '0ms' : `${wait + i * 220}ms`;
         if (!passed) i += 1;
         el.classList.add('in');
       });
@@ -123,9 +129,11 @@ export default function KenshoPage() {
     window.addEventListener('resize', sweep);
     const t = window.setTimeout(sweep, 400);
     const t2 = window.setTimeout(sweep, 1200);
+    const t3 = window.setTimeout(sweep, HERO_MS + 100);
     return () => {
       window.cancelAnimationFrame(raf);
       window.clearTimeout(t2);
+      window.clearTimeout(t3);
       window.removeEventListener('scroll', sweep);
       window.removeEventListener('resize', sweep);
       window.clearTimeout(t);
@@ -143,9 +151,23 @@ export default function KenshoPage() {
     window.setTimeout(() => first?.focus({ preventScroll: true }), RM ? 0 : 520);
   };
 
+  // 送信前の検査。どの欄が原因かを欄の直下に出し、その欄に焦点を当てる
+  const [fieldErr, setFieldErr] = useState<{ name?: string; email?: string }>({});
+  const validate = () => {
+    const errs: { name?: string; email?: string } = {};
+    if (!form.name.trim()) errs.name = 'お名前を入力してください';
+    if (!form.email.trim()) errs.email = 'メールアドレスを入力してください';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errs.email = 'メールアドレスの形式を確認してください';
+    setFieldErr(errs);
+    const first = errs.name ? 'k-name' : errs.email ? 'k-email' : null;
+    if (first) document.getElementById(first)?.focus();
+    return !first;
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (sent === 'sending') return;
+    if (!validate()) return;
     setSent('sending');
     setMsg('');
     try {
@@ -234,21 +256,21 @@ export default function KenshoPage() {
           <h2 className="rv">出す前に、確かめる。</h2>
           <ol className="k-steps">
             <li className="k-step rv">
-              <span className="n">1</span>
+              <span className="n" aria-hidden="true">1</span>
               <div>
                 <b>試す</b>
                 <span>訴求の違う投稿をオーガニックで出す</span>
               </div>
             </li>
             <li className="k-step rv">
-              <span className="n">2</span>
+              <span className="n" aria-hidden="true">2</span>
               <div>
                 <b>選ぶ</b>
                 <span>反応の数字で当たりを選ぶ</span>
               </div>
             </li>
             <li className="k-step rv">
-              <span className="n">3</span>
+              <span className="n" aria-hidden="true">3</span>
               <div>
                 <b>出す</b>
                 <span>当たった投稿だけを広告にする</span>
@@ -345,8 +367,11 @@ export default function KenshoPage() {
                 autoComplete="name"
                 placeholder="山田 太郎"
                 value={form.name}
+                aria-invalid={fieldErr.name ? true : undefined}
+                aria-describedby={fieldErr.name ? 'k-name-err' : undefined}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
+              {fieldErr.name && <p className="k-ferr" id="k-name-err">{fieldErr.name}</p>}
             </div>
             <div className="fld">
               <label htmlFor="k-email">
@@ -360,8 +385,11 @@ export default function KenshoPage() {
                 inputMode="email"
                 placeholder="you@example.com"
                 value={form.email}
+                aria-invalid={fieldErr.email ? true : undefined}
+                aria-describedby={fieldErr.email ? 'k-email-err' : undefined}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
+              {fieldErr.email && <p className="k-ferr" id="k-email-err">{fieldErr.email}</p>}
             </div>
             <div className="fld">
               <label htmlFor="k-content">
@@ -398,7 +426,7 @@ export default function KenshoPage() {
             <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
               {sent === 'sending' ? '送信中…' : '無料で相談する'}
             </button>
-            {sent === 'error' && <p className="k-err">{msg}</p>}
+            {sent === 'error' && <p className="k-err" role="alert">{msg}</p>}
             <p className="k-fnote">ご相談の内容とご連絡にのみ使用します。</p>
           </form>
         </section>
