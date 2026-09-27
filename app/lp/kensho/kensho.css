@@ -328,3 +328,8 @@
   .lp.kensho .k-pf-r{padding-top:clamp(40px,4vw,64px)}
   .lp.kensho .k-pf-r .k-formcard{max-width:none}
 }
+
+/* 本文の改行：1文ずつ行を分け、語の途中では折り返さない（Tx） */
+.lp.kensho .ln{display:block}
+.lp.kensho .ph{display:inline-block}
+

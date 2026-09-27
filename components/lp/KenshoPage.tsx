@@ -36,9 +36,9 @@ const LP = {
 
 // 証拠の画像に添える文。投稿ごとの状態で変わる。「反応が出た」は本当に出た投稿にしか書かない
 const PROOF_TEXT: Record<LpPostStatus, string> = {
-  testing: 'この投稿は、いま試している最中です。反応の数字を見て、広告にするかどうかを決めます。',
-  selected: 'この投稿は、試した中で反応が出たものです。これから広告にします。',
-  ad: 'この広告は、試した投稿の中から数字で選ばれたものです。',
+  testing: 'この投稿は、|いま試している最中です。\n反応の数字を見て、|広告にするかどうかを|決めます。',
+  selected: 'この投稿は、|試した中で|反応が出たものです。\nこれから広告にします。',
+  ad: 'この広告は、|試した投稿の中から|数字で選ばれたものです。',
 };
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
@@ -54,6 +54,33 @@ type Tracking = Record<UtmKey, string> & { landing: string };
 const emptyTracking: Tracking = { utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '', landing: '' };
 
 const EASE = [0.19, 1, 0.22, 1] as const;
+
+// ============================================================
+// 本文の改行：1文ずつ行を分け、語の途中では折り返さない
+//   "\n" … ここで行を分ける（1文ごと）
+//   "|"   … 画面が狭いときだけ、ここで折り返してよい（意味の切れ目）
+//   行頭の "**" … その行を太字にする
+// ============================================================
+function Tx({ s }: { s: string }) {
+  return (
+    <>
+      {s.split('\n').map((line, i) => {
+        const bold = line.startsWith('**');
+        const body = bold ? line.slice(2) : line;
+        const parts = body.split('|').map((ph, j) => (
+          <span className="ph" key={j}>
+            {ph}
+          </span>
+        ));
+        return (
+          <span className="ln" key={i}>
+            {bold ? <b>{parts}</b> : parts}
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
 // ============================================================
 // 文字：1文字ずつ、マスクの下から押し出す
@@ -318,9 +345,9 @@ function Funnel({ post, rm }: { post?: LpPost; rm: boolean }) {
   });
   const line = useTransform(p, [0, 0.95], [0, 1]);
   const steps = [
-    { t: '試す', s: '言い方や見せ方の違う投稿を、お客様のInstagramアカウントに、広告費をかけずにいくつも出す' },
-    { t: '選ぶ', s: '保存・コメント・プロフィールへの移動など、反応の数字で選ぶ' },
-    { t: '出す', s: '反応が出た投稿だけを、広告にする' },
+    { t: '試す', s: '言い方や見せ方の違う投稿を、|お客様のInstagramアカウントに、|広告費をかけずに|いくつも出す' },
+    { t: '選ぶ', s: '保存・コメント・|プロフィールへの移動など、|反応の数字で選ぶ' },
+    { t: '出す', s: '反応が出た投稿だけを、|広告にする' },
   ];
   return (
     <div className="k-funnel" ref={ref}>
@@ -339,7 +366,9 @@ function Funnel({ post, rm }: { post?: LpPost; rm: boolean }) {
               </span>
               <div>
                 <b>{s.t}</b>
-                <span>{s.s}</span>
+                <span>
+                  <Tx s={s.s} />
+                </span>
               </div>
             </li>
           ))}
@@ -571,13 +600,12 @@ export default function KenshoPage() {
             <Heading text={['Instagramの投稿から', '来ましたよね。']} className="k-h2" rm={rm} />
             <Rise rm={rm} y={24} d={0.2}>
               <p className="k-body">
-                あなたが見た投稿は、言い方の違う投稿をいくつも試している中の1枚です。反応の数字で選び、反応が出た投稿だけを広告にする。
-                <b>このInstagramアカウント自体が、そのやり方の実演です。</b>
+                <Tx s={'あなたが見た投稿は、|言い方の違う投稿を|いくつも試している|中の1枚です。\n反応の数字で選び、|反応が出た投稿だけを|広告にする。\n**このInstagramアカウント自体が、|そのやり方の実演です。'} />
               </p>
             </Rise>
             {post && (
               <Rise rm={rm} y={16} d={0.3}>
-                <p className="k-proof-cap">{PROOF_TEXT[post.status ?? 'testing']}</p>
+                <p className="k-proof-cap"><Tx s={PROOF_TEXT[post.status ?? 'testing']} /></p>
               </Rise>
             )}
           </div>
@@ -655,11 +683,11 @@ export default function KenshoPage() {
         <section className="k-sec k-how">
           <Heading text={['出す前に、', '確かめる。']} className="k-h2 big" rm={rm} />
           <Rise rm={rm} y={20}>
-            <p className="k-body k-how-lead">いくつも試して、反応の数字で絞り、残った1枚だけを広告にします。</p>
+            <p className="k-body k-how-lead"><Tx s={'いくつも試して、|反応の数字で絞り、\n残った1枚だけを|広告にします。'} /></p>
           </Rise>
           <Funnel post={post} rm={rm} />
           <Rise rm={rm} x={-40} y={0}>
-            <p className="k-note">色、言い方、写真か文字か。投稿ごとに変えた点を記録しているので、なぜ反応したかを後から数字で見比べられます。</p>
+            <p className="k-note"><Tx s={'色、言い方、|写真か文字か。\n投稿ごとに|変えた点を|記録しているので、\nなぜ反応したかを|後から数字で|見比べられます。'} /></p>
           </Rise>
         </section>
 
@@ -668,7 +696,7 @@ export default function KenshoPage() {
           <Heading text={['反応が出なければ、', '広告に進みません。']} className="k-h2 huge" rm={rm} />
           <Rise rm={rm} y={24} d={0.15}>
             <p className="k-body">
-              反応が出なかった投稿は、広告にしません。広告費もかかりません。反応の基準（どの数字を、いくつ以上とするか）は、始める前に一緒に決めます。
+              <Tx s={'反応が出なかった投稿は、|広告にしません。\n広告費も|かかりません。\n反応の基準（どの数字を、|いくつ以上とするか）は、\n始める前に|一緒に決めます。'} />
             </p>
           </Rise>
         </section>
@@ -692,7 +720,7 @@ export default function KenshoPage() {
             ))}
           </ul>
           <Rise rm={rm} y={16}>
-            <p className="k-body">反応が出なかった場合も、試した投稿と数字のレポートはお渡しします。</p>
+            <p className="k-body"><Tx s={'反応が出なかった場合も、\n試した投稿と|数字のレポートは|お渡しします。'} /></p>
           </Rise>
         </section>
 
@@ -706,8 +734,8 @@ export default function KenshoPage() {
                 {LP.price ?? '価格はご相談時にお伝えします'}
                 {LP.price && LP.term && <small>／ {LP.term}</small>}
               </p>
-              <p className="k-pnote">単発のパッケージです。月額や継続の契約はありません。相談は無料で、相談したからといって申し込む必要はありません。</p>
-              <p className="k-pnote">検証パッケージの料金は、反応の有無にかかわらずかかります。</p>
+              <p className="k-pnote"><Tx s={'単発のパッケージです。\n月額や継続の契約は|ありません。\n相談は無料で、|相談したからといって|申し込む必要は|ありません。'} /></p>
+              <p className="k-pnote"><Tx s={'検証パッケージの料金は、|反応の有無に|かかわらず|かかります。'} /></p>
               <div className="k-inc">
                 <div>
                   <h3>含まれるもの</h3>
@@ -721,13 +749,15 @@ export default function KenshoPage() {
                 <div>
                   <h3>含まれないもの</h3>
                   <ul>
-                    <li>広告費（Metaに直接お支払いいただきます。当社を経由しません）</li>
+                    <li>
+                      <Tx s={'広告費（Metaに|直接お支払い|いただきます。\n当社を経由しません）'} />
+                    </li>
                   </ul>
                 </div>
               </div>
             </Rise>
             {/* 必須の一文。本文と同じ大きさ・同じ色。動かさない */}
-            <p className="k-must">本サービスは、投稿の制作・配信・計測・分析を行うものであり、売上や集客などの効果を保証するものではありません。</p>
+            <p className="k-must"><Tx s={'本サービスは、|投稿の制作・配信・計測・分析を|行うものであり、\n売上や集客などの|効果を保証するものでは|ありません。'} /></p>
             </div>
 
             {/* 無料相談 */}
@@ -736,7 +766,7 @@ export default function KenshoPage() {
               <div className="k-formtop">
                 <p className="k">検証パッケージ</p>
                 <h2>無料で相談する</h2>
-                <p>2営業日以内に、メールで返信します。電話はしません。</p>
+                <p><Tx s={'2営業日以内に、|メールで返信します。\n電話はしません。'} /></p>
               </div>
               <form className="k-form" onSubmit={onSubmit} noValidate>
                 <div className="fld">
@@ -828,7 +858,7 @@ export default function KenshoPage() {
                   onChange={(e) => setHoneypot(e.target.value)}
                 />
 
-                <p className="k-bizonly">事業者の方向けのサービスです。個人の方のご相談は受け付けていません。</p>
+                <p className="k-bizonly"><Tx s={'事業者の方向けのサービスです。\n個人の方のご相談は|受け付けていません。'} /></p>
                 <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
                   <span className="k-cta-shine" aria-hidden="true" />
                   <span className="t">{sent === 'sending' ? '送信中…' : '無料で相談する'}</span>
