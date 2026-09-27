@@ -357,7 +357,7 @@ export default function KenshoPage() {
   const rm = !!useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fvRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
   const [sent, setSent] = useState<'idle' | 'sending' | 'error'>('idle');
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState({ company: '', name: '', email: '', content: '' });
@@ -412,6 +412,17 @@ export default function KenshoPage() {
     const t = window.setTimeout(() => setBar(true), 2800);
     return () => window.clearTimeout(t);
   }, [rm]);
+
+  // フォームが画面に見えている間だけ、追従ボタンを引っ込める（送信ボタンに重ならないように）
+  const [formInView, setFormInView] = useState(false);
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => setFormInView(e.isIntersecting), { threshold: 0.12 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const barOn = bar && !formInView;
 
   const goForm = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -685,149 +696,153 @@ export default function KenshoPage() {
           </Rise>
         </section>
 
-        {/* ==================== 7. 価格 ==================== */}
+        {/* ==================== 7. 価格と無料相談。PCでは価格の右にフォームを置き、スクロールを減らす ==================== */}
         <section className="k-sec k-price-sec">
-          <Heading text={['価格']} className="k-h2" rm={rm} />
-          <Rise className="k-price" rm={rm} x={40} y={20} r={-1.5}>
-            <p className="k-amount">
-              {LP.price ?? '価格はご相談時にお伝えします'}
-              {LP.price && LP.term && <small>／ {LP.term}</small>}
-            </p>
-            <p className="k-pnote">単発のパッケージです。月額や継続の契約はありません。相談は無料で、相談したからといって申し込む必要はありません。</p>
-            <p className="k-pnote">検証パッケージの料金は、反応の有無にかかわらずかかります。</p>
-            <div className="k-inc">
-              <div>
-                <h3>含まれるもの</h3>
-                <ul>
-                  <li>投稿の制作</li>
-                  <li>お客様のアカウントでの配信</li>
-                  <li>反応の計測</li>
-                  <li>レポート</li>
-                </ul>
+          <div className="k-pf">
+            <div className="k-pf-l">
+            <Heading text={['価格']} className="k-h2" rm={rm} />
+            <Rise className="k-price" rm={rm} x={40} y={20} r={-1.5}>
+              <p className="k-amount">
+                {LP.price ?? '価格はご相談時にお伝えします'}
+                {LP.price && LP.term && <small>／ {LP.term}</small>}
+              </p>
+              <p className="k-pnote">単発のパッケージです。月額や継続の契約はありません。相談は無料で、相談したからといって申し込む必要はありません。</p>
+              <p className="k-pnote">検証パッケージの料金は、反応の有無にかかわらずかかります。</p>
+              <div className="k-inc">
+                <div>
+                  <h3>含まれるもの</h3>
+                  <ul>
+                    <li>投稿の制作</li>
+                    <li>お客様のアカウントでの配信</li>
+                    <li>反応の計測</li>
+                    <li>レポート</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3>含まれないもの</h3>
+                  <ul>
+                    <li>広告費（Metaに直接お支払いいただきます。当社を経由しません）</li>
+                  </ul>
+                </div>
               </div>
-              <div>
-                <h3>含まれないもの</h3>
-                <ul>
-                  <li>広告費（Metaに直接お支払いいただきます。当社を経由しません）</li>
-                </ul>
-              </div>
+            </Rise>
+            {/* 必須の一文。本文と同じ大きさ・同じ色。動かさない */}
+            <p className="k-must">本サービスは、投稿の制作・配信・計測・分析を行うものであり、売上や集客などの効果を保証するものではありません。</p>
             </div>
-          </Rise>
-          {/* 必須の一文。本文と同じ大きさ・同じ色。動かさない */}
-          <p className="k-must">本サービスは、投稿の制作・配信・計測・分析を行うものであり、売上や集客などの効果を保証するものではありません。</p>
-        </section>
 
-        {/* ==================== 8. 無料相談 ==================== */}
-        <section className="k-sec k-formsec" id="k-form" ref={formRef}>
-          <Rise className="k-formcard" rm={rm} y={60} r={-2}>
-            <div className="k-formtop">
-              <p className="k">検証パッケージ</p>
-              <h2>無料で相談する</h2>
-              <p>2営業日以内に、メールで返信します。電話はしません。</p>
+            {/* 無料相談 */}
+            <div className="k-pf-r k-formsec" id="k-form" ref={formRef}>
+            <Rise className="k-formcard" rm={rm} y={60} r={-2}>
+              <div className="k-formtop">
+                <p className="k">検証パッケージ</p>
+                <h2>無料で相談する</h2>
+                <p>2営業日以内に、メールで返信します。電話はしません。</p>
+              </div>
+              <form className="k-form" onSubmit={onSubmit} noValidate>
+                <div className="fld">
+                  <label htmlFor="k-company">
+                    会社名・屋号 <span className="rq">必須</span>
+                    <span className="k-lblnote">個人事業主の方は屋号</span>
+                  </label>
+                  <input
+                    id="k-company"
+                    type="text"
+                    required
+                    autoComplete="organization"
+                    placeholder="株式会社◯◯ ／ ◯◯商店"
+                    value={form.company}
+                    aria-invalid={fieldErr.company ? true : undefined}
+                    aria-describedby={fieldErr.company ? 'k-company-err' : undefined}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                  />
+                  {fieldErr.company && (
+                    <p className="k-ferr" id="k-company-err">
+                      {fieldErr.company}
+                    </p>
+                  )}
+                </div>
+                <div className="fld">
+                  <label htmlFor="k-name">
+                    お名前 <span className="rq">必須</span>
+                  </label>
+                  <input
+                    id="k-name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    placeholder="山田 太郎"
+                    value={form.name}
+                    aria-invalid={fieldErr.name ? true : undefined}
+                    aria-describedby={fieldErr.name ? 'k-name-err' : undefined}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  />
+                  {fieldErr.name && (
+                    <p className="k-ferr" id="k-name-err">
+                      {fieldErr.name}
+                    </p>
+                  )}
+                </div>
+                <div className="fld">
+                  <label htmlFor="k-email">
+                    メールアドレス <span className="rq">必須</span>
+                  </label>
+                  <input
+                    id="k-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    aria-invalid={fieldErr.email ? true : undefined}
+                    aria-describedby={fieldErr.email ? 'k-email-err' : undefined}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  />
+                  {fieldErr.email && (
+                    <p className="k-ferr" id="k-email-err">
+                      {fieldErr.email}
+                    </p>
+                  )}
+                </div>
+                <div className="fld">
+                  <label htmlFor="k-content">
+                    相談したいこと <span className="op">任意</span>
+                  </label>
+                  <textarea
+                    id="k-content"
+                    rows={3}
+                    placeholder="例）◯◯（商品名）の広告を出したい。Instagramは @◯◯"
+                    value={form.content}
+                    onChange={(e) => setForm({ ...form, content: e.target.value })}
+                  />
+                </div>
+
+                <input
+                  type="text"
+                  name="company_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hp"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+
+                <p className="k-bizonly">事業者の方向けのサービスです。個人の方のご相談は受け付けていません。</p>
+                <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
+                  <span className="k-cta-shine" aria-hidden="true" />
+                  <span className="t">{sent === 'sending' ? '送信中…' : '無料で相談する'}</span>
+                </button>
+                {sent === 'error' && (
+                  <p className="k-err" role="alert">
+                    {msg}
+                  </p>
+                )}
+                <p className="k-fnote">ご相談の内容とご連絡にのみ使用します。</p>
+              </form>
+            </Rise>
             </div>
-            <form className="k-form" onSubmit={onSubmit} noValidate>
-              <div className="fld">
-                <label htmlFor="k-company">
-                  会社名・屋号 <span className="rq">必須</span>
-                  <span className="k-lblnote">個人事業主の方は屋号</span>
-                </label>
-                <input
-                  id="k-company"
-                  type="text"
-                  required
-                  autoComplete="organization"
-                  placeholder="株式会社◯◯ ／ ◯◯商店"
-                  value={form.company}
-                  aria-invalid={fieldErr.company ? true : undefined}
-                  aria-describedby={fieldErr.company ? 'k-company-err' : undefined}
-                  onChange={(e) => setForm({ ...form, company: e.target.value })}
-                />
-                {fieldErr.company && (
-                  <p className="k-ferr" id="k-company-err">
-                    {fieldErr.company}
-                  </p>
-                )}
-              </div>
-              <div className="fld">
-                <label htmlFor="k-name">
-                  お名前 <span className="rq">必須</span>
-                </label>
-                <input
-                  id="k-name"
-                  type="text"
-                  required
-                  autoComplete="name"
-                  placeholder="山田 太郎"
-                  value={form.name}
-                  aria-invalid={fieldErr.name ? true : undefined}
-                  aria-describedby={fieldErr.name ? 'k-name-err' : undefined}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                {fieldErr.name && (
-                  <p className="k-ferr" id="k-name-err">
-                    {fieldErr.name}
-                  </p>
-                )}
-              </div>
-              <div className="fld">
-                <label htmlFor="k-email">
-                  メールアドレス <span className="rq">必須</span>
-                </label>
-                <input
-                  id="k-email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  inputMode="email"
-                  placeholder="you@example.com"
-                  value={form.email}
-                  aria-invalid={fieldErr.email ? true : undefined}
-                  aria-describedby={fieldErr.email ? 'k-email-err' : undefined}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-                {fieldErr.email && (
-                  <p className="k-ferr" id="k-email-err">
-                    {fieldErr.email}
-                  </p>
-                )}
-              </div>
-              <div className="fld">
-                <label htmlFor="k-content">
-                  相談したいこと <span className="op">任意</span>
-                </label>
-                <textarea
-                  id="k-content"
-                  rows={3}
-                  placeholder="例）◯◯（商品名）の広告を出したい。Instagramは @◯◯"
-                  value={form.content}
-                  onChange={(e) => setForm({ ...form, content: e.target.value })}
-                />
-              </div>
-
-              <input
-                type="text"
-                name="company_url"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-                className="hp"
-                value={honeypot}
-                onChange={(e) => setHoneypot(e.target.value)}
-              />
-
-              <p className="k-bizonly">事業者の方向けのサービスです。個人の方のご相談は受け付けていません。</p>
-              <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
-                <span className="k-cta-shine" aria-hidden="true" />
-                <span className="t">{sent === 'sending' ? '送信中…' : '無料で相談する'}</span>
-              </button>
-              {sent === 'error' && (
-                <p className="k-err" role="alert">
-                  {msg}
-                </p>
-              )}
-              <p className="k-fnote">ご相談の内容とご連絡にのみ使用します。</p>
-            </form>
-          </Rise>
+          </div>
         </section>
       </main>
 
@@ -841,16 +856,16 @@ export default function KenshoPage() {
         </div>
       </footer>
 
-      {/* 追従ボタン。入口の演出のあとに現れ、以降はずっと出しておく */}
+      {/* 追従ボタン。入口の演出のあとに現れ、以降は出しておく。フォームが見えている間だけ引っ込める */}
       <motion.a
         href="#k-form"
         className="k-bar"
         onClick={goForm}
         initial={false}
-        animate={bar ? { y: 0, opacity: 1 } : { y: 90, opacity: 0 }}
+        animate={barOn ? { y: 0, opacity: 1 } : { y: 90, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-        aria-hidden={!bar}
-        tabIndex={bar ? 0 : -1}
+        aria-hidden={!barOn}
+        tabIndex={barOn ? 0 : -1}
       >
         <span>検証パッケージ</span>
         <b>無料で相談する →</b>

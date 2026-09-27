@@ -319,3 +319,12 @@
 
 /* 追従ボタンの下に隠れないよう、ページの最後に同じ高さの余白を取る（フッターの指定より後に置く） */
 .lp.kensho .k-foot{padding-bottom:120px}
+
+/* 価格と無料相談を横に並べる（PC）。スマホは縦に積む */
+.lp.kensho .k-pf{display:grid;gap:56px}
+.lp.kensho .k-pf-r .k-formcard{margin-left:0;max-width:600px}
+@media(min-width:1080px){
+  .lp.kensho .k-pf{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:clamp(40px,5vw,88px);align-items:start}
+  .lp.kensho .k-pf-r{padding-top:clamp(40px,4vw,64px)}
+  .lp.kensho .k-pf-r .k-formcard{max-width:none}
+}
