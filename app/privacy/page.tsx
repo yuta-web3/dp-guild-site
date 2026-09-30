@@ -5,8 +5,9 @@ import LegalLayout, { legalRobots } from "@/components/LegalLayout";
 // 2026-09-06 石井さん確認済み。外国移転は国名＋PPC参照リンクを明記して公開可の状態。
 
 const ENACTED_DATE: string | null = "2026年9月6日";
+// 2026-09-30 改定：Microsoft Clarity（ページ内の操作の分析）を追記
 // 2026-09-27 改定：Instagramからのご相談（経路・投稿の記録）、Instagramでのメッセージ、広告の効果測定（Meta）、メール送信（Resend）を追記
-const REVISED_DATE = "2026年9月27日";
+const REVISED_DATE = "2026年9月30日";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
@@ -50,7 +51,7 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>アクセス解析</strong>
-          ：Cookie等を用いたアクセス情報（Google Analyticsを利用。また、広告の効果測定のため、Meta Platforms, Inc.が提供する計測ツールを利用する場合があります）。これらは単体では特定の個人を識別できない情報ですが、他の情報と組み合わせて識別できる場合には、個人情報として取り扱います。
+          ：Cookie等を用いたアクセス情報（Google Analyticsを利用）、およびページ内での操作の記録（スクロール・クリック等。Microsoft Clarityを利用）。また、広告の効果測定のため、Meta Platforms, Inc.が提供する計測ツールを利用する場合があります。これらは単体では特定の個人を識別できない情報ですが、他の情報と組み合わせて識別できる場合には、個人情報として取り扱います。
         </li>
       </ul>
 
@@ -95,6 +96,11 @@ export default function PrivacyPage() {
           <tr>
             <td>アクセス解析</td>
             <td>Google LLC</td>
+            <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
+          </tr>
+          <tr>
+            <td>ページ内の操作の分析（ヒートマップ等）</td>
+            <td>Microsoft Corporation</td>
             <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
           </tr>
           <tr>

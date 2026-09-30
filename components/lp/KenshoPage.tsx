@@ -45,6 +45,8 @@ const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
+    clarity?: (...args: unknown[]) => void;
   }
 }
 
@@ -490,6 +492,13 @@ export default function KenshoPage() {
         throw new Error(res.status === 400 && r.error ? r.error : '送信に失敗しました。時間をおいて、もう一度お試しください。');
       }
       window.fbq?.('track', 'Lead', { content_name: tracking.utm_content || 'profile', content_category: tracking.utm_source || 'direct' });
+      // Googleアナリティクス：LP専用の申込イベント（サイト全体のお問い合わせの計測とは混ぜない）
+      window.gtag?.('event', 'kensho_lead', {
+        route: tracking.utm_source || 'direct',
+        post_id: tracking.utm_content || 'none',
+      });
+      // Clarity：申込した人の録画に印を付ける
+      window.clarity?.('event', 'kensho_lead');
       const q = new URLSearchParams();
       UTM_KEYS.forEach((k) => {
         if (tracking[k]) q.set(k, tracking[k]);
@@ -519,6 +528,11 @@ export default function KenshoPage() {
           {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',${JSON.stringify(PIXEL_ID)});fbq('track','PageView');`}
         </Script>
       )}
+
+      {/* Microsoft Clarity（ヒートマップ・操作の録画）。サイト共通のレイアウトは他の作業と衝突しやすいので、LPの中だけに置く */}
+      <Script id="ms-clarity" strategy="afterInteractive">
+        {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","yq8grqz6mv");`}
+      </Script>
 
       <SiteHeader here="検証パッケージ" />
 
