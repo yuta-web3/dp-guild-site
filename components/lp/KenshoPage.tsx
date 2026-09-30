@@ -41,7 +41,8 @@ const PROOF_TEXT: Record<LpPostStatus, string> = {
   ad: 'この広告は、|試した投稿の中から|数字で選ばれたものです。',
 };
 
-const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+// Metaピクセル（データセット「dp-guild LP」／ビジネスポートフォリオ「株式会社dp-guild」）。IDは秘密ではないのでコードに置く
+const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '953181374021303';
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
