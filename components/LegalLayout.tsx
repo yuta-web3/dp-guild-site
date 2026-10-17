@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import { SiteFooterNav } from "@/components/SiteNav";
 
 // 法務系ページ（利用規約・特商法・プラポリ）共通レイアウト
 //
@@ -78,6 +79,7 @@ export default function LegalLayout({
               <Link href="/contact" className="text-gray-300 hover:text-white transition-colors">お問い合わせ</Link>
             </nav>
           </div>
+          <SiteFooterNav only="services" />
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs mt-6">
             <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">利用規約</Link>
             <Link href="/tokushoho" className="text-gray-400 hover:text-white transition-colors">特定商取引法に基づく表記</Link>

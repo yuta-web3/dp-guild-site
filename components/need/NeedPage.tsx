@@ -212,13 +212,13 @@ export default function NeedPage({ need }: { need: Need }) {
               <br />
               聞いてください
             </h2>
-            <p>いまの状況だけ書いてください。2営業日以内に返信します。</p>
+            <p>いまの状況だけ書いてください。1営業日以内に返信します。</p>
           </div>
           <div className="bd">
             {sent === 'done' ? (
               <div className="done">
                 <p className="dt">送信しました</p>
-                <p className="dd">2営業日以内に、ご入力のメールアドレス宛にご連絡します。</p>
+                <p className="dd">1営業日以内に、ご入力のメールアドレス宛にご連絡します。</p>
               </div>
             ) : (
               <>
@@ -322,7 +322,7 @@ export default function NeedPage({ need }: { need: Need }) {
       <div className="mbar">
         <div className="p">
           相談する
-          <small>2営業日以内に返信します</small>
+          <small>1営業日以内に返信します</small>
         </div>
         <a href="#contact">書いて送る</a>
       </div>

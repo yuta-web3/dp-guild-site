@@ -3,9 +3,10 @@ import { notFound } from 'next/navigation';
 import ServicePage from '@/components/service/ServicePage';
 import { getService, serviceSlugs } from '@/lib/services';
 import '../../lp-base.css';
+import './service.css';
 
-// サービスページの器。中身は lib/services.ts のデータで差し替わる。
-// サービスを増やすときは lib/services.ts に1件足すだけ。
+// サービスページの器。中身は lib/services/<slug>.ts のデータで差し替わる。
+// サービスを増やすときは lib/services/ に1ファイル足し、lib/services/index.ts の一覧に1行足すだけ。
 
 export function generateStaticParams() {
   return serviceSlugs.map((slug) => ({ slug }));
@@ -52,12 +53,18 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       url: 'https://dp-guild.com',
     },
     areaServed: 'JP',
-    offers: {
-      '@type': 'Offer',
-      price: String(service.price),
-      priceCurrency: 'JPY',
-      url: `https://dp-guild.com/services/${service.slug}`,
-    },
+    // 金額を出すページだけ価格を載せる。見積りのページは載せない
+    ...(service.price.kind === 'fixed'
+      ? {
+          offers: service.price.plans.map((p) => ({
+            '@type': 'Offer',
+            name: p.name,
+            price: String(p.amount),
+            priceCurrency: 'JPY',
+            url: `https://dp-guild.com/services/${service.slug}`,
+          })),
+        }
+      : {}),
   };
 
   return (
@@ -66,6 +73,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* JS が無いときは、2画面目以降の出現を待たずに全部見せる（FV は CSS だけで出るので不要） */}
+      <noscript>
+        <style>
+          {'.lp.svc .rv{opacity:1!important;transform:none!important}' +
+            '.lp.svc .steps[hidden]{display:block!important}.lp.svc .seg{display:none}'}
+        </style>
+      </noscript>
       <ServicePage service={service} />
     </>
   );

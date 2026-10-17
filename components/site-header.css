@@ -40,7 +40,7 @@
 .site-hdr.inset{right:var(--panel,0px)}
 @media(max-width:1040px){.site-hdr.inset{right:0}}
 
-.site-hdr .mark{display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit}
+.site-hdr .mark{flex:none;display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit}
 .site-hdr .mark img{height:24px;width:24px;object-fit:contain}
 .site-hdr .mark b{
   font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -50,12 +50,13 @@
 .site-hdr .here{
   margin-left:14px;padding-left:14px;border-left:1px solid var(--sh-rule);
   font-size:11.5px;font-weight:700;color:var(--sh-mut);text-decoration:none;
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 a.site-hdr-here:hover{color:var(--sh-ink)}
 @media(max-width:700px){.site-hdr .here{display:none}}
 
 .site-hdr .go{
-  margin-left:auto;
+  margin-left:6px;
   background:var(--sh-ink);color:var(--sh-ground);
   font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
   font-weight:900;font-size:12.5px;letter-spacing:.02em;
@@ -68,3 +69,100 @@ a.site-hdr-here:hover{color:var(--sh-ink)}
 /* ヘッダーぶんの余白。.lp 以外のページは自前で上余白を持っているため、
    必要なページだけ .site-hdr-pad を付ける */
 .site-hdr-pad{padding-top:56px}
+
+/* ============ 案内（2026-10-03） ============
+   控えめな文字のリンク。資料請求パネル（.rail）がいちばん目立つ、を崩さない。
+   一覧の色はヘッダーの反転（.ondark）に引きずられないよう、ここで固定の値を持つ */
+.site-hdr [hidden]{display:none!important}
+.site-hdr .nav{flex:none;margin-left:auto;display:flex;align-items:center;gap:2px}
+.site-hdr .ln{
+  display:inline-flex;align-items:center;gap:6px;
+  background:none;border:0;padding:7px 10px;margin:0;cursor:pointer;
+  font:inherit;font-size:12px;font-weight:700;letter-spacing:.02em;line-height:1.4;
+  color:var(--sh-mut);text-decoration:none;white-space:nowrap;
+  transition:color .2s;
+}
+.site-hdr .ln:hover,.site-hdr .ln[aria-expanded="true"]{color:var(--sh-ink)}
+.site-hdr .ln[aria-current="page"],.site-hdr .ln.cur{color:var(--sh-ink)}
+.site-hdr .car{display:block;width:6px;height:6px;margin-top:-3px;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);
+  transition:transform .2s}
+.site-hdr .ln[aria-expanded="true"] .car{transform:translateY(3px) rotate(225deg)}
+.site-hdr .ln:focus-visible,.site-hdr .mmb:focus-visible,
+.site-hdr .ddl a:focus-visible,.site-hdr .mmp a:focus-visible,
+.site-hdr .go:focus-visible,.site-hdr .mark:focus-visible{outline:2px solid #3560E0;outline-offset:2px}
+
+/* PC：サービスの一覧。ボタンの右端にそろえて左へ開く（右の資料請求パネルに重ねない） */
+.site-hdr .dd{position:relative}
+.site-hdr .ddl{
+  position:absolute;top:calc(100% + 8px);right:0;z-index:1;
+  list-style:none;margin:0;padding:6px 0;min-width:268px;
+  background:#FFFFFF;border:1px solid rgba(16,21,34,.13);
+  box-shadow:0 18px 40px -22px rgba(16,21,34,.45);
+  animation:sh-in .18s ease-out;
+}
+.site-hdr .ddl a{display:block;padding:9px 18px;font-size:13px;font-weight:500;line-height:1.5;
+  color:#101522;text-decoration:none;white-space:nowrap}
+.site-hdr .ddl a:hover{background:#F4F6FA}
+.site-hdr .ddl a[aria-current="page"]{font-weight:700;box-shadow:inset 2px 0 0 #3560E0}
+@keyframes sh-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+/* スマホ：メニュー。PC の間は出さない */
+.site-hdr .mm{display:none}
+.site-hdr .mmb{
+  display:inline-flex;align-items:center;gap:8px;
+  background:none;border:1px solid var(--sh-rule);padding:7px 11px;margin:0;cursor:pointer;
+  font:inherit;font-size:12px;font-weight:700;color:var(--sh-ink);line-height:1.3;
+}
+.site-hdr .bars{display:grid;gap:3px;width:14px}
+.site-hdr .bars i{display:block;height:1.5px;background:currentColor;transition:transform .2s,opacity .2s}
+.site-hdr .mmb[aria-expanded="true"] .bars i:nth-child(1){transform:translateY(4.5px) rotate(45deg)}
+.site-hdr .mmb[aria-expanded="true"] .bars i:nth-child(2){opacity:0}
+.site-hdr .mmb[aria-expanded="true"] .bars i:nth-child(3){transform:translateY(-4.5px) rotate(-45deg)}
+.site-hdr .mmp{
+  position:absolute;top:100%;left:0;right:0;
+  max-height:calc(100svh - 56px);overflow-y:auto;overscroll-behavior:contain;
+  background:#FFFFFF;border-top:1px solid rgba(16,21,34,.13);border-bottom:1px solid rgba(16,21,34,.13);
+  box-shadow:0 22px 40px -26px rgba(16,21,34,.5);
+  padding:6px clamp(16px,3vw,36px) 14px;
+  animation:sh-in .18s ease-out;
+}
+.site-hdr .mmh{margin:12px 0 2px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#949CAC}
+.site-hdr .mmp ul{list-style:none;margin:0;padding:0}
+.site-hdr .mmp a{display:block;padding:11px 0;border-bottom:1px solid rgba(16,21,34,.07);
+  font-size:14px;font-weight:500;line-height:1.5;color:#101522;text-decoration:none}
+.site-hdr .mmp li:last-child a{border-bottom:0}
+.site-hdr .mmp a[aria-current="page"]{font-weight:700;color:#3560E0}
+
+/* メニューを開いている間は、下の固定バー（.mbar）より手前に出す。白い板も敷く */
+.site-hdr.open,.site-hdr.ondark.open:not(.stuck){z-index:80;background:#FFFFFF;border-bottom-color:rgba(16,21,34,.13);
+  --sh-ink:#101522;--sh-mut:#5C6577;--sh-rule:rgba(16,21,34,.13)}
+.site-hdr.open .mark img,.site-hdr.ondark.open:not(.stuck) .mark img{filter:none}
+.site-hdr.ondark.open:not(.stuck) .go{background:#101522;color:#FFFFFF}
+
+@media(max-width:760px){
+  .site-hdr .nav{display:none}
+  .site-hdr .go{margin-left:auto}
+  .site-hdr .mm{display:block;margin-left:auto}
+  .site-hdr .go + .mm{margin-left:0}
+  .site-hdr .go{padding:8px 14px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .site-hdr,.site-hdr *{transition:none!important;animation:none!important}
+}
+
+/* ============ 認識しやすさ（2026-10-03 代表「ヘッダーって認識しづらい」） ============
+   一番上から白い板と下線を敷き、背景の格子の上に溶けないようにする。
+   濃い面のページでの白抜き（.ondark）もやめ、全ページ同じ見た目にそろえる */
+.site-hdr,.site-hdr.ondark:not(.stuck){
+  background:#FFFFFF;
+  border-bottom-color:rgba(16,21,34,.13);
+  box-shadow:0 6px 18px -14px rgba(16,21,34,.35);
+}
+.site-hdr.ondark:not(.stuck){--sh-ink:#101522;--sh-mut:#3E4757;--sh-rule:rgba(16,21,34,.13)}
+.site-hdr.ondark:not(.stuck) .go{background:#101522;color:#FFFFFF}
+.site-hdr.ondark:not(.stuck) .mark img{filter:none}
+.site-hdr .ln{font-size:13.5px;color:#101522}
+.site-hdr .ln:hover{color:#3560E0}
+.site-hdr .here{font-size:12.5px;color:#3E4757}

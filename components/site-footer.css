@@ -1,0 +1,29 @@
+/* フッターの案内（components/SiteNav.tsx の SiteFooterNav）。
+   .lp の lpfoot でも、法務ページ（Tailwind）のフッターでも同じに見えるよう、独立したスコープにしている。
+   濃い色の面の上に置く前提。
+   .lp の「.lp a{color:inherit}」より強くするため、リンクは nav a で書く */
+
+.site-fnav{margin-top:24px;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+.site-fnav ul{list-style:none;margin:0;padding:0}
+.site-fnav nav a{color:rgba(255,255,255,.78);text-decoration:none;transition:color .2s}
+.site-fnav nav a:hover{color:#fff}
+.site-fnav nav a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.site-fnav nav a[aria-current="page"]{color:#fff;font-weight:700}
+
+.site-fnav .fn-main{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px 40px}
+.site-fnav.only .fn-main{grid-template-columns:minmax(0,1fr);max-width:560px}
+.site-fnav .fn-h{margin:0 0 9px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.45)}
+.site-fnav .fn-grp ul{display:grid;gap:7px;font-size:12.5px;line-height:1.6}
+/* サービスは2列に流す（7本を縦1列にすると長い） */
+.site-fnav .fn-svc ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}
+
+.site-fnav .fn-legal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.14);font-size:11.5px}
+.site-fnav nav.fn-legal a{color:rgba(255,255,255,.55)}
+.site-fnav nav.fn-legal a:hover{color:#fff}
+
+@media(max-width:620px){
+  .site-fnav .fn-main{grid-template-columns:1fr}
+  .site-fnav .fn-svc ul{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){ .site-fnav nav a{transition:none} }

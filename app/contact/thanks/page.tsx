@@ -32,7 +32,7 @@ export default function ContactThanksPage() {
 
           <p className="text-gray-600 mb-4 leading-relaxed">
             お問い合わせを受け付けました。<br />
-            内容を確認の上、2営業日以内にご連絡いたします。
+            内容を確認の上、1営業日以内にご連絡いたします。
           </p>
 
           <p className="text-gray-500 text-sm mb-10">

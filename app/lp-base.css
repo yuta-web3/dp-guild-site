@@ -290,11 +290,7 @@
 .lp .lpfoot .co b{font-size:15px;color:#fff;font-family:var(--disp);font-weight:900;margin-bottom:3px}
 .lp .lpfoot .co a{color:rgba(255,255,255,.72)}
 .lp .lpfoot .co a:hover{color:#fff}
-.lp .lpfoot nav{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:12.5px}
-.lp .lpfoot nav a{color:rgba(255,255,255,.78)}
-.lp .lpfoot nav a:hover{color:#fff}
-.lp .lpfoot nav.legal{margin-top:12px;font-size:11.5px}
-.lp .lpfoot nav.legal a{color:rgba(255,255,255,.55)}
+/* 案内（サービス・会社・法務3ページ）は components/SiteNav.tsx の SiteFooterNav（components/site-footer.css） */
 .lp .lpfoot .cp{margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);
   font-size:11px;color:rgba(255,255,255,.45)}
 @media(max-width:1040px){

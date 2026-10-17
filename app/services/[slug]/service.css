@@ -1,0 +1,347 @@
+/* サービスページ固有のスタイル。共通部分は app/lp-base.css（.lp 配下）。
+   トップの top.css と同じ言語（右端パネル・不可能立体・格子）で、サービス用に足したものだけ。
+   すべて .lp.svc 配下に閉じる。トップや他のLPに影響させない */
+
+/* 左の列の右端は1つ。FV・実績の枠・本文・進め方の帯の中身をすべてこの幅でそろえる */
+.lp.svc{--col:min(860px,100%)}
+.lp.svc .fvtxt,.lp.svc .sec,.lp.svc .stepband .sec{max-width:var(--col)}
+
+/* ============ FV ============ */
+/* 画面いっぱいに引き伸ばさない。中身の高さで終わらせる（トップと同じ） */
+.lp.svc .fv{min-height:0;padding:74px 0 clamp(8px,1.2vw,16px)}
+@media(max-width:1040px){.lp.svc .fv{padding:62px 0 4px}}
+
+/* FV は JS を待たずに CSS だけで出す。JS が無い・遅いときも白紙にしない。
+   出る順は data-fd（--fd）。全部出そろうまで約0.8秒 */
+.lp.svc .rv[data-fd]{opacity:1;transform:none;
+  animation:svcFv .5s cubic-bezier(.16,1,.3,1) both;
+  animation-delay:calc(40ms + var(--fd,0) * 55ms)}
+@keyframes svcFv{from{opacity:0;transform:translateY(16px)}}
+
+/* 見出しの右に立方体の帯を取る。帯を取らないと立方体が文字を横切る */
+.lp.svc .fvhead{position:relative;padding-right:clamp(0px,14vw,200px)}
+@media(max-width:1040px){.lp.svc .fvhead{padding-right:0}}
+
+.lp.svc .eyebrow{margin:0}
+.lp.svc h1{word-break:auto-phrase}
+/* 下線は CSS だけで引く（JS を待たない） */
+.lp.svc h1 .hl::after{transition:none;animation:svcHl .7s cubic-bezier(.16,1,.3,1) .45s both}
+@keyframes svcHl{from{transform:scaleX(0)}to{transform:none}}
+.lp.svc .lede{max-width:40em}
+.lp.svc .lede,.lp.svc .points li,.lp.svc .termline{word-break:auto-phrase}
+.lp.svc .termline{max-width:44em}
+/* 狭い画面では用語の補足を出さない（FAQ に同じ説明がある）。証拠を1画面目に上げるため */
+@media(max-width:620px){.lp.svc .termline{display:none}}
+
+/* 数字の欄。dl の既定の余白を消す */
+.lp.svc .facts{margin:18px 0 0;max-width:100%}
+.lp.svc .facts dd{margin:0}
+.lp.svc .facts .f{max-width:20em}
+/* 帯（上の黒い罫線）は左の列の幅いっぱいに引く。セルの幅は中身のまま、余りは最後の空き列で受ける */
+@media(min-width:521px){
+  .lp.svc .facts{width:100%}
+  .lp.svc .facts.n1{grid-template-columns:auto minmax(0,1fr)}
+  .lp.svc .facts.n2{grid-template-columns:repeat(2,auto) minmax(0,1fr)}
+  .lp.svc .facts.n3{grid-template-columns:repeat(3,auto) minmax(0,1fr)}
+}
+.lp.svc .facts .v.txt{font-family:var(--disp);font-weight:900;font-size:19px;letter-spacing:-.01em}
+/* 数字ではない欄（「お見積り」など）は、補足を下の行に回す。横に並べると折り返しが崩れる */
+.lp.svc .facts .v.txt small{display:block;margin:3px 0 0;font-weight:500;line-height:1.55;font-size:11px}
+.lp.svc .facts .v.num small{line-height:1.45}
+
+/* 狭い画面：数字の欄は1列の表にする（項目名｜値）。細い列に押し込んで1文字ずつ折り返させない */
+@media(max-width:520px){
+  .lp.svc .facts{grid-template-columns:minmax(0,1fr);width:100%;border-bottom:0}
+  .lp.svc .facts .f,.lp.svc .facts .f:first-child,.lp.svc .facts .f:last-child{
+    display:grid;grid-template-columns:7.2em minmax(0,1fr);column-gap:12px;align-items:baseline;
+    max-width:none;padding:7px 0 6px;border-right:0;border-bottom:1px solid var(--rule)}
+  .lp.svc .facts .k{line-height:1.45}
+  .lp.svc .facts .v{font-size:18px;margin-top:0;line-height:1.35}
+  .lp.svc .facts .v small{font-size:10.5px;margin-left:3px}
+  .lp.svc .facts .v.txt{font-size:15px}
+  .lp.svc .facts .v.txt small{display:inline;margin:0 0 0 6px;font-size:10.5px;color:var(--mut)}
+  /* 1画面目に実績を入れるため、数字の欄は2行まで（3つ目は本文に書いてある） */
+  .lp.svc .facts .f:nth-child(n+3){display:none}
+  /* パネルにも同じ一文があるときは、FV 側を1行に詰める */
+  .lp.svc .fvmon.dup{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-block:5px}
+}
+
+/* 狭い画面：実績をリードの直後（数字の欄の前）に上げる。固定バーの下に隠さない */
+@media(max-width:620px){
+  .lp.svc .fvtxt{display:flex;flex-direction:column}
+  .lp.svc .fvtxt > .fvhead{order:0}
+  .lp.svc .fvtxt > .proofline{order:1}
+  .lp.svc .fvtxt > .facts{order:2}
+  .lp.svc .fvtxt > .fvmon{order:3}
+  .lp.svc .fvtxt > .points{order:4}
+}
+/* 360幅など低い画面：リードの行間と FV の上の余白を少し詰め、実績の添え書きは1行にする（実績を1画面目に入れる） */
+@media(max-width:400px){
+  .lp.svc .fv{padding-top:56px}
+  .lp.svc .lede{line-height:1.72;font-size:13px}
+  .lp.svc .proofline{margin-top:10px}
+  .lp.svc .proofline .pk{padding:1px 7px}
+  .lp.svc .proofline.plain .tt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lp.svc .proofline .tt{line-height:1.4}
+}
+
+/* モニター価格の一文（同じ金額がリードに無いときだけ出る） */
+.lp.svc .fvmon{margin-top:10px;padding:7px 12px;font-size:12.5px;font-weight:700;line-height:1.7;
+  background:linear-gradient(90deg,rgba(15,191,176,.12),rgba(122,69,232,.08));border-left:3px solid var(--cy)}
+
+/* 証拠をFVの中に。数字は等幅の太字で目に入る大きさに。本文の「実績」への近道 */
+.lp.svc .proofline{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 14px;align-items:center;
+  margin-top:14px;padding:10px 14px 10px 12px;background:var(--paper);border:1px solid var(--rule);
+  border-left:3px solid var(--bl);text-decoration:none;transition:border-color .25s,background .25s}
+.lp.svc .proofline:hover{border-color:var(--bl);background:var(--ground)}
+.lp.svc .proofline .pk{font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--ink);
+  padding:2px 8px;white-space:nowrap;align-self:start;margin-top:3px}
+.lp.svc .proofline .pl{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:6px 20px}
+.lp.svc .proofline .it{display:flex;flex-direction:column;min-width:0}
+.lp.svc .proofline .ft{font-size:13px;font-weight:700;line-height:1.5;word-break:auto-phrase}
+.lp.svc .proofline .tt{font-size:11.5px;font-weight:700;line-height:1.5;color:var(--mut);margin-top:1px;word-break:auto-phrase}
+.lp.svc .proofline .tt0{font-size:13.5px;font-weight:700;line-height:1.6;word-break:auto-phrase;text-wrap-style:balance}
+/* 数字の無い実績：見出しの下に、本文から抜いた1文を添える */
+.lp.svc .proofline.plain .tt{font-weight:500;color:var(--mut);text-wrap-style:pretty}
+.lp.svc .proofline::after{content:"→";color:var(--bl);font-size:16px;line-height:1;transition:transform .22s}
+.lp.svc .proofline:hover::after{transform:translateX(4px)}
+.lp.svc .fig{font-family:var(--mono);font-weight:800;font-size:1.5em;line-height:1.1;letter-spacing:-.03em;
+  color:var(--ink);margin:0 .06em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(transparent 64%,rgba(15,191,176,.24) 64%)}
+@media(max-width:520px){
+  .lp.svc .proofline{grid-template-columns:minmax(0,1fr) auto;padding:9px 12px 9px 11px}
+  .lp.svc .proofline .pk{grid-column:1 / -1;justify-self:start;margin-top:0}
+  .lp.svc .proofline::after{grid-column:2;grid-row:2}
+  .lp.svc .proofline .pl{grid-template-columns:minmax(0,1fr);gap:5px}
+  /* 数字の無い実績：添える1文は1件目だけ（2件目は見出しだけ）。1画面目に収めるため */
+  .lp.svc .proofline.plain .it + .it .tt{display:none}
+}
+
+.lp.svc .points{margin-top:14px}
+
+/* 読み終えた目を右のパネルへ渡す一行。箱にもボタンにもしない（入口は送信ボタン1つ）。
+   最後に動くのはこの矢印。3回だけ動いて止まる */
+.lp.svc .handoff{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin:16px 0 0;padding:0;
+  background:none;border:0;max-width:var(--col)}
+.lp.svc .handoff:hover{background:none}
+.lp.svc .handoff .k{display:inline;font-size:12px}
+.lp.svc .handoff .t{display:inline;font-size:14.5px;margin:0}
+.lp.svc .handoff .ar{margin-left:0;font-size:17px;color:var(--bl);animation:nudge 1.1s ease-in-out 1.1s 3}
+@media(max-width:1040px){.lp.svc .handoff{display:none}}
+
+/* ---- ロゴの不可能立体（トップと同じ図形・描き順） ----
+   線の長さは pathLength=1 で固定。JS を待たずに CSS だけで組み上がる */
+.lp.svc .cubewrap{position:absolute;z-index:0;pointer-events:none;opacity:.85;
+  right:0;top:18px;width:clamp(110px,10vw,150px);aspect-ratio:1/1.06}
+.lp.svc .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
+.lp.svc .cubewrap::before{content:"";position:absolute;z-index:0;inset:-14% -10%;
+  background:radial-gradient(closest-side,
+    color-mix(in srgb,var(--ground) 80%,transparent) 0 44%,
+    color-mix(in srgb,var(--ground) 40%,transparent) 68%,
+    transparent 100%)}
+.lp.svc .cube g.face{will-change:transform}
+.lp.svc .cube path{fill:none;stroke:url(#svcCubeG);stroke-width:6;stroke-linejoin:miter;
+  filter:drop-shadow(0 3px 10px rgba(53,96,224,.22))}
+.lp.svc .cube path.thin{stroke-width:3.6;opacity:.92}
+.lp.svc .cube path.hide{stroke:var(--ground);stroke-width:17;filter:none;opacity:1}
+.lp.svc .cube .draw{stroke-dasharray:1;stroke-dashoffset:1;
+  animation:svcCubeDraw .5s cubic-bezier(.3,1,.4,1) forwards}
+.lp.svc .cube .draw.d1{animation-delay:.02s}
+.lp.svc .cube .draw.d2{animation-delay:.06s}
+.lp.svc .cube .draw.d3{animation-delay:.10s}
+.lp.svc .cube .draw.d4{animation-delay:.15s}
+.lp.svc .cube .draw.d5{animation-delay:.19s}
+.lp.svc .cube .draw.d6{animation-delay:.23s}
+.lp.svc .cube .draw.d7{animation-delay:.28s}
+.lp.svc .cube .draw.d8{animation-delay:.31s}
+.lp.svc .cube .draw.d9{animation-delay:.34s}
+@keyframes svcCubeDraw{to{stroke-dashoffset:0}}
+/* 狭い画面でも消さない。見出しの右上に小さく回り込ませる（文字の上には重ねない・下へも押さない） */
+@media(max-width:1040px){
+  .lp.svc .cubewrap{position:relative;float:right;top:auto;right:auto;
+    width:clamp(56px,12vw,92px);margin:0 0 4px 14px;opacity:.95}
+  .lp.svc .cubewrap::before{display:none}
+  .lp.svc .cube path{stroke-width:9;filter:none}
+  .lp.svc .cube path.thin{stroke-width:5.5}
+  .lp.svc .cube path.hide{stroke-width:22}
+}
+
+/* ============ 資料請求パネル ============ */
+/* 白文字が読める濃さまで、グラデーションの始まりを暗くする（小さい白文字で 4.5:1 以上） */
+.lp.svc .card .top{background:linear-gradient(140deg,#0B7D7B,#2C55D4 56%,#6A3AD6)}
+.lp.svc .card .top .k{background:#fff;color:var(--ink)}
+.lp.svc .card .top h2{font-size:clamp(22px,2.05vw,32px);word-break:auto-phrase}
+.lp.svc .card .pitch{list-style:none;margin:12px 0 0;padding:11px 0 0;
+  border-top:1px solid rgba(255,255,255,.32);display:grid;gap:3px}
+.lp.svc .card .pitch li{position:relative;padding-left:19px;font-size:12.5px;font-weight:700;line-height:1.65}
+.lp.svc .card .pitch li::before{content:"";position:absolute;left:2px;top:.5em;width:9px;height:4.5px;
+  border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+
+.lp.svc .card .mon{margin:0 0 12px;padding:8px 11px;font-size:12px;font-weight:700;line-height:1.65;color:var(--ink);
+  background:linear-gradient(90deg,rgba(15,191,176,.12),rgba(122,69,232,.08));border-left:3px solid var(--cy)}
+
+/* 入力欄：必須の3つだけを出す。任意の2つは「＋」で開く */
+.lp.svc .fld label{color:var(--ink)}
+.lp.svc .fld.bad input{border-color:#C0392B;background:#FFF7F6}
+.lp.svc .ferr{grid-column:1 / -1;margin-top:4px;font-size:11.5px;font-weight:700;line-height:1.5;color:#B3261E}
+.lp.svc .more{margin:0 0 4px}
+.lp.svc .more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:700;color:var(--bl);padding:3px 0}
+.lp.svc .more summary::-webkit-details-marker{display:none}
+.lp.svc .more summary::before{content:"＋";font-size:11px}
+.lp.svc .more[open] summary::before{content:"－"}
+.lp.svc .more[open] summary{margin-bottom:6px}
+
+/* 送信したらどうなるかを、押す前に1行で */
+.lp.svc .flow{position:relative;margin-top:10px;padding-left:15px;font-size:12px;font-weight:700;line-height:1.65;color:var(--ink)}
+.lp.svc .flow::before{content:"";position:absolute;left:1px;top:.5em;width:7px;height:7px;
+  background:linear-gradient(135deg,var(--cy),var(--vi))}
+.lp.svc .fnote{margin-top:4px;padding-left:15px;font-size:11px;color:var(--mut)}
+.lp.svc .card .err{margin-top:10px;font-size:12px;line-height:1.7;color:#B3261E;font-weight:700}
+.lp.svc .card .err .errmail{margin-top:2px;color:var(--ink);font-weight:500}
+.lp.svc .card .err a{border-bottom:1px solid var(--rule);font-weight:700}
+.lp.svc .card .done .dd2{margin-top:10px;font-size:12px;line-height:1.75;color:var(--mut)}
+
+/* iPhone で入力欄に触れたとき画面が拡大されないよう、狭い画面は16px */
+@media(max-width:1040px){
+  .lp.svc .fld input{font-size:16px}
+  .lp.svc #dl{scroll-margin-top:64px}
+}
+
+/* 画面が低いPCでも、送信ボタンまでを1画面に収める */
+@media(min-width:1041px) and (max-height:940px){
+  .lp.svc .card .top{padding-top:18px;padding-bottom:16px}
+  .lp.svc .card .top .k{margin-bottom:6px;font-size:11px;padding:2px 9px}
+  .lp.svc .card .top h2{font-size:clamp(20px,1.8vw,28px);line-height:1.25}
+  .lp.svc .card .pitch{margin-top:9px;padding-top:8px;gap:1px}
+  .lp.svc .card .pitch li{font-size:12px;line-height:1.55}
+  .lp.svc .card .bd{padding-top:12px;padding-bottom:10px}
+  .lp.svc .card .mon{margin-bottom:9px;padding:6px 10px}
+  /* 項目名を入力欄の左に置き、縦の長さを詰める。資料の中身（上の箇条書き）は削らない */
+  .lp.svc .fld{display:grid;grid-template-columns:8em minmax(0,1fr);column-gap:10px;align-items:center;margin-bottom:6px}
+  .lp.svc .fld label{margin-bottom:0;line-height:1.35;font-size:11.5px}
+  .lp.svc .fld input{padding:8px 12px;font-size:14px;line-height:1.4}
+  .lp.svc .ferr{grid-column:2}
+  .lp.svc .sub{padding:13px;margin-top:4px}
+  .lp.svc .flow{margin-top:8px}
+}
+/* さらに低い画面（〜760px）：資料の中身の文字をもう一段詰める */
+@media(min-width:1041px) and (max-height:760px){
+  .lp.svc .card .top{padding-top:14px;padding-bottom:12px}
+  .lp.svc .card .top h2{font-size:clamp(18px,1.6vw,24px)}
+  .lp.svc .card .pitch li{font-size:11.5px;line-height:1.5}
+}
+
+/* ============ 本文 ============ */
+/* 考え方：困りごとの答えの「向き」を先に1つだけ */
+.lp.svc .concept{margin-top:22px;padding:16px 18px 17px;background:var(--paper);position:relative;
+  border-left:3px solid transparent;
+  border-image:linear-gradient(180deg,var(--cy),var(--bl) 55%,var(--vi)) 1}
+.lp.svc .concept .ck{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--mut)}
+.lp.svc .concept b{display:block;margin-top:3px;font-family:var(--disp);font-weight:900;font-size:16.5px;
+  line-height:1.55;letter-spacing:-.01em;word-break:auto-phrase}
+.lp.svc .concept p{margin-top:6px;font-size:13px;line-height:1.85;color:var(--mut)}
+
+/* 進め方のプラン切り替え（トップの絞り込みと同じ形） */
+.lp.svc .seg{margin-top:16px;display:flex;flex-wrap:wrap;gap:7px}
+.lp.svc .seg button{font:inherit;font-size:12.5px;font-weight:700;color:var(--mut);
+  background:var(--ground);border:1px solid var(--rule);padding:7px 15px;
+  transition:background .2s,color .2s,border-color .2s}
+.lp.svc .seg button:hover{color:var(--ink);border-color:var(--ink)}
+.lp.svc .seg button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.lp.svc .steps{margin-top:18px}
+
+/* 料金：プランを横に並べる。金額は動かさない */
+.lp.svc .plans{margin-top:18px;display:grid;gap:clamp(10px,1.2vw,14px)}
+.lp.svc .plans.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lp.svc .plans.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:620px){.lp.svc .plans.n2,.lp.svc .plans.n3{grid-template-columns:1fr}}
+.lp.svc .plans .plan{margin-top:0;padding:18px 20px 16px;display:flex;flex-direction:column}
+.lp.svc .plans .plan .pn{font-family:var(--disp);font-size:14px;font-weight:900;color:var(--ink);letter-spacing:0}
+.lp.svc .plans .plan .pp{font-family:var(--mono);font-size:clamp(26px,2.6vw,32px);letter-spacing:-.02em;margin-top:8px}
+.lp.svc .plans .plan .pp small{font-family:var(--body);font-size:12px}
+.lp.svc .plans .plan .pp .lb{display:block;font-family:var(--body);font-size:11px;font-weight:700;color:var(--mut);letter-spacing:.02em}
+.lp.svc .plans .plan .pp.was{font-size:clamp(16px,1.5vw,19px);color:var(--mut);text-decoration:line-through;text-decoration-thickness:1px}
+.lp.svc .plans .plan .pp.was .lb{text-decoration:none}
+.lp.svc .plans .plan .pp.was + .pp{margin-top:4px}
+.lp.svc .plans .plan .pnote1{margin-top:8px;font-size:12px;line-height:1.7;color:var(--mut)}
+.lp.svc .plans .plan ul{margin:12px 0 0;padding:11px 0 0 0;list-style:none;border-top:1px solid var(--rule2);font-size:13px}
+.lp.svc .plans .plan li{position:relative;padding-left:14px;margin-bottom:3px;line-height:1.75}
+.lp.svc .plans .plan li::before{content:"";position:absolute;left:0;top:.72em;width:6px;height:6px;
+  background:linear-gradient(135deg,var(--cy),var(--vi))}
+
+.lp.svc .monitor{margin-top:12px;padding:12px 16px;font-size:13.5px;font-weight:700;line-height:1.8;
+  background:linear-gradient(90deg,rgba(15,191,176,.10),rgba(122,69,232,.08));
+  border-left:3px solid var(--cy)}
+
+.lp.svc .factors{margin-top:14px;border-top:1px solid var(--rule)}
+.lp.svc .factors .row{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;padding:13px 0;
+  border-bottom:1px solid var(--rule2)}
+.lp.svc .factors .n{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--bl);padding-top:2px}
+.lp.svc .factors .t{font-family:var(--disp);font-weight:700;font-size:14.5px}
+.lp.svc .factors .d{font-size:13px;color:var(--mut);margin-top:2px;line-height:1.8}
+
+.lp.svc .pnotes{list-style:none;margin:14px 0 0;padding:0;font-size:12.5px;color:var(--mut);line-height:1.8}
+.lp.svc .pnotes li{position:relative;padding-left:13px}
+.lp.svc .pnotes li::before{content:"";position:absolute;left:0;top:.9em;width:5px;height:1px;background:var(--mut)}
+.lp.svc .pnotes a{border-bottom:1px solid var(--rule);color:var(--ink)}
+
+/* 実績：結果を見出しに。誰が何をしたかを下に。数字は等幅の太字 */
+.lp.svc #proof{scroll-margin-top:64px}
+.lp.svc .proofs{margin-top:16px;display:grid;gap:10px}
+.lp.svc .pf{position:relative;border:1px solid var(--rule);background:var(--ground);
+  padding:clamp(14px,1.6vw,18px) clamp(15px,1.7vw,20px)}
+.lp.svc .pf h3{font-family:var(--disp);font-weight:900;font-size:15.5px;line-height:1.55;letter-spacing:-.01em;
+  word-break:auto-phrase}
+.lp.svc .pf p{margin-top:5px;font-size:13px;line-height:1.85;color:var(--mut)}
+.lp.svc .pf h3 .fig{font-size:1.25em}
+.lp.svc .pf p .fig{font-size:1.15em;color:var(--ink);background:none}
+/* ホバーで枠線のグラデーションが回る（トップの実績カードと同じ） */
+.lp.svc .pf::before{content:"";position:absolute;inset:-1px;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:conic-gradient(from var(--ang),transparent 0 62%,var(--cy) 72%,var(--vi) 86%,transparent 94%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;padding:1px}
+.lp.svc .pf:hover::before{opacity:1;animation:spin 3.2s linear infinite}
+.lp.svc #proof .sub2{margin-top:12px}
+
+/* 見出しは文節で折り返す */
+.lp.svc .gains b,.lp.svc .steps b,.lp.svc .deliv .t,.lp.svc .faq summary{word-break:auto-phrase}
+
+/* lp-base の 620px 指定はセレクタが壊れているので、ここで効かせる */
+@media(max-width:620px){.lp.svc .deliv .row{grid-template-columns:1fr;gap:3px}}
+
+/* ============ スマホの固定バー ============
+   資料請求の欄が見えている間・送信が終わった後は隠す（同じ入口を2つ見せない） */
+.lp.svc .mbar{padding-bottom:calc(9px + env(safe-area-inset-bottom,0px));transition:transform .3s,opacity .3s}
+.lp.svc.dlvis .mbar{transform:translateY(110%);opacity:0;pointer-events:none}
+.lp.svc .mbar .p .u{font-size:13px;margin-left:1px}
+.lp.svc .mbar .p .lb{font-family:var(--body);font-size:10.5px;font-weight:700;color:#fff;background:var(--cy);
+  padding:1px 6px;margin-right:6px;vertical-align:2px;letter-spacing:.02em}
+.lp.svc .mbar .p.txt{font-family:var(--disp);font-weight:900;font-size:15px}
+
+/* ============ キーボード操作 ============
+   どこにいるか必ず見えるように。マウスのクリックでは出さない */
+.lp.svc a:focus-visible,.lp.svc button:focus-visible,.lp.svc summary:focus-visible{
+  outline:2px solid var(--bl);outline-offset:3px}
+.lp.svc .card .sub:focus-visible{outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){
+  .lp.svc .cube .draw{stroke-dashoffset:0!important}
+  .lp.svc .pf:hover::before{animation:none}
+  .lp.svc h1 .hl::after{animation:none!important;transform:none!important}
+}
+
+/* ============ 余白の詰め ============
+   lp-base の既定（セクション間最大74px・下110px）はこのページには広い。読む流れを切らない間隔に */
+.lp.svc .sec{padding-top:clamp(36px,4vw,56px)}
+.lp.svc .stepband{margin-top:clamp(40px,4.4vw,64px)}
+.lp.svc .stepband .sec{padding-top:0}
+.lp.svc .shell{padding-bottom:clamp(40px,4.4vw,64px)}
+.lp.svc .lpfoot{margin-top:0}
+
+/* 含まないもの：記号を自前で付ける（リセットで消えるため） */
+.lp.svc .exclude ul{list-style:none;padding-left:0}
+.lp.svc .exclude li{position:relative;padding-left:16px}
+.lp.svc .exclude li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;
+  border:1px solid var(--faint);transform:rotate(45deg)}

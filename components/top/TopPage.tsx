@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import SiteHeader from '@/components/SiteHeader';
+import { SiteFooterNav } from '@/components/SiteNav';
 import { company, ceoCareer } from '@/lib/top-cases';
 import { works, workKinds, beyond, type Work } from '@/lib/works';
 
@@ -380,7 +380,7 @@ export default function TopPage() {
                 <div className="done">
                   <p className="dt">受け付けました</p>
                   <p className="dd">
-                    ご入力のメールアドレス宛に、担当より2営業日以内に会社案内をお送りします。
+                    ご入力のメールアドレス宛に、担当より1営業日以内に会社案内をお送りします。
                   </p>
                 </div>
               ) : (
@@ -632,11 +632,9 @@ export default function TopPage() {
               <a href={`mailto:${company.email}`}>{company.email}</a>
             </span>
           </div>
-          <nav className="legal">
-            <Link href="/terms">利用規約</Link>
-            <Link href="/tokushoho">特定商取引法に基づく表記</Link>
-            <Link href="/privacy">プライバシーポリシー</Link>
-          </nav>
+          {/* サイトの案内（サービス・会社案内・お問い合わせ）と法務3ページ。
+              法務3ページは消さない（決済の審査で見られる） */}
+          <SiteFooterNav />
           <p className="cp">&copy; 2025 DP-GUILD. All rights reserved.</p>
         </div>
       </footer>

@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { client } from '@/lib/microcms';
 import type { BlogListResponse } from '@/lib/microcms';
+import { serviceSlugs } from '@/lib/services';
 
 const BASE_URL = 'https://dp-guild.com';
 
@@ -65,6 +66,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
   ];
+
+  // サービスページ（lib/services の serviceSlugs から自動。手で並べない）
+  const servicePages: MetadataRoute.Sitemap = serviceSlugs.map((slug) => ({
+    url: `${BASE_URL}/services/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.9,
+  }));
+  staticPages.push(...servicePages);
 
   // ブログ記事（microCMSから動的に取得）
   try {

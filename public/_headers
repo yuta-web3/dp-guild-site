@@ -1,0 +1,3 @@
+# 資料のPDFは検索に出さない（フォームを送った人へのメールでだけ渡す）
+/docs/*
+  X-Robots-Tag: noindex, nofollow

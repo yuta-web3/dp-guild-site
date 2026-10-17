@@ -20,7 +20,7 @@ export const documentSchema = z.object({
     .optional()
     .or(z.literal('')),
 
-  // どのサービスの資料か（lib/services.ts の slug）
+  // どのサービスの資料か（lib/services の slug）
   // サイトのURL。会社名より直接的で、そのまま開いて中身を見られる
   website: z.string()
     .max(300, 'URLは300文字以内で入力してください')

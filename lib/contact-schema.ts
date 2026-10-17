@@ -47,9 +47,8 @@ const utmField = z.string()
 
 export const lpContactSchema = z.object({
   company: z.string()
-    .max(100, '会社名は100文字以内で入力してください')
-    .optional()
-    .or(z.literal('')),
+    .min(1, '会社名・屋号は必須です')
+    .max(100, '会社名・屋号は100文字以内で入力してください'),
 
   name: z.string()
     .min(1, 'お名前は必須です')

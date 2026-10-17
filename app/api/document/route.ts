@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { ZodError } from 'zod';
 import { documentSchema } from '@/lib/document-schema';
 import { services } from '@/lib/services';
 
@@ -28,7 +29,7 @@ const autoReplyHtml = (name: string, serviceLabel: string, docUrl: string | null
              <p style="margin:24px 0;">
                <a href="${docUrl}" style="display:inline-block;background:#101522;color:#fff;text-decoration:none;padding:14px 28px;font-weight:bold;">資料をダウンロード</a>
              </p>`
-          : `<p>ご請求いただいた資料は、担当より2営業日以内にお送りいたします。</p>`
+          : `<p>ご請求いただいた資料は、担当より1営業日以内にお送りいたします。</p>`
       }
       <p>ご不明な点がありましたら、本メールにそのままご返信ください。</p>
       <div style="margin-top:28px;padding-top:18px;border-top:1px solid #e5e7eb;font-size:14px;color:#6b7280;">
@@ -72,29 +73,52 @@ async function notifySlack(d: {
   }
 }
 
+// 画面に出す文言は日本語だけ。入力の誤りは「どの欄の何が違うか」を返す（画面側でその欄の下に出す）
+const FIELD_MSG: Record<string, string> = {
+  company: '会社名・屋号を確かめてください',
+  name: 'お名前を確かめてください',
+  email: 'メールアドレスの形を確かめてください（例：you@example.com）',
+  phone: '電話番号を確かめてください',
+  website: 'URLを確かめてください',
+};
+const COMPANY_MAIL = 'info@dp-guild.com';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // スパム対策：見えない欄に入力があれば、送信できたように見せて何もしない（機械に手がかりを渡さない）
+    if (body && typeof body.honeypot === 'string' && body.honeypot.length > 0) {
+      return NextResponse.json({ success: true, docUrl: null });
+    }
+
     const data = documentSchema.parse(body);
 
-    // スパム対策
-    if (data.honeypot) {
-      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 });
-    }
-    if (Date.now() - data.timestamp < 3000) {
-      return NextResponse.json({ error: 'Please take your time to fill the form' }, { status: 400 });
+    // 起点は画面側で「最初に入力欄に触れた時刻」。自動入力ですぐ押す人をはじかないよう 1.5 秒にする
+    if (Date.now() - data.timestamp < 1500) {
+      return NextResponse.json(
+        { error: '送信が早すぎたため受け付けられませんでした。数秒おいて、もう一度「資料をもらう」を押してください。' },
+        { status: 400 }
+      );
     }
 
     // サービス指定が無ければ会社案内。トップページからの請求がこれにあたる
     const COMPANY_DOC = {
       slug: 'company',
       label: '会社案内',
-      doc: null as string | null,
+      doc: 'dp-guild-company-53231486c23b.pdf' as string | null,
     };
     const service = data.service ? services[data.service] : COMPANY_DOC;
     if (!service) {
-      return NextResponse.json({ error: 'Unknown service' }, { status: 400 });
+      return NextResponse.json(
+        { error: `このページからは受け付けられませんでした。お手数ですが ${COMPANY_MAIL} までメールでご連絡ください。` },
+        { status: 400 }
+      );
     }
+
+    // 保存とメールのどちらも失敗したら、受け付けていないことを画面に正直に返す（リードを黙って消さない）
+    let attempted = 0;
+    let delivered = 0;
 
     const docUrl = service.doc
       ? `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dp-guild.com'}/docs/${service.doc}`
@@ -102,6 +126,7 @@ export async function POST(request: NextRequest) {
 
     // 保存（お問い合わせと同じ inquiries テーブルに、資料請求として記録する）
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      attempted++;
       try {
         const { createClient } = await import('@supabase/supabase-js');
         const supabaseAdmin = createClient(
@@ -125,6 +150,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (error) console.error('Supabase insert error:', error);
+        else delivered++;
       } catch (dbError) {
         console.error('Database save failed:', dbError);
       }
@@ -132,6 +158,7 @@ export async function POST(request: NextRequest) {
 
     // メール送信
     if (resend) {
+      attempted++;
       try {
         const fromEmail = process.env.COMPANY_EMAIL || 'contact@dp-guild.com';
         const companyName = process.env.COMPANY_NAME || '株式会社DP-GUILD';
@@ -145,7 +172,8 @@ export async function POST(request: NextRequest) {
           html: autoReplyHtml(data.name, service.label, docUrl),
         });
 
-        await resend.emails.send({
+        // 社内への通知が届いたかを見る（Resend は失敗しても例外を投げず error を返す）
+        const notify = await resend.emails.send({
           from: `Document Request <${fromEmail}>`,
           to: toEmail,
           replyTo: data.email,
@@ -161,6 +189,8 @@ export async function POST(request: NextRequest) {
             ${docUrl ? '' : '<p style="color:#b45309;"><strong>※資料PDFが未登録のため、担当者から手動で送付してください。</strong></p>'}
           `,
         });
+        if (notify.error) throw new Error(`Resend: ${notify.error.message}`);
+        delivered++;
       } catch (emailError) {
         console.error('Email send failed:', emailError);
       }
@@ -168,9 +198,38 @@ export async function POST(request: NextRequest) {
 
     await notifySlack({ ...data, serviceLabel: service.label });
 
+    // 保存先もメールも設定されていない（attempted === 0）ときも、成功と見せない。設定漏れでリードが消えるのを防ぐ
+    if (delivered === 0) {
+      console.error(
+        attempted === 0
+          ? 'Document request lost: no storage or email configured'
+          : 'Document request lost: both save and email failed',
+        { service: service.slug }
+      );
+      return NextResponse.json(
+        { error: `送信を受け付けられませんでした。お手数ですが ${COMPANY_MAIL} までメールでご連絡ください。` },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({ success: true, docUrl });
   } catch (error) {
+    if (error instanceof ZodError) {
+      const issue = error.issues[0];
+      const field = issue ? String(issue.path[0] ?? '') : '';
+      // スキーマに書いた日本語の文言はそのまま使う。英語の既定文言（型の違い等）は欄ごとの日本語に置き換える
+      const jp = issue && /[ぁ-んァ-ン一-龥]/.test(issue.message);
+      const msg = FIELD_MSG[field] ? (jp ? issue.message : FIELD_MSG[field]) : '';
+      if (msg) return NextResponse.json({ error: msg, field }, { status: 400 });
+      return NextResponse.json(
+        { error: 'ページを読み込み直して、もう一度お試しください。' },
+        { status: 400 }
+      );
+    }
     console.error('Document request failed:', error);
-    return NextResponse.json({ error: '送信に失敗しました。時間をおいてお試しください。' }, { status: 400 });
+    return NextResponse.json(
+      { error: `送信できませんでした。もう一度お試しいただくか、${COMPANY_MAIL} までメールでご連絡ください。` },
+      { status: 400 }
+    );
   }
 }

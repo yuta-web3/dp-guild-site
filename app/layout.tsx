@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SiteNavProvider } from "@/components/SiteNav";
+import { services, serviceSlugs } from "@/lib/services";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -124,6 +126,13 @@ export const metadata: Metadata = {
   },
 };
 
+// ヘッダー・フッターのサービス案内。lib/services の並び順と label から自動で作る（手で並べない）。
+// 名前とURLだけをブラウザへ渡す（サービスの文言そのものは送らない）
+const serviceNav = serviceSlugs.map((slug) => ({
+  href: `/services/${slug}`,
+  label: services[slug].label,
+}));
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -160,7 +169,7 @@ export default function RootLayout({
             __html: JSON.stringify(localBusinessJsonLd),
           }}
         />
-        {children}
+        <SiteNavProvider services={serviceNav}>{children}</SiteNavProvider>
       </body>
     </html>
   );

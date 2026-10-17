@@ -356,7 +356,7 @@ export default function ContactClient() {
                     ありがとうございます
                   </p>
                   <div className="text-sm text-gray-600 space-y-2 ml-7">
-                    <p className="font-medium text-gray-700">2営業日以内に、以下の流れでご連絡します：</p>
+                    <p className="font-medium text-gray-700">1営業日以内に、以下の流れでご連絡します：</p>
                     <ol className="list-decimal list-inside space-y-1 text-gray-600">
                       <li>いただいた内容を整理し、状況を確認します</li>
                       <li>必要に応じて、選択肢をお伝えします</li>

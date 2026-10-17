@@ -22,8 +22,10 @@ export default function KenshoThanksPage() {
         <h1>送信しました。</h1>
         <p>2営業日以内に、ご入力のメールアドレス宛にご連絡します。</p>
         <p>自動返信メールをお送りしています。届かない場合は、迷惑メールフォルダをご確認ください。</p>
+        <p>返信までの間、Instagramで試している投稿をご覧ください。どれも、このページで書いたやり方で出しています。</p>
+        {/* 自社アカウントが決まったら href を Instagram のURLに変える */}
         <Link href="/" className="k-back">
-          株式会社DP-GUILD のトップページへ
+          株式会社DP-GUILD のサイトへ
         </Link>
       </main>
 

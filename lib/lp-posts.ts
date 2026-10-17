@@ -15,13 +15,21 @@ export type LpPost = {
   /** 画像の実寸。未指定は 1080×1350（Instagram の縦長） */
   width?: number;
   height?: number;
+  /** 投稿の状態。添え文がこれで変わる。更新し忘れても嘘にならないよう、省略時は testing
+   *  testing  … 試している最中（反応の数字を見て決める）
+   *  selected … 試した中で反応が出た（これから広告にする）
+   *  ad       … 広告にした */
+  status?: LpPostStatus;
 };
+
+export type LpPostStatus = 'testing' | 'selected' | 'ad';
 
 export const lpPosts: LpPost[] = [
   {
     id: 'p001',
     src: '/images/lp/posts/p001.png',
     alt: '効くか分からない広告に、お金を払っていませんか。',
+    status: 'testing',
   },
 ];
 

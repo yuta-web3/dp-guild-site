@@ -14,7 +14,7 @@
 //
 // 【器は1枚】
 // app/needs/[slug]/page.tsx がページの器。ここのデータを足せばページが増える。
-// サービスページ（lib/services.ts）と同じ作りにしている。
+// サービスページ（lib/services/）と同じ作りにしている。
 //
 // 【入口を4つにした根拠】Search Console 実測（2025-09-16〜2026-09-15）
 //   1記事あたりの表示回数で比べると、
@@ -143,7 +143,7 @@ export const needs: Record<string, Need> = {
         body: '誰に何を届けるアカウントかを先に決めて、文章でお見せします。合意を取ってから最初の分をつくり、公開できる状態でお渡しします。編集できるテンプレートと、投稿の判断ルールも一緒に渡すので、次からは社内で回せます。',
         term: '2週間',
         hand: '月に数時間。決める人が1人いれば足ります',
-        service: { slug: 'instagram-feed', label: 'Instagram初期構築（フィード）' },
+        service: { slug: 'sns-management', label: 'SNS運用代行' },
       },
       {
         condition: '社内に手が空いている人がいない',

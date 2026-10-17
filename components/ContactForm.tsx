@@ -239,7 +239,7 @@ export default function ContactForm() {
                 >
                   <p className="text-green-800 flex items-center">
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    お問い合わせありがとうございます。2営業日以内にご連絡させていただきます。
+                    お問い合わせありがとうございます。1営業日以内にご連絡させていただきます。
                   </p>
                 </motion.div>
               )}
