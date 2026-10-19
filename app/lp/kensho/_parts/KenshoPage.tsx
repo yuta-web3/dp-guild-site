@@ -1,11 +1,11 @@
 'use client';
 
-// 検証パッケージ LP（1から作り直し 2026-09-26）
+// 検証パッケージ LP（1から作り直し 2026-09-26／2026-10-19 サイトから独立させ、無料相談を資料請求に切り替えた）
 //
 // 土台は石井さんのデザインプロンプト（docs/DESIGN_PROMPT.md）本文：
 //   「当社の技術力そのものを見せる作品。開いた瞬間に『この会社は作れる』と分かるもの」
 //   ロゴの不可能立体を設計思想に。非対称・はみ出し・重ね・斜めの境界。アニメーションが主役。
-// LP として変えたのは中身だけ（入口→証拠→困りごと→仕組み→約束→手に入るもの→価格→相談）。
+// LP として変えたのは中身だけ（入口→証拠→困りごと→仕組み→約束→手に入るもの→価格→資料請求）。
 // 動きは「次に見せたいものへ目を連れて行く」ために置く（石井さん方針）。
 //   立方体が組み上がる → 見出しが押し出される → 「お金を払って」に光が走る → ボタン
 //   スクロールで立方体が分解し、各面が飛んでいく。仕組みの節は、スクロールで 9枚 → 3枚 → 1枚 と絞られる。
@@ -25,8 +25,8 @@ import {
   type MotionValue,
   type Variants,
 } from 'framer-motion';
-import SiteHeader from '@/components/SiteHeader';
-import { getLpPost, type LpPost, type LpPostStatus } from '@/lib/lp-posts';
+import LpHeader from './LpHeader';
+import { getLpPost, type LpPost, type LpPostStatus } from './posts';
 
 // ---- 定数。ここだけ変えれば表示が変わる ----
 const LP = {
@@ -434,7 +434,7 @@ export default function KenshoPage() {
     setPost(getLpPost(next.utm_content));
   }, []);
 
-  // 追従ボタン：入口の相談ボタンが出たあとに現れ、以降はずっと出しておく（石井さん 2026-09-26）。
+  // 追従ボタン：入口の資料請求のボタンが出たあとに現れ、以降はずっと出しておく（石井さん 2026-09-26）。
   // 1画面目の目の順番（立方体 → 見出し → ボタン）を崩さないよう、出すのは入口の演出が終わってから
   useEffect(() => {
     if (rm) {
@@ -483,7 +483,7 @@ export default function KenshoPage() {
     setSent('sending');
     setMsg('');
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/api/lp/kensho', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, honeypot, timestamp: startedAt.current, ...tracking }),
@@ -522,7 +522,7 @@ export default function KenshoPage() {
   const n3 = n2 + HL.length;
 
   return (
-    <div className="lp kensho">
+    <div className="lpk kensho">
       <canvas className="k-iso" ref={canvasRef} aria-hidden="true" />
       {PIXEL_ID && (
         <Script id="meta-pixel" strategy="afterInteractive">
@@ -535,7 +535,7 @@ export default function KenshoPage() {
         {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","yq8grqz6mv");`}
       </Script>
 
-      <SiteHeader here="検証パッケージ" />
+      <LpHeader here="検証パッケージ" />
 
       {/* ==================== 1. 入口 ==================== */}
       <section className="k-fv" ref={fvRef}>
@@ -597,12 +597,12 @@ export default function KenshoPage() {
           >
             <a href="#k-form" className="k-cta" onClick={goForm}>
               <span className="k-cta-shine" aria-hidden="true" />
-              <span className="t">無料で相談する</span>
+              <span className="t">資料を受け取る</span>
               <span className="ar" aria-hidden="true">
                 →
               </span>
             </a>
-            <p className="k-ctanote">電話番号は聞きません。メールで返信します。</p>
+            <p className="k-ctanote">資料はメールでお送りします。電話番号は聞きません。</p>
           </motion.div>
         </motion.div>
         <div className="k-cut" aria-hidden="true" />
@@ -739,7 +739,7 @@ export default function KenshoPage() {
           </Rise>
         </section>
 
-        {/* ==================== 7. 価格と無料相談。PCでは価格の右にフォームを置き、スクロールを減らす ==================== */}
+        {/* ==================== 7. 価格と資料請求。PCでは価格の右にフォームを置き、スクロールを減らす ==================== */}
         <section className="k-sec k-price-sec">
           <div className="k-pf">
             <div className="k-pf-l">
@@ -749,15 +749,17 @@ export default function KenshoPage() {
                 {LP.price ?? '価格はご相談時にお伝えします'}
                 {LP.price && LP.term && <small>／ {LP.term}</small>}
               </p>
-              <p className="k-pnote"><Tx s={'単発のパッケージです。\n月額や継続の契約は|ありません。\n相談は無料で、|相談したからといって|申し込む必要は|ありません。'} /></p>
+              <p className="k-pnote"><Tx s={'単発のパッケージです。\n月額や継続の契約は|ありません。\n資料の請求と相談は、|無料です。\n請求したからといって、|申し込む必要は|ありません。'} /></p>
               <p className="k-pnote"><Tx s={'検証パッケージの料金は、|反応の有無に|かかわらず|かかります。'} /></p>
               <div className="k-inc">
                 <div>
                   <h3>含まれるもの</h3>
                   <ul>
                     <li>投稿の制作</li>
+                    <li>コメントへの自動DMの設置</li>
+                    <li>申込の計測の設定</li>
                     <li>お客様のアカウントでの配信</li>
-                    <li>反応の計測</li>
+                    <li>反応と申込の計測</li>
                     <li>レポート</li>
                   </ul>
                 </div>
@@ -775,13 +777,13 @@ export default function KenshoPage() {
             <p className="k-must"><Tx s={'本サービスは、|投稿の制作・配信・計測・分析を|行うものであり、\n売上や集客などの|効果を保証するものでは|ありません。'} /></p>
             </div>
 
-            {/* 無料相談 */}
+            {/* 資料請求 */}
             <div className="k-pf-r k-formsec" id="k-form" ref={formRef}>
             <Rise className="k-formcard" rm={rm} y={60} r={-2}>
               <div className="k-formtop">
                 <p className="k">検証パッケージ</p>
-                <h2>無料で相談する</h2>
-                <p><Tx s={'1営業日以内に、|メールで返信します。\n電話はしません。'} /></p>
+                <h2>資料を受け取る</h2>
+                <p><Tx s={'送信すると、|資料をメールで|お送りします。\nご相談は、|そのメールへの返信で。|1営業日以内に|お答えします。'} /></p>
               </div>
               <form className="k-form" onSubmit={onSubmit} noValidate>
                 <div className="fld">
@@ -851,7 +853,7 @@ export default function KenshoPage() {
                 </div>
                 <div className="fld">
                   <label htmlFor="k-content">
-                    相談したいこと <span className="op">任意</span>
+                    ご質問・ご相談 <span className="op">任意</span>
                   </label>
                   <textarea
                     id="k-content"
@@ -876,14 +878,14 @@ export default function KenshoPage() {
                 <p className="k-bizonly"><Tx s={'事業者の方向けのサービスです。\n個人の方のご相談は|受け付けていません。'} /></p>
                 <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
                   <span className="k-cta-shine" aria-hidden="true" />
-                  <span className="t">{sent === 'sending' ? '送信中…' : '無料で相談する'}</span>
+                  <span className="t">{sent === 'sending' ? '送信中…' : '資料を受け取る'}</span>
                 </button>
                 {sent === 'error' && (
                   <p className="k-err" role="alert">
                     {msg}
                   </p>
                 )}
-                <p className="k-fnote">ご相談の内容とご連絡にのみ使用します。</p>
+                <p className="k-fnote">資料の送付とご連絡にのみ使用します。</p>
               </form>
             </Rise>
             </div>
@@ -913,7 +915,7 @@ export default function KenshoPage() {
         tabIndex={barOn ? 0 : -1}
       >
         <span>検証パッケージ</span>
-        <b>無料で相談する →</b>
+        <b>資料を受け取る →</b>
       </motion.a>
     </div>
   );
