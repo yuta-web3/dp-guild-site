@@ -7,7 +7,7 @@
    ただし立方体が入る高さは残す（余白ではなく、動きの置き場所） */
 .lp .shell{padding-bottom:clamp(18px,2vw,28px)}
 
-.lp .fvtxt{max-width:min(880px,100%);position:relative;z-index:2}
+.lp .fvtxt{max-width:min(var(--colw),100%);position:relative;z-index:2}
 
 /* 立方体は背景レイヤーに置く。同じ段に並べると、その高さぶん
    文章が押し下げられて死んだ余白になる。背景なら文章の位置は動かない */
@@ -63,7 +63,7 @@
 .lp .layer p{margin-top:10px;font-size:12.5px;line-height:1.75;color:var(--mut)}
 
 /* 資料を請求する理由。ページに載せないものが資料にあると示す */
-.lp .toask{position:relative;z-index:2;margin-top:clamp(16px,1.9vw,24px);max-width:720px;
+.lp .toask{position:relative;z-index:2;margin-top:clamp(16px,1.9vw,24px);max-width:var(--colw);
   font-size:13.5px;line-height:1.85;color:var(--ink);
   padding-left:14px;border-left:3px solid var(--cy)}
 .lp .toask b{font-weight:900}
@@ -113,7 +113,7 @@
 /* 見出しの右。切らずに全体を見せる（組み上がりを見せてから分解するため）。
    絶対配置なので、下の相談リストの位置には一切影響しない */
 .lp .cubewrap{position:absolute;z-index:0;pointer-events:none;opacity:.85;
-  right:0;top:-44px;transform:none;
+  right:0;top:4px;transform:none;
   width:clamp(110px,10vw,150px);aspect-ratio:1/1.06}
 .lp .cubewrap svg{position:relative;z-index:1;width:100%;height:100%;overflow:visible}
 
@@ -216,12 +216,12 @@
 .lp .case2 .opts li{font-size:13px;line-height:1.85;color:var(--mut)}
 
 /* 誰がやるか */
-.lp .ceo2{border-left:3px solid var(--ink);padding:4px 0 4px 16px;margin-top:18px;max-width:700px}
+.lp .ceo2{border-left:3px solid var(--ink);padding:4px 0 4px 16px;margin-top:18px;max-width:var(--colw)}
 .lp .ceo2 .nm{font-family:var(--disp);font-weight:900;font-size:15px}
 .lp .ceo2 .tx{margin-top:9px;font-size:13.5px;line-height:1.95;color:var(--ink)}
 
 /* 会社のこと */
-.lp .info{margin-top:18px;max-width:700px;border-top:1px solid var(--rule)}
+.lp .info{margin-top:18px;max-width:var(--colw);border-top:1px solid var(--rule)}
 .lp .info .row{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;
   padding:12px 2px;border-bottom:1px solid var(--rule);font-size:13.5px}
 .lp .info .row span:first-child{font-weight:700;color:var(--mut);font-size:12.5px}
@@ -300,8 +300,8 @@
 .lp .caselist.kinds .go{white-space:nowrap}
 
 /* 誰がやるか：左に顔写真、右に文章 */
-.lp .ceo2{display:grid;grid-template-columns:clamp(150px,15vw,200px) minmax(0,1fr);gap:clamp(18px,2.2vw,30px);
-  align-items:start;border-left:0;padding:0;max-width:760px}
+.lp .ceo2{display:grid;grid-template-columns:clamp(150px,17vw,260px) minmax(0,1fr);gap:clamp(18px,2.2vw,30px);
+  align-items:start;border-left:0;padding:0;max-width:var(--colw)}
 .lp .ceo2 .ph{aspect-ratio:4/5;overflow:hidden;background:var(--paper)}
 /* 元写真は上半身全体で顔が小さいので、顔（横50%・縦37%あたり）を中心に拡大して切り取る */
 .lp .ceo2 .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 35%;display:block;transform:scale(1.7);transform-origin:52% 38%}

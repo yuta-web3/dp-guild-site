@@ -1,0 +1,30 @@
+/* お問い合わせページ固有。共通は app/lp-base.css と app/top.css */
+
+/* 入力欄は lp-base の input と同じ見た目にそろえる */
+.lp .fld textarea{width:100%;font:inherit;font-size:14px;line-height:1.7;padding:11px 13px;color:var(--ink);
+  background:var(--paper);border:1px solid var(--rule);border-radius:0;resize:vertical;min-height:84px}
+.lp .fld textarea::placeholder{color:var(--faint)}
+.lp .fld textarea:focus{outline:2px solid var(--bl);outline-offset:-1px;background:var(--ground)}
+.lp.contact .fld .err{margin-top:5px}
+
+/* フォームだけのページ。右の相談パネルは無いので、その分の余白を取らない */
+.lp.contact{--panel:0px;--colw:640px}
+.lp.contact .shell{padding-top:clamp(96px,9vw,128px)}
+.lp.contact .ttl{font-family:var(--disp);font-weight:900;font-size:clamp(26px,3vw,34px);letter-spacing:-.02em}
+.lp.contact .guide{margin-top:10px;font-size:14px;color:var(--mut);line-height:1.8}
+.lp.contact .card{margin-top:clamp(20px,2.4vw,30px);border:1px solid var(--rule);background:var(--ground)}
+.lp.contact .card .bd{padding:clamp(20px,2.6vw,36px)}
+.lp.contact .fld{margin-bottom:16px}
+.lp.contact .fnote a{border-bottom:1px solid var(--rule)}
+.lp.contact .body{max-width:var(--colw)}
+
+/* 用件を選ぶボタン（複数選べる） */
+.lp.contact .fld .lbl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--mut);margin-bottom:7px}
+.lp.contact .chips{display:flex;flex-wrap:wrap;gap:7px}
+.lp.contact .chip{font:inherit;font-size:13px;font-weight:700;color:var(--ink);background:var(--paper);
+  border:1px solid var(--rule);padding:8px 13px;line-height:1.4;transition:background .15s,border-color .15s,color .15s}
+.lp.contact .chip:hover{border-color:var(--bl)}
+.lp.contact .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.lp.contact .chip:focus-visible{outline:2px solid var(--bl);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.lp.contact .chip{transition:none}}
+.lp.contact .fld .hint{font-size:11.5px;color:var(--mut);margin-top:5px}

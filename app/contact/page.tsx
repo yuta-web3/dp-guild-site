@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import ContactClient from './ContactClient';
+import '../lp-base.css';
+import '../top.css';
+import './contact.css';
 
 export const metadata: Metadata = {
   title: 'お問い合わせ - DP-GUILD',

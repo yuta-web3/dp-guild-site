@@ -13,7 +13,7 @@
   background:var(--paper);border:1px solid var(--rule);padding:7px 13px}
 
 /* ---- 教育の核心。1〜2行。ここだけ読めば何で決まるか分かる ---- */
-.lp .keyline{margin-top:16px;max-width:760px;
+.lp .keyline{margin-top:16px;max-width:var(--colw);
   font-family:var(--disp);font-weight:900;font-size:clamp(14px,1.5vw,17px);
   line-height:1.8;letter-spacing:-.01em;color:var(--ink);
   padding-left:15px;border-left:3px solid var(--cy)}
@@ -75,6 +75,6 @@
 .lp .app dd{margin:0;font-size:12.5px;line-height:1.7;color:var(--ink)}
 
 /* ---- 詳しい説明 ---- */
-.lp .learn{padding:4px 0 24px;max-width:680px}
+.lp .learn{padding:4px 0 24px;max-width:var(--colw)}
 .lp .learn p{font-size:14px;line-height:2;margin-top:14px;color:var(--ink)}
 .lp .learn p:first-child{margin-top:0}

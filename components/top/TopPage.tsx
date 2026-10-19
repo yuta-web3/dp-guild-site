@@ -635,7 +635,7 @@ export default function TopPage() {
           {/* サイトの案内（サービス・会社案内・お問い合わせ）と法務3ページ。
               法務3ページは消さない（決済の審査で見られる） */}
           <SiteFooterNav />
-          <p className="cp">&copy; 2025 DP-GUILD. All rights reserved.</p>
+          <p className="cp">&copy; 2026 DP-GUILD. All rights reserved.</p>
         </div>
       </footer>
 

@@ -105,3 +105,27 @@ export async function getAllBlogs() {
   
   return { contents: allContents, totalCount: allContents.length };
 }
+
+// ブログ一覧用：一覧に要る項目だけを全件取る（本文は取らない。重いため）
+export type BlogSummary = Pick<Blog, 'id' | 'title' | 'description' | 'category' | 'publishedAt' | 'eyecatch'>;
+
+export async function getBlogSummaries() {
+  const all: BlogSummary[] = [];
+  let offset = 0;
+  const limit = 100;
+  while (true) {
+    const res = await client.get<{ contents: BlogSummary[]; totalCount: number }>({
+      endpoint: 'blogs',
+      queries: {
+        limit,
+        offset,
+        orders: '-publishedAt',
+        fields: 'id,title,description,category,publishedAt,eyecatch',
+      },
+    });
+    all.push(...res.contents);
+    if (all.length >= res.totalCount || res.contents.length === 0) break;
+    offset += limit;
+  }
+  return all;
+}

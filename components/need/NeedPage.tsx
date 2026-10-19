@@ -198,7 +198,7 @@ export default function NeedPage({ need }: { need: Need }) {
         </div>
 
         <footer className="foot">
-          <p className="cp">&copy; 2025 DP-GUILD. All rights reserved.</p>
+          <p className="cp">&copy; 2026 DP-GUILD. All rights reserved.</p>
         </footer>
       </div>
 

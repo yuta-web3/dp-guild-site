@@ -51,6 +51,9 @@ export type Service = {
   title: [string, string];
   /** title[1] の中にそのまま含まれる語 */
   titleHighlight: string;
+  /** 最初の画面の説明。2行に収まる長さ（最初の画面は短く、濃く） */
+  summary: string;
+  /** 本文の最初に置く説明（検索で読まれる言葉を含む。最初の画面には出さない） */
   lede: string[];
   /** 用語の補足。不要なら null */
   termline: string | null;

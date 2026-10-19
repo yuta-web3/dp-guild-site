@@ -20,10 +20,11 @@ export const contactSchema = z.object({
     .optional()
     .or(z.literal('')),
 
+  // 任意（お問い合わせは連絡先が分かればよい。相談内容は空でも受け付ける）
   content: z.string()
-    .min(1, '要件・相談内容は必須です')
-    .min(10, '要件・相談内容は10文字以上で入力してください')
-    .max(2000, '要件・相談内容は2000文字以内で入力してください'),
+    .max(2000, '要件・相談内容は2000文字以内で入力してください')
+    .optional()
+    .or(z.literal('')),
 
   // ハニーポット（スパム対策）
   honeypot: z.string().max(0),

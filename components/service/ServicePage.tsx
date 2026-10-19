@@ -478,7 +478,6 @@ export default function ServicePage({ service }: { service: Service }) {
   // モニター価格はFVで1回だけ出す。リードに同じ金額が書いてあれば、FVの帯もパネルの帯も出さない（同じ画面に2回出さない）
   const monitorKey = monitor ? (monitor.split('：')[1] || monitor).split('（')[0] : '';
   const ledeHasMonitor = !!monitor && service.lede.join('').includes(monitorKey);
-  const fvMonitor = monitor && !ledeHasMonitor ? monitor : null;
   const panelMonitor = monitor && !ledeHasMonitor ? monitor : null;
 
   // スマホの固定バーに出す一行。金額があるページは、払う金額（モニター価格があればそちら）の最安値。
@@ -545,18 +544,8 @@ export default function ServicePage({ service }: { service: Service }) {
                 {afterHl}
               </h1>
               <p className="lede rv up" {...fd(2)}>
-                {service.lede.map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    {i < service.lede.length - 1 && <br />}
-                  </span>
-                ))}
+                {service.summary}
               </p>
-              {service.termline && (
-                <p className="termline rv up" {...fd(3)}>
-                  {service.termline}
-                </p>
-              )}
             </div>
 
             <dl className={`facts n${facts.length} rv up`} {...fd(3)}>
@@ -574,12 +563,6 @@ export default function ServicePage({ service }: { service: Service }) {
                 );
               })}
             </dl>
-            {fvMonitor && (
-              <p className={`fvmon rv up${panelMonitor ? ' dup' : ''}`} {...fd(4)}>
-                {fvMonitor}
-              </p>
-            )}
-
             {proofTop.length > 0 && (
               <a className={`proofline rv up${proofPlain ? ' plain' : ''}`} {...fd(4)} href="#proof">
                 <span className="pk">当社の実績</span>
@@ -614,13 +597,14 @@ export default function ServicePage({ service }: { service: Service }) {
             </ul>
           </div>
 
-          {/* 読み終えた目を右のパネルへ渡す一行。ボタンにはしない（入口は右の送信ボタン1つ）。
-              広い画面だけ。狭い画面では下の固定バーが入口になる */}
-          <p className="handoff rv up" {...fd(6)} aria-hidden="true">
-            <span className="k">まだ決めなくて大丈夫です。</span>
-            <span className="t">まずは右の資料をご覧ください</span>
-            <span className="ar">→</span>
-          </p>
+          {/* 読み終えた目を右のパネルへ渡す帯。押すと資料請求の欄へ移る（広い画面だけ。狭い画面では下の固定バーが入口） */}
+          <a className="handoff rv up" {...fd(6)} href="#dl">
+            <span className="tx">
+              <span className="k">まだ決めなくて大丈夫です。</span>
+              <span className="t">まずは右の資料をご覧ください</span>
+            </span>
+            <span className="ar" aria-hidden="true">→</span>
+          </a>
         </section>
 
         {/* ==================== 資料請求パネル ====================
@@ -774,6 +758,16 @@ export default function ServicePage({ service }: { service: Service }) {
             FVで判断できなかった人が読む場所。削らずに書く。
             証拠（実績）は「何が変わるか」の直後に置く。料金より前に信じる理由を渡す */}
         <main className="body">
+          {/* 最初の画面から下ろした説明と用語。検索で読まれる言葉はここに残す */}
+          <section className="sec intro">
+            {service.lede.map((line, i) => (
+              <p key={i} className="introp">
+                {line}
+              </p>
+            ))}
+            {service.termline && <p className="termline">{service.termline}</p>}
+          </section>
+
           <section className="sec">
             {sechead('こんな状態ではありませんか')}
             <ul className="probs">

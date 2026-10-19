@@ -76,7 +76,7 @@ const createEmailHtml = (data: { name: string; email: string; company?: string; 
       ` : ''}
       <div class="field">
         <div class="label">ご相談内容</div>
-        <div class="value" style="white-space: pre-wrap;">${data.content}</div>
+        <div class="value" style="white-space: pre-wrap;">${data.content || '（未記入）'}</div>
       </div>
 
       <div class="footer">
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
     const lpData = isLpRequest(body) ? lpContactSchema.parse(body) : null;
     const validatedData = lpData
       ? { ...lpData, website: undefined as string | undefined, content: lpData.content || '' }
-      : contactSchema.parse(body);
+      : (() => { const d = contactSchema.parse(body); return { ...d, content: d.content || '' }; })();
     const routeLine = lpData ? buildRouteLine(lpData) : '';
 
     // スパム対策: ハニーポットチェック

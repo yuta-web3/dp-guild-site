@@ -1,9 +1,13 @@
 import Link from 'next/link';
-import { getBlogById, getAllBlogs, type FAQ } from '@/lib/microcms';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
+import { getBlogById, getAllBlogs, getBlogSummaries, type FAQ, type BlogSummary } from '@/lib/microcms';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
+import IsoGrid from '@/components/IsoGrid';
+import ReadProgress from '@/components/blog/ReadProgress';
+import '../../lp-base.css';
+import '../blog.css';
 
 export const revalidate = 60;
 
@@ -97,6 +101,32 @@ export async function generateStaticParams() {
   }));
 }
 
+// 本文の大見出し（h2）から目次を作る。idが無い見出しには付ける
+function withToc(html: string) {
+  const toc: { id: string; text: string }[] = [];
+  let n = 0;
+  const out = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/g, (_m, attrs: string, inner: string) => {
+    n += 1;
+    const found = /\bid="([^"]+)"/.exec(attrs);
+    const id = found ? found[1] : `sec-${n}`;
+    const text = inner.replace(/<[^>]+>/g, '').trim();
+    if (text) toc.push({ id, text });
+    return found ? `<h2${attrs}>${inner}</h2>` : `<h2${attrs} id="${id}">${inner}</h2>`;
+  });
+  return { html: out, toc };
+}
+
+// 同じカテゴリの新しい記事3つ。足りなければ新しい記事で埋める
+async function related(id: string, categoryId?: string): Promise<BlogSummary[]> {
+  try {
+    const all = (await getBlogSummaries()).filter((b) => b.id !== id);
+    const same = all.filter((b) => categoryId && b.category?.id === categoryId);
+    return [...same, ...all.filter((b) => !same.includes(b))].slice(0, 3);
+  } catch {
+    return [];
+  }
+}
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -111,8 +141,14 @@ export default async function BlogDetailPage({ params }: Props) {
     notFound();
   }
 
+  const { html, toc } = withToc(blog.content);
+  const more = await related(id, blog.category?.id);
+
+  const date = (d: string) =>
+    new Date(d).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.');
+
   return (
-    <div className="font-sans text-gray-900 bg-white min-h-screen">
+    <div className="lp blog post">
       {/* Article JSON-LD構造化データ */}
       <script
         type="application/ld+json"
@@ -130,144 +166,138 @@ export default async function BlogDetailPage({ params }: Props) {
         />
       )}
 
-      <SiteHeader here="読みもの" hereHref="/blog" cta />
+      <IsoGrid />
+      <ReadProgress />
+      <SiteHeader here="ブログ" hereHref="/blog" />
 
-      {/* Article */}
-      <article className="pt-28 pb-16">
-        <div className="container mx-auto px-4 md:px-8 max-w-4xl">
-          {/* Back link */}
-          <Link
-            href="/blog"
-            className="inline-flex items-center text-gray-500 hover:text-gray-600 mb-8 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            記事一覧に戻る
-          </Link>
-
-          {/* Title（H1） */}
-          <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-6 leading-tight">
-            {blog.title}
-          </h1>
-
-          {/* Category & Date & Author */}
-          <div className="flex flex-wrap items-center gap-4 mb-8">
+      <div className="shell">
+        <article className="body bx-article">
+          {/* パンくず */}
+          <nav className="bx-crumb" aria-label="現在地">
+            <Link href="/blog">ブログ</Link>
             {blog.category && (
-              <span className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
-                {blog.category.name}
-              </span>
+              <>
+                <span aria-hidden="true">/</span>
+                <Link href={`/blog?category=${blog.category.id}`}>{blog.category.name}</Link>
+              </>
             )}
-            <div className="flex items-center text-gray-500 text-sm">
-              <Calendar className="w-4 h-4 mr-1" />
-              {new Date(blog.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.')}
-            </div>
-            <div className="flex items-center text-gray-500 text-sm">
-              <User className="w-4 h-4 mr-1" />
-              {AUTHOR.name}
-            </div>
+          </nav>
+
+          <h1 className="bx-ttl">{blog.title}</h1>
+
+          <div className="bx-by">
+            {blog.category && <span className="bx-tag">{blog.category.name}</span>}
+            <time dateTime={blog.publishedAt}>{date(blog.publishedAt)}</time>
+            <span className="au">{AUTHOR.name}</span>
           </div>
 
           {/* TL;DR - 要点ボックス（ガイドライン準拠） */}
           {blog.tldr && (
-            <div className="bg-[#e8f4fd] border border-[#b8daff] rounded-lg p-6 mb-12">
-              <h2 className="text-lg font-bold text-[#004085] mb-4">この記事の要点</h2>
-              <ul className="space-y-3 pl-5 list-disc marker:text-[#004085]">
+            <div className="bx-tldr">
+              <h2>この記事の要点</h2>
+              <ul>
                 {blog.tldr.split(/\\n|\n/).filter(Boolean).map((line, i) => (
-                  <li key={i} className="text-gray-700 leading-relaxed text-[15px]">{line.trim()}</li>
+                  <li key={i}>{line.trim()}</li>
                 ))}
               </ul>
             </div>
           )}
 
           {/* 中盤CTA - シンプルバナー */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-gray-700 text-sm md:text-base">
-              <span className="mr-2">💡</span>
-              SNS・Web・DXのお困りごと、まずは相談してみませんか？
-            </p>
-            <a
-              href="https://timerex.net/s/info_f990_429a/709e9191"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="whitespace-nowrap px-5 py-2 bg-[#0F172A] text-white rounded-md text-sm font-medium hover:bg-[#1e293b] transition-colors"
-            >
-              無料相談はこちら
+          <div className="bx-midcta">
+            <p>SNS・Web・DXのお困りごと、まずは相談してみませんか？</p>
+            <a href="https://timerex.net/s/info_f990_429a/709e9191" target="_blank" rel="noopener noreferrer">
+              無料相談はこちら<span aria-hidden="true">→</span>
             </a>
           </div>
 
+          {/* 目次（大見出しが3つ以上の記事だけ） */}
+          {toc.length >= 3 && (
+            <nav className="bx-toc" aria-label="目次">
+              <p className="h">目次</p>
+              <ol>
+                {toc.map((t) => (
+                  <li key={t.id}>
+                    <a href={`#${t.id}`}>{t.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+
           {/* Content - ガイドライン準拠のスタイリング */}
-          <div
-            className="article-content"
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          />
+          <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} />
 
           {/* FAQ - ガイドライン準拠（本文の後、CTA前） */}
           {blog.faq && blog.faq.length > 0 && (
-            <section className="mt-20 pt-10 border-t border-gray-200">
-              <h2 className="text-2xl font-bold text-[#0F172A] mb-8">よくある質問</h2>
-              <div className="space-y-6">
+            <section className="bx-faq">
+              <h2>よくある質問</h2>
+              <dl>
                 {blog.faq.map((item, index) => (
-                  <div key={index} className="border-b border-gray-100 pb-6 last:border-b-0">
-                    <h3 className="text-lg font-bold text-[#0F172A] mb-3">
-                      Q. {item.question}
-                    </h3>
-                    <p className="text-gray-700 leading-relaxed pl-6">
-                      A. {item.answer}
-                    </p>
+                  <div key={index}>
+                    <dt>
+                      <span aria-hidden="true">Q</span>
+                      {item.question}
+                    </dt>
+                    <dd>
+                      <span aria-hidden="true">A</span>
+                      {item.answer}
+                    </dd>
                   </div>
+                ))}
+              </dl>
+            </section>
+          )}
+
+          {/* CTA - 強化版 */}
+          <div className="bx-endcta">
+            <h2>お困りごとはありませんか？</h2>
+            <p>
+              「何から手をつければいいかわからない」という状態でも大丈夫です。
+              <br />
+              まずはお気軽にご相談ください。
+            </p>
+            <div className="bt">
+              <a className="pri" href="https://timerex.net/s/info_f990_429a/709e9191" target="_blank" rel="noopener noreferrer">
+                無料で相談する（Zoom）
+              </a>
+              <a className="sec2" href="/contact">
+                お問い合わせフォーム
+              </a>
+            </div>
+          </div>
+
+          {more.length > 0 && (
+            <section className="bx-rel">
+              <h2>
+                {blog.category && more.every((b) => b.category?.id === blog.category?.id)
+                  ? `「${blog.category.name}」のほかの記事`
+                  : 'ほかの記事'}
+              </h2>
+              <div className="bx-relgrid">
+                {more.map((b) => (
+                  <Link key={b.id} href={`/blog/${b.id}`} className="bx-relcard">
+                    <span className="bx-meta">
+                      {b.category && <span className="bx-tag">{b.category.name}</span>}
+                      <time dateTime={b.publishedAt}>{date(b.publishedAt)}</time>
+                    </span>
+                    <span className="bx-title">{b.title}</span>
+                    <span className="bx-more">
+                      読む<i />
+                    </span>
+                  </Link>
                 ))}
               </div>
             </section>
           )}
 
-          {/* CTA - 強化版 */}
-          <div className="mt-16 bg-[#0F172A] text-white p-8 md:p-10 rounded-xl">
-            <h2 className="text-xl md:text-2xl font-bold mb-4 text-center">
-              お困りごとはありませんか？
-            </h2>
-            <p className="text-gray-300 text-center mb-8 text-sm md:text-base">
-              「何から手をつければいいかわからない」という状態でも大丈夫です。<br className="hidden md:block" />
-              まずはお気軽にご相談ください。
-            </p>
-            <div className="flex flex-col md:flex-row gap-4 justify-center">
-              <a
-                href="https://timerex.net/s/info_f990_429a/709e9191"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0F172A] rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-              >
-                無料で相談する（Zoom）
-              </a>
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-[#0F172A] transition-colors"
-              >
-                お問い合わせフォーム
-              </a>
-            </div>
-          </div>
-        </div>
-      </article>
+          <p className="bx-back">
+            <Link href="/blog">← ブログの一覧へ</Link>
+          </p>
+        </article>
+      </div>
 
-      {/* Footer */}
-      <footer className="bg-[#0F172A] text-white py-12">
-        <div className="container mx-auto px-4 md:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <span className="text-xl font-bold">DP-GUILD</span>
-            </div>
-            <nav className="flex space-x-6 text-sm text-gray-400">
-              <Link href="/" className="hover:text-white transition-colors">ホーム</Link>
-              <Link href="/about" className="hover:text-white transition-colors">会社概要</Link>
-              <Link href="/results" className="hover:text-white transition-colors">実績・事例</Link>
-              <Link href="/blog" className="hover:text-white transition-colors">ブログ</Link>
-              <Link href="/contact" className="hover:text-white transition-colors">お問い合わせ</Link>
-            </nav>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} DP-GUILD Inc. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

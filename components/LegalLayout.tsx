@@ -1,6 +1,5 @@
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
-import { SiteFooterNav } from "@/components/SiteNav";
+import SiteFooter from '@/components/SiteFooter';
 
 // 法務系ページ（利用規約・特商法・プラポリ）共通レイアウト
 //
@@ -15,18 +14,18 @@ export const legalRobots = LEGAL_DRAFT
 
 export default function LegalLayout({
   title,
-  titleEn,
   updatedAt,
   children,
 }: {
   title: string;
-  titleEn: string;
+  /** 使っていない（英語の飾り見出しは出さない）。呼び出し側の互換のため残す */
+  titleEn?: string;
   updatedAt?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="font-sans text-gray-900 bg-white">
-      <SiteHeader here={title} cta />
+      <SiteHeader here={title} />
 
       {LEGAL_DRAFT && (
         <div className="pt-20">
@@ -43,9 +42,6 @@ export default function LegalLayout({
       {/* タイトル */}
       <section className={`${LEGAL_DRAFT ? "pt-10" : "pt-32"} pb-10 md:pb-14 px-5 md:px-8`}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs md:text-sm text-gray-400 tracking-widest uppercase mb-3 md:mb-4">
-            {titleEn}
-          </p>
           <h1 className="text-2xl md:text-4xl font-bold text-[#0F172A] leading-snug">
             {title}
           </h1>
@@ -67,31 +63,7 @@ export default function LegalLayout({
       </section>
 
       {/* フッター（シンプル形式） */}
-      <footer className="bg-[#0F172A] py-10 md:py-12">
-        <div className="max-w-6xl mx-auto px-5 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div className="text-xl font-bold text-white">DP-GUILD</div>
-            <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-              <Link href="/" className="text-gray-300 hover:text-white transition-colors">ホーム</Link>
-              <Link href="/about" className="text-gray-300 hover:text-white transition-colors">会社概要</Link>
-              <Link href="/results" className="text-gray-300 hover:text-white transition-colors">実績・事例</Link>
-              <Link href="/blog" className="text-gray-300 hover:text-white transition-colors">ブログ</Link>
-              <Link href="/contact" className="text-gray-300 hover:text-white transition-colors">お問い合わせ</Link>
-            </nav>
-          </div>
-          <SiteFooterNav only="services" />
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs mt-6">
-            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">利用規約</Link>
-            <Link href="/tokushoho" className="text-gray-400 hover:text-white transition-colors">特定商取引法に基づく表記</Link>
-            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">プライバシーポリシー</Link>
-          </div>
-          <div className="border-t border-gray-800 pt-6 mt-6">
-            <p className="text-center text-gray-500 text-xs md:text-sm">
-              &copy; 2025 DP-GUILD. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
