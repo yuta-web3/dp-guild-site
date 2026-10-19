@@ -756,8 +756,10 @@ export default function KenshoPage() {
                   <h3>含まれるもの</h3>
                   <ul>
                     <li>投稿の制作</li>
+                    <li>コメントへの自動DMの設置</li>
+                    <li>申込の計測の設定</li>
                     <li>お客様のアカウントでの配信</li>
-                    <li>反応の計測</li>
+                    <li>反応と申込の計測</li>
                     <li>レポート</li>
                   </ul>
                 </div>
