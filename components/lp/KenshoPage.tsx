@@ -30,7 +30,7 @@ import { getLpPost, type LpPost, type LpPostStatus } from '@/lib/lp-posts';
 
 // ---- 定数。ここだけ変えれば表示が変わる ----
 const LP = {
-  price: null as string | null, // 未設定なら「価格はご相談時にお伝えします」
+  price: '200,000円（税別）' as string | null, // null にすると「価格はご相談時にお伝えします」
   term: null as string | null,
 };
 
@@ -781,7 +781,7 @@ export default function KenshoPage() {
               <div className="k-formtop">
                 <p className="k">検証パッケージ</p>
                 <h2>無料で相談する</h2>
-                <p><Tx s={'2営業日以内に、|メールで返信します。\n電話はしません。'} /></p>
+                <p><Tx s={'1営業日以内に、|メールで返信します。\n電話はしません。'} /></p>
               </div>
               <form className="k-form" onSubmit={onSubmit} noValidate>
                 <div className="fld">

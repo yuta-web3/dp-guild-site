@@ -9,7 +9,7 @@ import '../kensho.css';
 
 export const metadata: Metadata = {
   title: '送信しました｜検証パッケージの無料相談',
-  description: 'ご相談を受け付けました。2営業日以内に、メールでご連絡します。',
+  description: 'ご相談を受け付けました。1営業日以内に、メールでご連絡します。',
   robots: { index: false, follow: false },
 };
 
@@ -20,7 +20,7 @@ export default function KenshoThanksPage() {
 
       <main className="k-wrap k-thanks">
         <h1>送信しました。</h1>
-        <p>2営業日以内に、ご入力のメールアドレス宛にご連絡します。</p>
+        <p>1営業日以内に、ご入力のメールアドレス宛にご連絡します。</p>
         <p>自動返信メールをお送りしています。届かない場合は、迷惑メールフォルダをご確認ください。</p>
         <p>返信までの間、Instagramで試している投稿をご覧ください。どれも、このページで書いたやり方で出しています。</p>
         {/* 自社アカウントが決まったら href を Instagram のURLに変える */}

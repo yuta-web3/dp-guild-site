@@ -31,7 +31,8 @@ function buildRouteLine(d: LpContactFormData): string {
 }
 
 // メールテンプレート
-const createEmailHtml = (data: { name: string; email: string; company?: string; website?: string; content: string }) => `
+// replyDays：LP（検証パッケージ）は1営業日、サイト全体のお問い合わせは2営業日
+const createEmailHtml = (data: { name: string; email: string; company?: string; website?: string; content: string }, replyDays = 2) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,7 +81,7 @@ const createEmailHtml = (data: { name: string; email: string; company?: string; 
       </div>
 
       <div class="footer">
-        <p>2営業日以内に担当者よりご連絡させていただきます。</p>
+        <p>${replyDays}営業日以内に担当者よりご連絡させていただきます。</p>
         <p style="margin-top: 20px;">
           株式会社DP-GUILD<br>
           〒520-3333 滋賀県甲賀市甲南町希望ケ丘3丁目12-9<br>
@@ -218,7 +219,7 @@ export async function POST(request: NextRequest) {
           to: validatedData.email,
           replyTo: toEmail,
           subject: 'お問い合わせありがとうございます',
-          html: createEmailHtml(validatedData),
+          html: createEmailHtml(validatedData, lpData ? 1 : 2),
         });
         console.log('Auto-reply email result:', autoReplyResult);
 
