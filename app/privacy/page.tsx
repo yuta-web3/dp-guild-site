@@ -7,7 +7,7 @@ import LegalLayout, { legalRobots } from "@/components/LegalLayout";
 const ENACTED_DATE: string | null = "2026年9月6日";
 // 2026-09-30 改定：Microsoft Clarity（ページ内の操作の分析）を追記
 // 2026-09-27 改定：Instagramからのご相談（経路・投稿の記録）、Instagramでのメッセージ、広告の効果測定（Meta）、メール送信（Resend）を追記
-// 2026-10-20 改定：資料請求（資料の送付）を追記
+// 2026-10-20 改定：資料請求（資料請求フォームで取得する情報・資料の送付）を追記
 const REVISED_DATE = "2026年10月20日";
 
 export const metadata: Metadata = {
@@ -33,6 +33,10 @@ export default function PrivacyPage() {
         <li>
           <strong>お問い合わせフォーム</strong>
           ：お名前、メールアドレス、会社名・屋号、ご相談・ご質問の内容
+        </li>
+        <li>
+          <strong>資料請求フォーム</strong>
+          ：会社名・屋号、お名前、メールアドレス、サイトのURL（任意）、電話番号（任意）
         </li>
         <li>
           <strong>Instagramからの資料請求・ご相談</strong>
