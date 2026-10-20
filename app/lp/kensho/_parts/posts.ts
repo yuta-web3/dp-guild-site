@@ -24,14 +24,8 @@ export type LpPost = {
 
 export type LpPostStatus = 'testing' | 'selected' | 'ad';
 
-export const lpPosts: LpPost[] = [
-  {
-    id: 'p001',
-    src: '/images/lp/posts/p001.png',
-    alt: '効くか分からない広告に、お金を払っていませんか。',
-    status: 'testing',
-  },
-];
+// 本物の投稿ができたら足す（画像は public/images/lp/posts/ に投稿IDの名前で置く）
+export const lpPosts: LpPost[] = [];
 
 /** utm_content から対応する投稿を引く。無ければ undefined */
 export function getLpPost(id: string | null | undefined): LpPost | undefined {

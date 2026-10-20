@@ -5,6 +5,10 @@ import LegalLayout, { legalRobots } from "@/components/LegalLayout";
 // 2026-09-06 石井さん確認済み。外国移転は国名＋PPC参照リンクを明記して公開可の状態。
 
 const ENACTED_DATE: string | null = "2026年9月6日";
+// 2026-09-30 改定：Microsoft Clarity（ページ内の操作の分析）を追記
+// 2026-09-27 改定：Instagramからのご相談（経路・投稿の記録）、Instagramでのメッセージ、広告の効果測定（Meta）、メール送信（Resend）を追記
+// 2026-10-20 改定：資料請求（資料の送付）を追記
+const REVISED_DATE = "2026年10月20日";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
@@ -17,8 +21,7 @@ export default function PrivacyPage() {
   return (
     <LegalLayout
       title="プライバシーポリシー"
-      titleEn="Privacy Policy"
-      updatedAt={ENACTED_DATE ? `制定日: ${ENACTED_DATE}` : undefined}
+      updatedAt={ENACTED_DATE ? `制定日: ${ENACTED_DATE} ／ 改定日: ${REVISED_DATE}` : undefined}
     >
       <p>
         株式会社DP-GUILD（以下「当社」）は、当社のウェブサイト（dp-guild.com）およびサービスの提供にあたり、お客様の個人情報を以下の方針に基づき取り扱います。
@@ -29,7 +32,15 @@ export default function PrivacyPage() {
       <ul>
         <li>
           <strong>お問い合わせフォーム</strong>
-          ：お名前、メールアドレス、会社名・屋号、ご相談内容
+          ：お名前、メールアドレス、会社名・屋号、ご相談・ご質問の内容
+        </li>
+        <li>
+          <strong>Instagramからの資料請求・ご相談</strong>
+          ：当社のInstagramの投稿やメッセージからご相談ページにお越しいただいた場合の、お越しいただいた経路（プロフィール、メッセージ、広告の別）と投稿を示す情報（ページのURLに含まれる情報）、および最初に開いたページのURL。これらは資料請求・ご相談の内容と合わせて記録します。
+        </li>
+        <li>
+          <strong>Instagramでのコメント・メッセージ</strong>
+          ：当社アカウントの投稿にコメントいただいた方へ、ご案内のメッセージをお送りすることがあります。その際、Instagramのユーザー名、コメントおよびメッセージの内容を取得します。
         </li>
         <li>
           <strong>サービスのお申込み・決済</strong>
@@ -41,13 +52,14 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>アクセス解析</strong>
-          ：Cookie等を用いたアクセス情報（Google Analyticsを利用）。これらは単体では特定の個人を識別できない情報ですが、他の情報と組み合わせて識別できる場合には、個人情報として取り扱います。
+          ：Cookie等を用いたアクセス情報（Google Analyticsを利用）、およびページ内での操作の記録（スクロール・クリック等。Microsoft Clarityを利用）。また、広告の効果測定のため、Meta Platforms, Inc.が提供する計測ツールを利用する場合があります。これらは単体では特定の個人を識別できない情報ですが、他の情報と組み合わせて識別できる場合には、個人情報として取り扱います。
         </li>
       </ul>
 
       <h2>2. 利用目的</h2>
       <p>取得した個人情報は、次の目的で利用します。</p>
       <ul>
+        <li>資料の送付</li>
         <li>お問い合わせ・ご相談への回答、日程調整等のご連絡</li>
         <li>サービスの提供、納品物の送付、代金の請求・決済</li>
         <li>サービスに関する重要なお知らせの送付</li>
@@ -55,6 +67,9 @@ export default function PrivacyPage() {
           当社サービスのご案内（納品後のレビュー・関連サービスのご提案を含みます）
         </li>
         <li>サイトの利便性向上・コンテンツ改善のための分析</li>
+        <li>
+          当社の投稿・広告の効果の測定と改善（どの経路・投稿から資料請求・ご相談いただいたかの集計を含みます）
+        </li>
       </ul>
 
       <h2>3. 第三者提供</h2>
@@ -71,24 +86,39 @@ export default function PrivacyPage() {
           <tr>
             <th scope="col">利用目的</th>
             <th scope="col">提供先の事業者</th>
-            <th scope="col">所在国</th>
+            <th scope="col" style={{ whiteSpace: "nowrap" }}>所在国</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>決済処理</td>
             <td>Stripe, Inc.</td>
-            <td>アメリカ合衆国</td>
+            <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
           </tr>
           <tr>
             <td>アクセス解析</td>
             <td>Google LLC</td>
-            <td>アメリカ合衆国</td>
+            <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
+          </tr>
+          <tr>
+            <td>ページ内の操作の分析（ヒートマップ等）</td>
+            <td>Microsoft Corporation</td>
+            <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
+          </tr>
+          <tr>
+            <td>メールの送信（自動返信・社内への通知）</td>
+            <td>Resend（メール配信サービスの提供事業者）</td>
+            <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
+          </tr>
+          <tr>
+            <td>広告の効果測定、Instagramでのメッセージの送受信</td>
+            <td>Meta Platforms, Inc.</td>
+            <td style={{ whiteSpace: "nowrap" }}>アメリカ合衆国</td>
           </tr>
           <tr>
             <td>日程調整</td>
             <td>株式会社TimeRex</td>
-            <td>日本</td>
+            <td style={{ whiteSpace: "nowrap" }}>日本</td>
           </tr>
         </tbody>
       </table>
@@ -106,7 +136,7 @@ export default function PrivacyPage() {
 
       <h2>5. Cookieの利用</h2>
       <p>
-        当サイトでは、アクセス解析のためにCookieを利用しています。ブラウザの設定によりCookieを無効にすることができますが、その場合も当サイトの閲覧に支障はありません。
+        当サイトでは、アクセス解析および広告の効果測定のためにCookie等を利用しています。ブラウザの設定によりCookieを無効にすることができますが、その場合も当サイトの閲覧に支障はありません。
       </p>
 
       <h2>6. 安全管理</h2>

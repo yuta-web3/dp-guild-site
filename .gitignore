@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# wrangler の手元実行で作られる一時ファイル
+.wrangler/

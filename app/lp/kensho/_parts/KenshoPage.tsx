@@ -1,11 +1,11 @@
 'use client';
 
-// 検証パッケージ LP（1から作り直し 2026-09-26）
+// 検証パッケージ LP（1から作り直し 2026-09-26／2026-10-19 サイトから独立させ、無料相談を資料請求に切り替えた）
 //
 // 土台は石井さんのデザインプロンプト（docs/DESIGN_PROMPT.md）本文：
 //   「当社の技術力そのものを見せる作品。開いた瞬間に『この会社は作れる』と分かるもの」
 //   ロゴの不可能立体を設計思想に。非対称・はみ出し・重ね・斜めの境界。アニメーションが主役。
-// LP として変えたのは中身だけ（入口→証拠→困りごと→仕組み→約束→手に入るもの→価格→相談）。
+// LP として変えたのは中身だけ（入口→証拠→困りごと→仕組み→約束→手に入るもの→価格→資料請求）。
 // 動きは「次に見せたいものへ目を連れて行く」ために置く（石井さん方針）。
 //   立方体が組み上がる → 見出しが押し出される → 「お金を払って」に光が走る → ボタン
 //   スクロールで立方体が分解し、各面が飛んでいく。仕組みの節は、スクロールで 9枚 → 3枚 → 1枚 と絞られる。
@@ -25,26 +25,29 @@ import {
   type MotionValue,
   type Variants,
 } from 'framer-motion';
-import SiteHeader from '@/components/SiteHeader';
-import { getLpPost, type LpPost, type LpPostStatus } from '@/lib/lp-posts';
+import LpHeader from './LpHeader';
+import { getLpPost, type LpPost, type LpPostStatus } from './posts';
 
 // ---- 定数。ここだけ変えれば表示が変わる ----
 const LP = {
-  price: null as string | null, // 未設定なら「価格はご相談時にお伝えします」
+  price: '200,000円（税別）' as string | null, // null にすると「価格はご相談時にお伝えします」
   term: null as string | null,
 };
 
 // 証拠の画像に添える文。投稿ごとの状態で変わる。「反応が出た」は本当に出た投稿にしか書かない
 const PROOF_TEXT: Record<LpPostStatus, string> = {
-  testing: 'この投稿は、いま試している最中です。反応の数字を見て、広告にするかどうかを決めます。',
-  selected: 'この投稿は、試した中で反応が出たものです。これから広告にします。',
-  ad: 'この広告は、試した投稿の中から数字で選ばれたものです。',
+  testing: 'この投稿は、|いま試している最中です。\n反応の数字を見て、|広告にするかどうかを|決めます。',
+  selected: 'この投稿は、|試した中で|反応が出たものです。\nこれから広告にします。',
+  ad: 'この広告は、|試した投稿の中から|数字で選ばれたものです。',
 };
 
-const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+// Metaピクセル（データセット「dp-guild LP」／ビジネスポートフォリオ「株式会社dp-guild」）。IDは秘密ではないのでコードに置く
+const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID || '953181374021303';
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
+    clarity?: (...args: unknown[]) => void;
   }
 }
 
@@ -54,6 +57,33 @@ type Tracking = Record<UtmKey, string> & { landing: string };
 const emptyTracking: Tracking = { utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '', landing: '' };
 
 const EASE = [0.19, 1, 0.22, 1] as const;
+
+// ============================================================
+// 本文の改行：1文ずつ行を分け、語の途中では折り返さない
+//   "\n" … ここで行を分ける（1文ごと）
+//   "|"   … 画面が狭いときだけ、ここで折り返してよい（意味の切れ目）
+//   行頭の "**" … その行を太字にする
+// ============================================================
+function Tx({ s }: { s: string }) {
+  return (
+    <>
+      {s.split('\n').map((line, i) => {
+        const bold = line.startsWith('**');
+        const body = bold ? line.slice(2) : line;
+        const parts = body.split('|').map((ph, j) => (
+          <span className="ph" key={j}>
+            {ph}
+          </span>
+        ));
+        return (
+          <span className="ln" key={i}>
+            {bold ? <b>{parts}</b> : parts}
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
 // ============================================================
 // 文字：1文字ずつ、マスクの下から押し出す
@@ -318,9 +348,9 @@ function Funnel({ post, rm }: { post?: LpPost; rm: boolean }) {
   });
   const line = useTransform(p, [0, 0.95], [0, 1]);
   const steps = [
-    { t: '試す', s: '言い方や見せ方の違う投稿を、お客様のInstagramアカウントに、広告費をかけずにいくつも出す' },
-    { t: '選ぶ', s: '保存・コメント・プロフィールへの移動など、反応の数字で選ぶ' },
-    { t: '出す', s: '反応が出た投稿だけを、広告にする' },
+    { t: '試す', s: '言い方や見せ方の違う投稿を、|お客様のInstagramアカウントに、|広告費をかけずに|いくつも出す' },
+    { t: '選ぶ', s: '保存・コメント・|プロフィールへの移動など、|反応の数字で選ぶ' },
+    { t: '出す', s: '反応が出た投稿だけを、|広告にする' },
   ];
   return (
     <div className="k-funnel" ref={ref}>
@@ -339,7 +369,9 @@ function Funnel({ post, rm }: { post?: LpPost; rm: boolean }) {
               </span>
               <div>
                 <b>{s.t}</b>
-                <span>{s.s}</span>
+                <span>
+                  <Tx s={s.s} />
+                </span>
               </div>
             </li>
           ))}
@@ -357,7 +389,7 @@ export default function KenshoPage() {
   const rm = !!useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fvRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
   const [sent, setSent] = useState<'idle' | 'sending' | 'error'>('idle');
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState({ company: '', name: '', email: '', content: '' });
@@ -402,7 +434,7 @@ export default function KenshoPage() {
     setPost(getLpPost(next.utm_content));
   }, []);
 
-  // 追従ボタン：入口の相談ボタンが出たあとに現れ、以降はずっと出しておく（石井さん 2026-09-26）。
+  // 追従ボタン：入口の資料請求のボタンが出たあとに現れ、以降はずっと出しておく（石井さん 2026-09-26）。
   // 1画面目の目の順番（立方体 → 見出し → ボタン）を崩さないよう、出すのは入口の演出が終わってから
   useEffect(() => {
     if (rm) {
@@ -412,6 +444,17 @@ export default function KenshoPage() {
     const t = window.setTimeout(() => setBar(true), 2800);
     return () => window.clearTimeout(t);
   }, [rm]);
+
+  // フォームが画面に見えている間だけ、追従ボタンを引っ込める（送信ボタンに重ならないように）
+  const [formInView, setFormInView] = useState(false);
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => setFormInView(e.isIntersecting), { threshold: 0.12 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const barOn = bar && !formInView;
 
   const goForm = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -440,7 +483,7 @@ export default function KenshoPage() {
     setSent('sending');
     setMsg('');
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/api/lp/kensho', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, honeypot, timestamp: startedAt.current, ...tracking }),
@@ -450,6 +493,13 @@ export default function KenshoPage() {
         throw new Error(res.status === 400 && r.error ? r.error : '送信に失敗しました。時間をおいて、もう一度お試しください。');
       }
       window.fbq?.('track', 'Lead', { content_name: tracking.utm_content || 'profile', content_category: tracking.utm_source || 'direct' });
+      // Googleアナリティクス：LP専用の申込イベント（サイト全体のお問い合わせの計測とは混ぜない）
+      window.gtag?.('event', 'kensho_lead', {
+        route: tracking.utm_source || 'direct',
+        post_id: tracking.utm_content || 'none',
+      });
+      // Clarity：申込した人の録画に印を付ける
+      window.clarity?.('event', 'kensho_lead');
       const q = new URLSearchParams();
       UTM_KEYS.forEach((k) => {
         if (tracking[k]) q.set(k, tracking[k]);
@@ -472,7 +522,7 @@ export default function KenshoPage() {
   const n3 = n2 + HL.length;
 
   return (
-    <div className="lp kensho">
+    <div className="lpk kensho">
       <canvas className="k-iso" ref={canvasRef} aria-hidden="true" />
       {PIXEL_ID && (
         <Script id="meta-pixel" strategy="afterInteractive">
@@ -480,7 +530,12 @@ export default function KenshoPage() {
         </Script>
       )}
 
-      <SiteHeader here="検証パッケージ" />
+      {/* Microsoft Clarity（ヒートマップ・操作の録画）。サイト共通のレイアウトは他の作業と衝突しやすいので、LPの中だけに置く */}
+      <Script id="ms-clarity" strategy="afterInteractive">
+        {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","yq8grqz6mv");`}
+      </Script>
+
+      <LpHeader here="検証パッケージ" />
 
       {/* ==================== 1. 入口 ==================== */}
       <section className="k-fv" ref={fvRef}>
@@ -542,12 +597,12 @@ export default function KenshoPage() {
           >
             <a href="#k-form" className="k-cta" onClick={goForm}>
               <span className="k-cta-shine" aria-hidden="true" />
-              <span className="t">無料で相談する</span>
+              <span className="t">資料を受け取る</span>
               <span className="ar" aria-hidden="true">
                 →
               </span>
             </a>
-            <p className="k-ctanote">電話番号は聞きません。メールで返信します。</p>
+            <p className="k-ctanote">資料はメールでお送りします。電話番号は聞きません。</p>
           </motion.div>
         </motion.div>
         <div className="k-cut" aria-hidden="true" />
@@ -560,13 +615,12 @@ export default function KenshoPage() {
             <Heading text={['Instagramの投稿から', '来ましたよね。']} className="k-h2" rm={rm} />
             <Rise rm={rm} y={24} d={0.2}>
               <p className="k-body">
-                あなたが見た投稿は、言い方の違う投稿をいくつも試している中の1枚です。反応の数字で選び、反応が出た投稿だけを広告にする。
-                <b>このInstagramアカウント自体が、そのやり方の実演です。</b>
+                <Tx s={'あなたが見た投稿は、|言い方の違う投稿を|いくつも試している|中の1枚です。\n反応の数字で選び、|反応が出た投稿だけを|広告にする。\n**このInstagramアカウント自体が、|そのやり方の実演です。'} />
               </p>
             </Rise>
             {post && (
               <Rise rm={rm} y={16} d={0.3}>
-                <p className="k-proof-cap">{PROOF_TEXT[post.status ?? 'testing']}</p>
+                <p className="k-proof-cap"><Tx s={PROOF_TEXT[post.status ?? 'testing']} /></p>
               </Rise>
             )}
           </div>
@@ -644,11 +698,11 @@ export default function KenshoPage() {
         <section className="k-sec k-how">
           <Heading text={['出す前に、', '確かめる。']} className="k-h2 big" rm={rm} />
           <Rise rm={rm} y={20}>
-            <p className="k-body k-how-lead">いくつも試して、反応の数字で絞り、残った1枚だけを広告にします。</p>
+            <p className="k-body k-how-lead"><Tx s={'いくつも試して、|反応の数字で絞り、\n残った1枚だけを|広告にします。'} /></p>
           </Rise>
           <Funnel post={post} rm={rm} />
           <Rise rm={rm} x={-40} y={0}>
-            <p className="k-note">色、言い方、写真か文字か。投稿ごとに変えた点を記録しているので、なぜ反応したかを後から数字で見比べられます。</p>
+            <p className="k-note"><Tx s={'色、言い方、|写真か文字か。\n投稿ごとに|変えた点を|記録しているので、\nなぜ反応したかを|後から数字で|見比べられます。'} /></p>
           </Rise>
         </section>
 
@@ -657,7 +711,7 @@ export default function KenshoPage() {
           <Heading text={['反応が出なければ、', '広告に進みません。']} className="k-h2 huge" rm={rm} />
           <Rise rm={rm} y={24} d={0.15}>
             <p className="k-body">
-              反応が出なかった投稿は、広告にしません。広告費もかかりません。反応の基準（どの数字を、いくつ以上とするか）は、始める前に一緒に決めます。
+              <Tx s={'反応が出なかった投稿は、|広告にしません。\n広告費も|かかりません。\n反応の基準（どの数字を、|いくつ以上とするか）は、\n始める前に|一緒に決めます。'} />
             </p>
           </Rise>
         </section>
@@ -681,181 +735,187 @@ export default function KenshoPage() {
             ))}
           </ul>
           <Rise rm={rm} y={16}>
-            <p className="k-body">反応が出なかった場合も、試した投稿と数字のレポートはお渡しします。</p>
+            <p className="k-body"><Tx s={'反応が出なかった場合も、\n試した投稿と|数字のレポートは|お渡しします。'} /></p>
           </Rise>
         </section>
 
-        {/* ==================== 7. 価格 ==================== */}
+        {/* ==================== 7. 価格と資料請求。PCでは価格の右にフォームを置き、スクロールを減らす ==================== */}
         <section className="k-sec k-price-sec">
-          <Heading text={['価格']} className="k-h2" rm={rm} />
-          <Rise className="k-price" rm={rm} x={40} y={20} r={-1.5}>
-            <p className="k-amount">
-              {LP.price ?? '価格はご相談時にお伝えします'}
-              {LP.price && LP.term && <small>／ {LP.term}</small>}
-            </p>
-            <p className="k-pnote">単発のパッケージです。月額や継続の契約はありません。相談は無料で、相談したからといって申し込む必要はありません。</p>
-            <p className="k-pnote">検証パッケージの料金は、反応の有無にかかわらずかかります。</p>
-            <div className="k-inc">
-              <div>
-                <h3>含まれるもの</h3>
-                <ul>
-                  <li>投稿の制作</li>
-                  <li>お客様のアカウントでの配信</li>
-                  <li>反応の計測</li>
-                  <li>レポート</li>
-                </ul>
+          <div className="k-pf">
+            <div className="k-pf-l">
+            <Heading text={['価格']} className="k-h2" rm={rm} />
+            <Rise className="k-price" rm={rm} x={40} y={20} r={-1.5}>
+              <p className="k-amount">
+                {LP.price ?? '価格はご相談時にお伝えします'}
+                {LP.price && LP.term && <small>／ {LP.term}</small>}
+              </p>
+              <p className="k-pnote"><Tx s={'単発のパッケージです。\n月額や継続の契約は|ありません。\n資料の請求と相談は、|無料です。\n請求したからといって、|申し込む必要は|ありません。'} /></p>
+              <p className="k-pnote"><Tx s={'検証パッケージの料金は、|反応の有無に|かかわらず|かかります。'} /></p>
+              <div className="k-inc">
+                <div>
+                  <h3>含まれるもの</h3>
+                  <ul>
+                    <li>投稿の制作</li>
+                    <li>コメントへの自動DMの設置</li>
+                    <li>申込の計測の設定</li>
+                    <li>お客様のアカウントでの配信</li>
+                    <li>反応と申込の計測</li>
+                    <li>レポート</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3>含まれないもの</h3>
+                  <ul>
+                    <li>
+                      <Tx s={'広告費（Metaに|直接お支払い|いただきます。\n当社を経由しません）'} />
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div>
-                <h3>含まれないもの</h3>
-                <ul>
-                  <li>広告費（Metaに直接お支払いいただきます。当社を経由しません）</li>
-                </ul>
-              </div>
+            </Rise>
+            {/* 必須の一文。本文と同じ大きさ・同じ色。動かさない */}
+            <p className="k-must"><Tx s={'本サービスは、|投稿の制作・配信・計測・分析を|行うものであり、\n売上や集客などの|効果を保証するものでは|ありません。'} /></p>
             </div>
-          </Rise>
-          {/* 必須の一文。本文と同じ大きさ・同じ色。動かさない */}
-          <p className="k-must">本サービスは、投稿の制作・配信・計測・分析を行うものであり、売上や集客などの効果を保証するものではありません。</p>
-        </section>
 
-        {/* ==================== 8. 無料相談 ==================== */}
-        <section className="k-sec k-formsec" id="k-form" ref={formRef}>
-          <Rise className="k-formcard" rm={rm} y={60} r={-2}>
-            <div className="k-formtop">
-              <p className="k">検証パッケージ</p>
-              <h2>無料で相談する</h2>
-              <p>2営業日以内に、メールで返信します。電話はしません。</p>
+            {/* 資料請求 */}
+            <div className="k-pf-r k-formsec" id="k-form" ref={formRef}>
+            <Rise className="k-formcard" rm={rm} y={60} r={-2}>
+              <div className="k-formtop">
+                <p className="k">検証パッケージ</p>
+                <h2>資料を受け取る</h2>
+                <p><Tx s={'送信すると、|資料をメールで|お送りします。\nご相談は、|そのメールへの返信で。|1営業日以内に|お答えします。'} /></p>
+              </div>
+              <form className="k-form" onSubmit={onSubmit} noValidate>
+                <div className="fld">
+                  <label htmlFor="k-company">
+                    会社名・屋号 <span className="rq">必須</span>
+                    <span className="k-lblnote">個人事業主の方は屋号</span>
+                  </label>
+                  <input
+                    id="k-company"
+                    type="text"
+                    required
+                    autoComplete="organization"
+                    placeholder="株式会社◯◯ ／ ◯◯商店"
+                    value={form.company}
+                    aria-invalid={fieldErr.company ? true : undefined}
+                    aria-describedby={fieldErr.company ? 'k-company-err' : undefined}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                  />
+                  {fieldErr.company && (
+                    <p className="k-ferr" id="k-company-err">
+                      {fieldErr.company}
+                    </p>
+                  )}
+                </div>
+                <div className="fld">
+                  <label htmlFor="k-name">
+                    お名前 <span className="rq">必須</span>
+                  </label>
+                  <input
+                    id="k-name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    placeholder="山田 太郎"
+                    value={form.name}
+                    aria-invalid={fieldErr.name ? true : undefined}
+                    aria-describedby={fieldErr.name ? 'k-name-err' : undefined}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  />
+                  {fieldErr.name && (
+                    <p className="k-ferr" id="k-name-err">
+                      {fieldErr.name}
+                    </p>
+                  )}
+                </div>
+                <div className="fld">
+                  <label htmlFor="k-email">
+                    メールアドレス <span className="rq">必須</span>
+                  </label>
+                  <input
+                    id="k-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    aria-invalid={fieldErr.email ? true : undefined}
+                    aria-describedby={fieldErr.email ? 'k-email-err' : undefined}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  />
+                  {fieldErr.email && (
+                    <p className="k-ferr" id="k-email-err">
+                      {fieldErr.email}
+                    </p>
+                  )}
+                </div>
+                <div className="fld">
+                  <label htmlFor="k-content">
+                    ご質問・ご相談 <span className="op">任意</span>
+                  </label>
+                  <textarea
+                    id="k-content"
+                    rows={3}
+                    placeholder="例）◯◯（商品名）の広告を出したい。Instagramは @◯◯"
+                    value={form.content}
+                    onChange={(e) => setForm({ ...form, content: e.target.value })}
+                  />
+                </div>
+
+                <input
+                  type="text"
+                  name="company_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hp"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+
+                <p className="k-bizonly"><Tx s={'事業者の方向けのサービスです。\n個人の方のご相談は|受け付けていません。'} /></p>
+                <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
+                  <span className="k-cta-shine" aria-hidden="true" />
+                  <span className="t">{sent === 'sending' ? '送信中…' : '資料を受け取る'}</span>
+                </button>
+                {sent === 'error' && (
+                  <p className="k-err" role="alert">
+                    {msg}
+                  </p>
+                )}
+                <p className="k-fnote">資料の送付とご連絡にのみ使用します。</p>
+              </form>
+            </Rise>
             </div>
-            <form className="k-form" onSubmit={onSubmit} noValidate>
-              <div className="fld">
-                <label htmlFor="k-company">
-                  会社名・屋号 <span className="rq">必須</span>
-                  <span className="k-lblnote">個人事業主の方は屋号</span>
-                </label>
-                <input
-                  id="k-company"
-                  type="text"
-                  required
-                  autoComplete="organization"
-                  placeholder="株式会社◯◯ ／ ◯◯商店"
-                  value={form.company}
-                  aria-invalid={fieldErr.company ? true : undefined}
-                  aria-describedby={fieldErr.company ? 'k-company-err' : undefined}
-                  onChange={(e) => setForm({ ...form, company: e.target.value })}
-                />
-                {fieldErr.company && (
-                  <p className="k-ferr" id="k-company-err">
-                    {fieldErr.company}
-                  </p>
-                )}
-              </div>
-              <div className="fld">
-                <label htmlFor="k-name">
-                  お名前 <span className="rq">必須</span>
-                </label>
-                <input
-                  id="k-name"
-                  type="text"
-                  required
-                  autoComplete="name"
-                  placeholder="山田 太郎"
-                  value={form.name}
-                  aria-invalid={fieldErr.name ? true : undefined}
-                  aria-describedby={fieldErr.name ? 'k-name-err' : undefined}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                {fieldErr.name && (
-                  <p className="k-ferr" id="k-name-err">
-                    {fieldErr.name}
-                  </p>
-                )}
-              </div>
-              <div className="fld">
-                <label htmlFor="k-email">
-                  メールアドレス <span className="rq">必須</span>
-                </label>
-                <input
-                  id="k-email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  inputMode="email"
-                  placeholder="you@example.com"
-                  value={form.email}
-                  aria-invalid={fieldErr.email ? true : undefined}
-                  aria-describedby={fieldErr.email ? 'k-email-err' : undefined}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-                {fieldErr.email && (
-                  <p className="k-ferr" id="k-email-err">
-                    {fieldErr.email}
-                  </p>
-                )}
-              </div>
-              <div className="fld">
-                <label htmlFor="k-content">
-                  相談したいこと <span className="op">任意</span>
-                </label>
-                <textarea
-                  id="k-content"
-                  rows={3}
-                  placeholder="例）◯◯（商品名）の広告を出したい。Instagramは @◯◯"
-                  value={form.content}
-                  onChange={(e) => setForm({ ...form, content: e.target.value })}
-                />
-              </div>
-
-              <input
-                type="text"
-                name="company_url"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-                className="hp"
-                value={honeypot}
-                onChange={(e) => setHoneypot(e.target.value)}
-              />
-
-              <p className="k-bizonly">事業者の方向けのサービスです。個人の方のご相談は受け付けていません。</p>
-              <button className="k-cta k-sub" type="submit" disabled={sent === 'sending'}>
-                <span className="k-cta-shine" aria-hidden="true" />
-                <span className="t">{sent === 'sending' ? '送信中…' : '無料で相談する'}</span>
-              </button>
-              {sent === 'error' && (
-                <p className="k-err" role="alert">
-                  {msg}
-                </p>
-              )}
-              <p className="k-fnote">ご相談の内容とご連絡にのみ使用します。</p>
-            </form>
-          </Rise>
+          </div>
         </section>
       </main>
 
       <footer className="k-foot">
         <div className="k-foot-in">
           <nav aria-label="法的情報">
-            <Link href="/tokushoho">特定商取引法に基づく表記</Link>
             <Link href="/privacy">プライバシーポリシー</Link>
-            <Link href="/terms">利用規約</Link>
           </nav>
           <p className="k-co">運営会社：株式会社DP-GUILD</p>
           <p className="k-cp">&copy; {new Date().getFullYear()} DP-GUILD</p>
         </div>
       </footer>
 
-      {/* 追従ボタン。入口の演出のあとに現れ、以降はずっと出しておく */}
+      {/* 追従ボタン。入口の演出のあとに現れ、以降は出しておく。フォームが見えている間だけ引っ込める */}
       <motion.a
         href="#k-form"
         className="k-bar"
         onClick={goForm}
         initial={false}
-        animate={bar ? { y: 0, opacity: 1 } : { y: 90, opacity: 0 }}
+        animate={barOn ? { y: 0, opacity: 1 } : { y: 90, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-        aria-hidden={!bar}
-        tabIndex={bar ? 0 : -1}
+        aria-hidden={!barOn}
+        tabIndex={barOn ? 0 : -1}
       >
         <span>検証パッケージ</span>
-        <b>無料で相談する →</b>
+        <b>資料を受け取る →</b>
       </motion.a>
     </div>
   );

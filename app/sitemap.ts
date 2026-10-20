@@ -67,7 +67,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ブログ記事（microCMSから動的に取得）
   try {
     const blogs = await getAllBlogs();
-    const blogPages: MetadataRoute.Sitemap = blogs.map((blog) => ({
+    // 別の記事へ転送している記事（next.config.js の redirects）は載せない
+    const redirected = new Set(['snsunyouhiyou01']);
+    const blogPages: MetadataRoute.Sitemap = blogs.filter((blog) => !redirected.has(blog.id)).map((blog) => ({
       url: `${BASE_URL}/blog/${blog.id}`,
       lastModified: new Date(blog.updatedAt),
       changeFrequency: 'monthly',
