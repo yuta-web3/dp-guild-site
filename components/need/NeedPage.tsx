@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
+import { SiteFooterNav } from '@/components/SiteNav';
+import { company } from '@/lib/top-cases';
 import type { Need } from '@/lib/needs';
 
 // 入口ページ。
@@ -77,6 +79,17 @@ export default function NeedPage({ need }: { need: Need }) {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (sent === 'sending') return;
+    // 必須は連絡先の3つだけ。空のまま送らない（送り先でも同じことを確かめる）
+    if (!form.company.trim() || !form.name.trim() || !form.email.trim()) {
+      setSent('error');
+      setMsg('会社名・屋号、お名前、メールアドレスを入力してください。');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      setSent('error');
+      setMsg('メールアドレスの形を確かめてください。');
+      return;
+    }
     setSent('sending');
     setMsg('');
     try {
@@ -197,9 +210,6 @@ export default function NeedPage({ need }: { need: Need }) {
           </details>
         </div>
 
-        <footer className="foot">
-          <p className="cp">&copy; 2026 DP-GUILD. All rights reserved.</p>
-        </footer>
       </div>
 
       {/* ============ 相談パネル。このページの中で完結させる ============ */}
@@ -224,16 +234,18 @@ export default function NeedPage({ need }: { need: Need }) {
               <>
                 <div className="fld">
                   <label htmlFor="need-company">
-                    会社名・屋号 <span className="op">任意</span>
+                    会社名・屋号 <span className="rq">必須</span>
                   </label>
                   <input
                     id="need-company"
                     type="text"
+                    required
                     autoComplete="organization"
                     placeholder="株式会社◯◯"
                     value={form.company}
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
                   />
+                  <p className="hint">個人事業の方は、屋号またはお名前で大丈夫です。</p>
                 </div>
                 <div className="fld">
                   <label htmlFor="need-website">
@@ -279,11 +291,10 @@ export default function NeedPage({ need }: { need: Need }) {
                 </div>
                 <div className="fld">
                   <label htmlFor="need-content">
-                    いま困っていること <span className="rq">必須</span>
+                    いま困っていること <span className="op">任意</span>
                   </label>
                   <textarea
                     id="need-content"
-                    required
                     rows={3}
                     /* 入力例はページごとに変える。集客のページで在庫の例が出ると、
                        自分の話ではないと思われる */
@@ -318,6 +329,25 @@ export default function NeedPage({ need }: { need: Need }) {
           </div>
         </form>
       </aside>
+
+      {/* フッターはサービスページと同じ。相談パネルの後に置く（スマホでパネルより上に出さない） */}
+      <footer className="lpfoot">
+        <div className="inner">
+          <div className="co">
+            <b>{company.name}</b>
+            <span>
+              {company.zip} {company.address}
+            </span>
+            <span>
+              <a href={`mailto:${company.email}`}>{company.email}</a>
+            </span>
+          </div>
+          <SiteFooterNav />
+          <p className="cp" suppressHydrationWarning>
+            &copy; {new Date().getFullYear()} DP-GUILD. All rights reserved.
+          </p>
+        </div>
+      </footer>
 
       <div className="mbar">
         <div className="p">

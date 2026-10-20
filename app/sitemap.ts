@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { client } from '@/lib/microcms';
 import type { BlogListResponse } from '@/lib/microcms';
 import { serviceSlugs } from '@/lib/services';
+import { needSlugs } from '@/lib/needs';
 
 const BASE_URL = 'https://dp-guild.com';
 
@@ -63,6 +64,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
   staticPages.push(...servicePages);
+
+  // 入口ページ（lib/needs の needSlugs から自動。手で並べない）
+  const needPages: MetadataRoute.Sitemap = needSlugs.map((slug) => ({
+    url: `${BASE_URL}/needs/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }));
+  staticPages.push(...needPages);
+
+  // 法務ページ（検索に出す設定のページは、すべてサイトマップに載せる）
+  // LP（/lp/kensho）とお礼のページは noindex なので載せない
+  const legalPages: MetadataRoute.Sitemap = ['/privacy', '/tokushoho', '/terms'].map((path) => ({
+    url: `${BASE_URL}${path}`,
+    lastModified: new Date(),
+    changeFrequency: 'yearly',
+    priority: 0.3,
+  }));
+  staticPages.push(...legalPages);
 
   // ブログ記事（microCMSから動的に取得）
   try {

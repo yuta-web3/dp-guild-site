@@ -231,6 +231,17 @@ export default function TopPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === 'sending') return;
+    // 必須は連絡先の3つだけ。空のまま送らない（送り先でも同じことを確かめる）
+    if (!form.company.trim() || !form.name.trim() || !form.email.trim()) {
+      setStatus('error');
+      setErrorMsg('会社名・屋号、お名前、メールアドレスを入力してください。');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      setStatus('error');
+      setErrorMsg('メールアドレスの形を確かめてください。');
+      return;
+    }
     setStatus('sending');
     setErrorMsg('');
     try {
