@@ -116,7 +116,7 @@ async function sendSlackNotification(
               { type: 'mrkdwn', text: `*メール:*\n${data.email}` },
               { type: 'mrkdwn', text: `*会社名:*\n${data.company || 'なし'}` },
               { type: 'mrkdwn', text: `*サイト:*\n${data.website || 'なし'}` },
-              { type: 'mrkdwn', text: `*送信日時:*\n${new Date().toLocaleString('ja-JP')}` },
+              { type: 'mrkdwn', text: `*送信日時:*\n${new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}` },
             ]
           },
           {
