@@ -24,7 +24,7 @@
     "react-dom": "19.1.10",
     "react-hook-form": "^7.63.0",
     "resend": "^6.1.2",
-    "zod": "^4.1.11"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -36,5 +36,18 @@
     "eslint-config-next": "15.5.28",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@cloudflare/next-on-pages": {
+      "miniflare": {
+        ".": "4.20260730.0",
+        "undici": "^7.30.1",
+        "sharp": "^0.35.5"
+      },
+      "cookie": "^0.7.2"
+    },
+    "next": {
+      "postcss": "^8.5.31"
+    }
   }
 }
