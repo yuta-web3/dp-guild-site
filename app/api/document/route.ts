@@ -45,10 +45,10 @@ const autoReplyHtml = (name: string, serviceLabel: string, docUrl: string | null
 
 async function notifySlack(d: {
   company: string; name: string; email: string; phone?: string; website?: string; serviceLabel: string;
-}) {
-  if (!process.env.SLACK_WEBHOOK_URL) return;
+}): Promise<boolean> {
+  if (!process.env.SLACK_WEBHOOK_URL) return false;
   try {
-    await fetch(process.env.SLACK_WEBHOOK_URL, {
+    const res = await fetch(process.env.SLACK_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -68,8 +68,11 @@ async function notifySlack(d: {
         ],
       }),
     });
+    if (!res.ok) console.error('Slack notification failed:', res.status);
+    return res.ok;
   } catch (e) {
     console.error('Slack notification failed:', e);
+    return false;
   }
 }
 
@@ -116,7 +119,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 保存とメールのどちらも失敗したら、受け付けていないことを画面に正直に返す（リードを黙って消さない）
+    // 保存・メール・Slack のどれにも届かなかったら、受け付けていないことを画面に正直に返す（リードを黙って消さない）
     let attempted = 0;
     let delivered = 0;
 
@@ -196,14 +199,15 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    await notifySlack({ ...data, serviceLabel: service.label });
+    if (process.env.SLACK_WEBHOOK_URL) attempted++;
+    if (await notifySlack({ ...data, serviceLabel: service.label })) delivered++;
 
-    // 保存先もメールも設定されていない（attempted === 0）ときも、成功と見せない。設定漏れでリードが消えるのを防ぐ
+    // 保存先・メール・Slack のどれも設定されていない（attempted === 0）ときも、成功と見せない。設定漏れでリードが消えるのを防ぐ
     if (delivered === 0) {
       console.error(
         attempted === 0
           ? 'Document request lost: no storage or email configured'
-          : 'Document request lost: both save and email failed',
+          : 'Document request lost: save, email and Slack all failed',
         { service: service.slug }
       );
       return NextResponse.json(

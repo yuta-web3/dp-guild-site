@@ -92,11 +92,11 @@ const createEmailHtml = (raw: { name: string; email: string; company?: string; w
 // Slack通知
 async function sendSlackNotification(
   data: { name: string; email: string; company?: string; website?: string; content: string },
-) {
-  if (!process.env.SLACK_WEBHOOK_URL) return;
+): Promise<boolean> {
+  if (!process.env.SLACK_WEBHOOK_URL) return false;
 
   try {
-    await fetch(process.env.SLACK_WEBHOOK_URL, {
+    const res = await fetch(process.env.SLACK_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -129,8 +129,11 @@ async function sendSlackNotification(
         ]
       })
     });
+    if (!res.ok) console.error('Slack notification failed:', res.status);
+    return res.ok;
   } catch (error) {
     console.error('Slack notification failed:', error);
+    return false;
   }
 }
 
@@ -153,6 +156,10 @@ export async function POST(request: NextRequest) {
     if (timeDiff < 3000) {
       return NextResponse.json({ error: 'Please take your time to fill the form' }, { status: 400 });
     }
+
+    // 保存・社内へのメール・Slack のどれか1つに届けば受け付けとする。
+    // どれにも届かなければ、お客様の情報が当社に届いていないので、画面にエラーを出してメールでの連絡を案内する
+    let delivered = 0;
 
     // Supabaseに保存（環境変数が設定されている場合）
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -186,6 +193,8 @@ export async function POST(request: NextRequest) {
 
         if (error) {
           console.error('Supabase insert error:', error);
+        } else {
+          delivered++;
         }
       } catch (dbError) {
         console.error('Database save failed:', dbError);
@@ -226,18 +235,30 @@ export async function POST(request: NextRequest) {
           `,
         });
         console.log('Notification email result:', notificationResult);
+        // Resend は失敗しても例外を投げず error を返す
+        if (notificationResult.error) {
+          console.error('Notification email failed:', notificationResult.error);
+        } else {
+          delivered++;
+        }
 
         console.log('Emails sent successfully to:', validatedData.email, 'and', toEmail);
       } catch (emailError) {
         console.error('Email send failed:', emailError);
-        // メール送信失敗してもフォーム送信自体は成功とする
       }
     } else {
       console.log('Resend not configured, skipping email sending');
     }
 
     // Slack通知（環境変数が設定されている場合）
-    await sendSlackNotification(validatedData);
+    if (await sendSlackNotification(validatedData)) delivered++;
+
+    if (delivered === 0) {
+      console.error('Contact lost: save, email and Slack all failed or not configured');
+      return NextResponse.json({
+        error: '送信を受け付けられませんでした。お手数ですが info@dp-guild.com までメールでご連絡ください。'
+      }, { status: 500 });
+    }
 
     return NextResponse.json({
       success: true,
