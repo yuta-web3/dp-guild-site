@@ -7,6 +7,7 @@ import { SiteFooterNav } from '@/components/SiteNav';
 import IsoCube from '@/components/service/IsoCube';
 import { company } from '@/lib/top-cases';
 import type { Service, TD } from '@/lib/services';
+import { markFormStart, markLead } from '@/lib/clarity';
 
 // サービスページの器。全サービスでこの1枚を使い、文字だけを lib/services/<slug>.ts から差し替える。
 // 見た目の言語はトップ（components/top/TopPage.tsx）と同じ：右端の全高パネル・ロゴの不可能立体・背景の格子。
@@ -116,6 +117,7 @@ export default function ServicePage({ service }: { service: Service }) {
     touchedAt.current = Date.now();
     // 計測：入力を始めた（どこで離脱したかを見るため）
     gtagOf()?.('event', 'form_start', { service: service.slug });
+    markFormStart(`service:${service.slug}`);
   };
 
   // ---- 出現・スクロール駆動・背景の格子 ----
@@ -439,6 +441,7 @@ export default function ServicePage({ service }: { service: Service }) {
       }
 
       setStatus('done');
+      markLead(`service:${service.slug}`);
 
       // 計測：GA4 が読み込まれているときだけ送る（無ければ何もしない）。
       // 資料へ移動するときは、送り終わってから（または 800ms 後に）移動する。先に移ると数えられない

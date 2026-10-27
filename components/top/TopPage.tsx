@@ -6,6 +6,7 @@ import SiteHeader from '@/components/SiteHeader';
 import { SiteFooterNav } from '@/components/SiteNav';
 import { company, ceoCareer } from '@/lib/top-cases';
 import { works, workKinds, beyond, type Work } from '@/lib/works';
+import { markFormStart, markLead } from '@/lib/clarity';
 
 type Status = 'idle' | 'sending' | 'done' | 'error';
 
@@ -253,6 +254,7 @@ export default function TopPage() {
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || '送信に失敗しました');
       setStatus('done');
+      markLead('top');
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : '送信に失敗しました');
@@ -376,7 +378,7 @@ export default function TopPage() {
 
         {/* ==================== 相談パネル ==================== */}
         <aside className="rail" id="contact">
-          <form className="card" onSubmit={onSubmit} noValidate>
+          <form className="card" onSubmit={onSubmit} onFocus={() => markFormStart('top')} noValidate>
             <div className="top">
               <div className="k">社内でのご検討用に</div>
               <h2>

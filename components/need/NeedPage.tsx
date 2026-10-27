@@ -6,6 +6,7 @@ import SiteHeader from '@/components/SiteHeader';
 import { SiteFooterNav } from '@/components/SiteNav';
 import { company } from '@/lib/top-cases';
 import type { Need } from '@/lib/needs';
+import { markFormStart, markLead } from '@/lib/clarity';
 
 // 入口ページ。
 //
@@ -101,6 +102,7 @@ export default function NeedPage({ need }: { need: Need }) {
       const r = await res.json();
       if (!res.ok) throw new Error(r.error || '送信に失敗しました');
       setSent('done');
+      markLead(`need:${need.slug}`);
     } catch (err) {
       setSent('error');
       setMsg(err instanceof Error ? err.message : '送信に失敗しました');
@@ -214,7 +216,7 @@ export default function NeedPage({ need }: { need: Need }) {
 
       {/* ============ 相談パネル。このページの中で完結させる ============ */}
       <aside className="rail" id="contact">
-        <form className="card" onSubmit={onSubmit} noValidate>
+        <form className="card" onSubmit={onSubmit} onFocus={() => markFormStart(`need:${need.slug}`)} noValidate>
           <div className="top">
             <div className="k">相談は無料です</div>
             <h2>

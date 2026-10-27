@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import SiteHeader from '@/components/SiteHeader';
 import { SiteFooterNav, useServiceNav } from '@/components/SiteNav';
 import { company } from '@/lib/top-cases';
+import { markFormStart, markLead } from '@/lib/clarity';
 
 // お問い合わせ。フォームだけの簡単なページ。
 // 送信先は /api/contact。必須は連絡先だけ。用件は選ぶだけ・内容は任意（打たなくても送れる）
@@ -72,6 +73,7 @@ export default function ContactClient() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'エラーが発生しました');
+      markLead('contact');
       router.push('/contact/thanks');
     } catch (error) {
       console.error('Submit error:', error);
@@ -96,7 +98,7 @@ export default function ContactClient() {
           <h1 className="ttl">お問い合わせ</h1>
           <p className="guide">1営業日以内に、メールでご連絡します。</p>
 
-          <form className="card" onSubmit={handleSubmit} noValidate>
+          <form className="card" onSubmit={handleSubmit} onFocus={() => markFormStart('contact')} noValidate>
             <div className="bd">
               <input
                 type="text"
