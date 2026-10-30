@@ -11,7 +11,7 @@ const PER = 12;
 
 const norm = (s: string) => s.normalize('NFKC').toLowerCase();
 const fmt = (d: string) =>
-  new Date(d).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.');
+  new Date(d).toLocaleDateString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.');
 
 export default function BlogIndex({ posts }: { posts: BlogSummary[] }) {
   const [cat, setCat] = useState('all');

@@ -136,7 +136,7 @@ export default async function BlogDetailPage({ params }: Props) {
   const more = await related(id, blog.category?.id);
 
   const date = (d: string) =>
-    new Date(d).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.');
+    new Date(d).toLocaleDateString('ja-JP', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.');
 
   return (
     <div className="lp blog post">
