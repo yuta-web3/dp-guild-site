@@ -7,19 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "pages:build": "npx @cloudflare/next-on-pages",
-    "pages:preview": "npx wrangler pages dev .vercel/output/static"
+    "build:workers": "node scripts/check-open-next-bundle.mjs before && opennextjs-cloudflare build && node scripts/check-open-next-bundle.mjs after",
+    "preview": "npm run build:workers && opennextjs-cloudflare preview",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@cloudflare/next-on-pages": "^1.13.16",
     "@hookform/resolvers": "^5.2.2",
+    "@opennextjs/cloudflare": "1.20.13",
     "@react-email/render": "^1.3.1",
     "@splinetool/react-spline": "^4.1.0",
     "@supabase/supabase-js": "^2.58.0",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.544.0",
     "microcms-js-sdk": "^3.2.0",
-    "next": "15.5.28",
+    "next": "16.4.3",
     "react": "19.1.10",
     "react-dom": "19.1.10",
     "react-hook-form": "^7.63.0",
@@ -32,22 +33,22 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
-    "eslint-config-next": "15.5.28",
+    "eslint-config-next": "16.4.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "4.151.3"
   },
   "overrides": {
-    "@cloudflare/next-on-pages": {
-      "miniflare": {
-        ".": "4.20260730.0",
-        "undici": "^7.30.1",
-        "sharp": "^0.35.5"
-      },
-      "cookie": "^0.7.2"
-    },
     "next": {
       "postcss": "^8.5.31"
+    },
+    "@node-minify/core": {
+      "glob": "^10.5.0"
+    },
+    "miniflare": {
+      "undici": "^7.30.1"
     }
   }
 }

@@ -4,7 +4,6 @@ import { ZodError } from 'zod';
 import { documentSchema } from '@/lib/document-schema';
 import { services } from '@/lib/services';
 
-export const runtime = 'edge';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 

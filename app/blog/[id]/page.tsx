@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getBlogById, getAllBlogs, getBlogSummaries, type FAQ, type BlogSummary } from '@/lib/microcms';
+import { getBlogById, getBlogSummaries, type FAQ, type BlogSummary } from '@/lib/microcms';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import SiteHeader from '@/components/SiteHeader';
@@ -9,7 +9,8 @@ import ReadProgress from '@/components/blog/ReadProgress';
 import '../../lp-base.css';
 import '../blog.css';
 
-export const revalidate = 60;
+// 開かれるたびにその場で作る（今の本番と同じ動き。ブログ一覧と同じ理由）
+export const dynamic = 'force-dynamic';
 
 // メタデータ生成（aio_answerをmeta tagに含める）
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -89,16 +90,6 @@ function generateArticleJsonLd(blog: { title: string; description: string; publi
       '@id': `https://dp-guild.com/blog/${id}`,
     },
   };
-}
-
-// 静的生成用のパス取得
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const { contents } = await getAllBlogs();
-  return contents.map((blog) => ({
-    id: blog.id,
-  }));
 }
 
 // 本文の大見出し（h2）から目次を作る。idが無い見出しには付ける
