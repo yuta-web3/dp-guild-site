@@ -191,6 +191,19 @@ export default async function BlogDetailPage({ params }: Props) {
             <span className="au">{AUTHOR.name}</span>
           </div>
 
+          {/* アイキャッチ（検索上位の記事と同じく、題名の下に出す） */}
+          {blog.eyecatch && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="bx-eye"
+              src={`${blog.eyecatch.url}?w=1200&fm=webp`}
+              alt=""
+              width={blog.eyecatch.width}
+              height={blog.eyecatch.height}
+              fetchPriority="high"
+            />
+          )}
+
           {/* TL;DR - 要点ボックス（ガイドライン準拠） */}
           {blog.tldr && (
             <div className="bx-tldr">
