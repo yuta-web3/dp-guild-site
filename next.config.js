@@ -12,6 +12,12 @@ const nextConfig = {
         destination: '/blog/snsoutsourcecost01',
         permanent: true,
       },
+      // カニバリ対策（2026-11-04）: ほぼ同じ題名の hpcompany01 → hpcorporate01（表示と順位が上の方に寄せる）
+      {
+        source: '/blog/hpcompany01',
+        destination: '/blog/hpcorporate01',
+        permanent: true,
+      },
       // 会社概要・実績はトップ（会社案内）にまとめた。転送を2段にしないよう /case も直接トップへ
       { source: '/about', destination: '/', permanent: true },
       { source: '/results', destination: '/', permanent: true },
