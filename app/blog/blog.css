@@ -182,6 +182,7 @@
 .lp .bx-by .au::before{content:"";display:inline-block;width:6px;height:6px;margin-right:8px;vertical-align:middle;
   background:linear-gradient(135deg,var(--cy),var(--vi))}
 
+.lp .bx-eye{display:block;width:100%;height:auto;margin-top:24px;border-radius:12px}
 .lp .bx-tldr{position:relative;margin-top:28px;padding:22px 24px 20px 26px;background:var(--paper);overflow:hidden}
 .lp .bx-tldr::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--cy),var(--bl) 55%,var(--vi))}
 .lp .bx-tldr h2{font-family:var(--disp);font-weight:900;font-size:16px;letter-spacing:-.01em}
