@@ -78,6 +78,23 @@ async function notifySlack(d: KenshoRequest) {
   }
 }
 
+// 投稿番号ごとの申込の数を数えるため、広告の実験室のWorkerに「1件来た」とだけ知らせる。
+// 名前・会社・メールは送らない。知らせに失敗しても、申込そのものは止めない（2026-11-05）
+async function logLead(d: KenshoRequest) {
+  const token = process.env.LEAD_LOG_TOKEN;
+  if (!token) return;
+  try {
+    await fetch(`${SITE}/api/lp/kensho-lead`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Lead-Token': token },
+      body: JSON.stringify({ source: d.utm_source || null, post_no: d.utm_content || null, landing: d.landing || null }),
+      signal: AbortSignal.timeout(3000),
+    });
+  } catch (e) {
+    console.error('Lead log failed:', e);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -136,6 +153,7 @@ export async function POST(request: NextRequest) {
     }
 
     await notifySlack(data);
+    if (delivered) await logLead(data);
 
     if (!delivered) {
       console.error('Kensho request lost: email not configured or failed');
