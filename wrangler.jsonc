@@ -14,6 +14,10 @@
       "service": "dp-guild-site"
     }
   ],
+  "routes": [
+    { "pattern": "dp-guild.com", "custom_domain": true },
+    { "pattern": "www.dp-guild.com", "custom_domain": true }
+  ],
   "observability": {
     "enabled": true
   }
