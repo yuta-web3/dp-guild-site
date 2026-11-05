@@ -8,7 +8,9 @@ import BlogIndex from '@/components/blog/BlogIndex';
 import '../lp-base.css';
 import './blog.css';
 
-export const revalidate = 60; // ISR: 60秒ごとに再検証
+// 開かれるたびにその場で作る（今の本番と同じ動き。新しい記事がすぐ出る）。
+// 時間で作り直す形（ISR）は、Workers では保存場所（R2）と順番待ち（Durable Objects）が要るので使わない
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'ブログ｜株式会社DP-GUILD',

@@ -7,7 +7,6 @@ import { kenshoRequestSchema, type KenshoRequest } from '@/app/lp/kensho/_parts/
 // サイトのお問い合わせ（/api/contact）・資料請求（/api/document）とは分ける（2026-10-19 LPを独立させる）。
 // 送信した人には、資料PDFのリンクを自動のメールで送る。社内にはメールとSlackで、経路と投稿番号を付けて知らせる。
 
-export const runtime = 'edge';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 

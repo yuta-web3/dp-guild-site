@@ -45,3 +45,8 @@ next-env.d.ts
 
 # wrangler の手元実行で作られる一時ファイル
 .wrangler/
+
+# OpenNext（Workers）の組み立ての出力
+.open-next/
+cloudflare-env.d.ts
+.dev.vars*

@@ -6,6 +6,9 @@ import { needSlugs } from '@/lib/needs';
 
 const BASE_URL = 'https://dp-guild.com';
 
+// 開かれるたびに作る（新しい記事をすぐ載せる。今の本番と同じ動き）
+export const dynamic = 'force-dynamic';
+
 // 全ブログ記事を取得（ページネーション対応）
 async function getAllBlogs() {
   const allBlogs: { id: string; updatedAt: string }[] = [];
