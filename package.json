@@ -38,7 +38,7 @@
     "eslint-config-next": "^16.4.5",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "wrangler": "4.151.3"
+    "wrangler": "4.157.0"
   },
   "overrides": {
     "next": {
@@ -46,9 +46,6 @@
     },
     "@node-minify/core": {
       "glob": "^10.5.0"
-    },
-    "miniflare": {
-      "undici": "^7.30.1"
     }
   }
 }
