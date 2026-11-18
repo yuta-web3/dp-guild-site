@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { contactSchema } from '@/lib/contact-schema';
+import { saveInquiry } from '@/lib/save-inquiry';
 
 
 // Resend setup
@@ -194,44 +195,19 @@ export async function POST(request: NextRequest) {
     let delivered = 0;
     const sales = looksLikeSales(validatedData);
 
-    // Supabaseに保存（環境変数が設定されている場合）
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      try {
-        const { createClient } = await import('@supabase/supabase-js');
-        const supabaseAdmin = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL,
-          process.env.SUPABASE_SERVICE_ROLE_KEY,
-          {
-            auth: {
-              autoRefreshToken: false,
-              persistSession: false
-            }
-          }
-        );
-
-        const { error } = await supabaseAdmin
-          .from('inquiries')
-          .insert({
-            name: validatedData.name,
-            email: validatedData.email,
-            company: validatedData.company || null,
-            // inquiries に website 列が無いため、本文の先頭に入れて確実に残す。
-            // 列を追加したら website: validatedData.website に分離する
-            content: validatedData.website
-              ? `［サイト］${validatedData.website}\n\n${validatedData.content}`
-              : validatedData.content,
-            created_at: new Date().toISOString(),
-            status: sales ? 'sales' : 'pending'
-          });
-
-        if (error) {
-          console.error('Supabase insert error:', error);
-        } else {
-          delivered++;
-        }
-      } catch (dbError) {
-        console.error('Database save failed:', dbError);
-      }
+    // D1 に残す（メール・Slack と並ぶ3つ目の残し先）
+    if (
+      await saveInquiry({
+        kind: 'contact',
+        status: sales ? 'sales' : 'pending',
+        name: validatedData.name,
+        email: validatedData.email,
+        company: validatedData.company || null,
+        website: validatedData.website || null,
+        content: validatedData.content,
+      })
+    ) {
+      delivered++;
     }
 
     // メール送信（Resendが設定されている場合）

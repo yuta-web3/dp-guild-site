@@ -18,6 +18,14 @@
       "service": "kokoku-jikken-dm"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "dp-guild-inquiries",
+      "database_id": "58d59662-803b-4977-a740-cd076edcbf4b",
+      "migrations_dir": "migrations"
+    }
+  ],
   "routes": [
     { "pattern": "dp-guild.com", "custom_domain": true },
     { "pattern": "www.dp-guild.com", "custom_domain": true }

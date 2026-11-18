@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { ZodError } from 'zod';
 import { documentSchema } from '@/lib/document-schema';
 import { services } from '@/lib/services';
+import { hasInquiryDb, saveInquiry } from '@/lib/save-inquiry';
 
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -126,35 +127,23 @@ export async function POST(request: NextRequest) {
       ? `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dp-guild.com'}/docs/${service.doc}`
       : null;
 
-    // 保存（お問い合わせと同じ inquiries テーブルに、資料請求として記録する）
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    // D1 に残す（お問い合わせと同じ inquiries の表に、資料請求として記録する）
+    if (hasInquiryDb()) {
       attempted++;
-      try {
-        const { createClient } = await import('@supabase/supabase-js');
-        const supabaseAdmin = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL,
-          process.env.SUPABASE_SERVICE_ROLE_KEY,
-          { auth: { autoRefreshToken: false, persistSession: false } }
-        );
-
-        const { error } = await supabaseAdmin.from('inquiries').insert({
+      if (
+        await saveInquiry({
+          kind: 'document',
+          status: 'document_request',
           name: data.name,
           email: data.email,
           company: data.company,
-          content: [
-            `【資料請求】${service.label}`,
-            `サービス: ${service.slug}`,
-            `電話番号: ${data.phone || 'なし'}`,
-            `サイト: ${data.website || 'なし'}`,
-          ].join('\n'),
-          created_at: new Date().toISOString(),
-          status: 'document_request',
-        });
-
-        if (error) console.error('Supabase insert error:', error);
-        else delivered++;
-      } catch (dbError) {
-        console.error('Database save failed:', dbError);
+          website: data.website || null,
+          phone: data.phone || null,
+          service: service.slug,
+          content: `【資料請求】${service.label}`,
+        })
+      ) {
+        delivered++;
       }
     }
 
