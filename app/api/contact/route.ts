@@ -88,9 +88,18 @@ const createEmailHtml = (raw: { name: string; email: string; company?: string; w
 };
 
 
+// 営業の見分け（2026-11-05 石井さん「つけとこう」）：売り込みの言い方が2つ以上あれば、通知の件名に【営業】と付け、保存先の status を sales にする。
+// 弾かずに受け付ける（本物の相談を間違えて捨てないため）。お客様も使う言葉（御社・拝見・営業・弊社では）は入れない
+const SALES_WORDS = ['のご提案', 'ご紹介させて', 'のご案内', '弊社サービス', 'お役に立て', '掲載', '代理店募集', 'パートナー', '貴社', 'アポイント', '商談', 'サービス資料', '無料トライアル', '突然のご連絡'];
+function looksLikeSales(data: { company?: string; content: string }): boolean {
+  const text = `${data.company || ''}\n${data.content}`;
+  return SALES_WORDS.filter((w) => text.includes(w)).length >= 2;
+}
+
 // Slack通知
 async function sendSlackNotification(
   data: { name: string; email: string; company?: string; website?: string; content: string },
+  sales = false,
 ): Promise<boolean> {
   if (!process.env.SLACK_WEBHOOK_URL) return false;
 
@@ -99,13 +108,13 @@ async function sendSlackNotification(
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: '新しいお問い合わせがありました',
+        text: `${sales ? '【営業】' : ''}新しいお問い合わせがありました`,
         blocks: [
           {
             type: 'header',
             text: {
               type: 'plain_text',
-              text: '📩 新しいお問い合わせ'
+              text: `${sales ? '【営業】' : '📩 '}新しいお問い合わせ`
             }
           },
           {
@@ -159,6 +168,7 @@ export async function POST(request: NextRequest) {
     // 保存・社内へのメール・Slack のどれか1つに届けば受け付けとする。
     // どれにも届かなければ、お客様の情報が当社に届いていないので、画面にエラーを出してメールでの連絡を案内する
     let delivered = 0;
+    const sales = looksLikeSales(validatedData);
 
     // Supabaseに保存（環境変数が設定されている場合）
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -187,7 +197,7 @@ export async function POST(request: NextRequest) {
               ? `［サイト］${validatedData.website}\n\n${validatedData.content}`
               : validatedData.content,
             created_at: new Date().toISOString(),
-            status: 'pending'
+            status: sales ? 'sales' : 'pending'
           });
 
         if (error) {
@@ -224,7 +234,7 @@ export async function POST(request: NextRequest) {
           from: `Contact Form <${fromEmail}>`,
           to: toEmail,
           replyTo: validatedData.email,
-          subject: `【新規問い合わせ】${validatedData.name} 様より`,
+          subject: `${sales ? '【営業】' : ''}【新規問い合わせ】${validatedData.name} 様より`,
           html: `
             <h2>新しいお問い合わせがありました</h2>
             <p><strong>お名前:</strong> ${escapeHtml(validatedData.name)}</p>
@@ -250,7 +260,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Slack通知（環境変数が設定されている場合）
-    if (await sendSlackNotification(validatedData)) delivered++;
+    if (await sendSlackNotification(validatedData, sales)) delivered++;
 
     if (delivered === 0) {
       console.error('Contact lost: save, email and Slack all failed or not configured');
