@@ -12,6 +12,10 @@
     {
       "binding": "WORKER_SELF_REFERENCE",
       "service": "dp-guild-site"
+    },
+    {
+      "binding": "LEAD_WORKER",
+      "service": "kokoku-jikken-dm"
     }
   ],
   "routes": [

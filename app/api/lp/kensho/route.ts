@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { ZodError } from 'zod';
 import { kenshoRequestSchema, type KenshoRequest } from '@/app/lp/kensho/_parts/schema';
 
@@ -80,16 +81,19 @@ async function notifySlack(d: KenshoRequest) {
 
 // 投稿番号ごとの申込の数を数えるため、広告の実験室のWorkerに「1件来た」とだけ知らせる。
 // 名前・会社・メールは送らない。知らせに失敗しても、申込そのものは止めない（2026-11-05）
+// 外のURLは通さず、Worker どうしの直通の道（wrangler.jsonc の services: LEAD_WORKER）で送る（2026-11-18）
+type LeadWorker = { fetch: (input: string, init?: RequestInit) => Promise<Response> };
 async function logLead(d: KenshoRequest) {
-  const token = process.env.LEAD_LOG_TOKEN;
-  if (!token) return;
   try {
-    await fetch(`${SITE}/api/lp/kensho-lead`, {
+    const lead = (getCloudflareContext().env as unknown as { LEAD_WORKER?: LeadWorker }).LEAD_WORKER;
+    if (!lead) return;
+    const res = await lead.fetch('https://kokoku-jikken-dm/api/lp/kensho-lead', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Lead-Token': token },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: d.utm_source || null, post_no: d.utm_content || null, landing: d.landing || null }),
       signal: AbortSignal.timeout(3000),
     });
+    if (!res.ok) console.error('Lead log failed:', res.status);
   } catch (e) {
     console.error('Lead log failed:', e);
   }
