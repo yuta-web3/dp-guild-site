@@ -145,9 +145,33 @@ async function sendSlackNotification(
   }
 }
 
+// bot よけ（Cloudflare Turnstile）の印を、Cloudflare に照らす（2026-11-18）。印は1回だけ・5分で切れる
+async function verifyTurnstile(secret: string, token: string, ip: string | null): Promise<boolean> {
+  try {
+    const form = new URLSearchParams({ secret, response: token });
+    if (ip) form.set('remoteip', ip);
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form });
+    const data = (await res.json()) as { success?: boolean };
+    return data.success === true;
+  } catch (error) {
+    console.error('Turnstile verify failed:', error);
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // bot よけ：秘密の鍵があれば、印の無い送信・通らない送信は受け付けない（保存も通知もしない）
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (turnstileSecret) {
+      const token = typeof body?.turnstileToken === 'string' ? body.turnstileToken : '';
+      const passed = token ? await verifyTurnstile(turnstileSecret, token, request.headers.get('cf-connecting-ip')) : false;
+      if (!passed) {
+        return NextResponse.json({ error: 'Bot check failed' }, { status: 400 });
+      }
+    }
 
     // バリデーション
     // 相談内容は任意。空なら空文字にそろえる

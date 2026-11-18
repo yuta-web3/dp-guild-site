@@ -6,6 +6,7 @@ import SiteHeader from '@/components/SiteHeader';
 import { SiteFooterNav, useServiceNav } from '@/components/SiteNav';
 import { company } from '@/lib/top-cases';
 import { markFormStart, markLead } from '@/lib/clarity';
+import Turnstile, { resetTurnstile } from '@/components/Turnstile';
 
 // お問い合わせ。フォームだけの簡単なページ。
 // 送信先は /api/contact。必須は連絡先だけ。用件は選ぶだけ・内容は任意（打たなくても送れる）
@@ -13,6 +14,7 @@ export default function ContactClient() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   // 用件はサービスの一覧から選ぶ（複数可）。打たなくても伝わるようにする
   const topics = [...useServiceNav().map((s) => s.label), 'まだ決まっていない・その他'];
@@ -69,6 +71,7 @@ export default function ContactClient() {
           content,
           honeypot: formData.honeypot,
           timestamp: formData.timestamp,
+          turnstileToken,
         }),
       });
       const result = await response.json();
@@ -78,6 +81,9 @@ export default function ContactClient() {
     } catch (error) {
       console.error('Submit error:', error);
       setSubmitError(true);
+      // 印は1回だけ使えるので、断られたら取り直す
+      setTurnstileToken('');
+      resetTurnstile();
     } finally {
       setIsSubmitting(false);
     }
@@ -163,6 +169,8 @@ export default function ContactClient() {
                   onChange={handleChange}
                 />
               </div>
+
+              <Turnstile onToken={setTurnstileToken} />
 
               <button className="sub" type="submit" disabled={isSubmitting}>
                 <span>{isSubmitting ? '送信中…' : '送信する'}</span>

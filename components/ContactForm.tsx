@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { contactSchema, type ContactFormData } from '@/lib/contact-schema';
+import Turnstile, { resetTurnstile } from '@/components/Turnstile';
 import { motion } from 'framer-motion';
 import { Send, Loader2, CheckCircle, AlertCircle, User, Mail, Building2, MessageSquare } from 'lucide-react';
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const {
     register,
@@ -41,7 +43,7 @@ export default function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, turnstileToken }),
       });
 
       const result = await response.json();
@@ -63,6 +65,9 @@ export default function ContactForm() {
     } catch (error) {
       console.error('Submit error:', error);
       setSubmitStatus('error');
+      // 印は1回だけ使えるので、断られたら取り直す
+      setTurnstileToken('');
+      resetTurnstile();
       // 5秒後にステータスをリセット
       setTimeout(() => {
         setSubmitStatus('idle');
@@ -204,6 +209,8 @@ export default function ContactForm() {
                   </p>
                 )}
               </div>
+
+              <Turnstile onToken={setTurnstileToken} />
 
               {/* 送信ボタン */}
               <div className="pt-4">
